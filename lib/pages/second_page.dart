@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:world_travel/router/router.dart';
-import 'package:world_travel/pages/home_page.dart' show HomeArgs;
 
 class SecondPageArgs {
   const SecondPageArgs({
@@ -12,7 +10,7 @@ class SecondPageArgs {
 }
 
 class SecondPage extends StatelessWidget {
-  const SecondPage({super.key, required this.args});
+  const SecondPage({required this.args, super.key});
 
   final SecondPageArgs args;
 
@@ -33,9 +31,7 @@ class SecondPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () => const HomeRoute(
-                $extra: HomeArgs(title: 'Back from Second Page with Page'),
-              ).go(context),
+              onPressed: () => const HomeRoute().go(context),
               child: const Text('Go back to Home Page'),
             ),
           ],

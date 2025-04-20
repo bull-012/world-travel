@@ -13,9 +13,7 @@ class HomeArgs {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.args});
-
-  final HomeArgs args;
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -35,7 +33,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.args.title),
+        title: const Text('仮'),
       ),
       body: Center(
         child: Column(

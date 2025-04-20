@@ -6,7 +6,7 @@ part of 'counter_command.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$counterCommandHash() => r'2eebabb704e0cfc5dcb691c4b1013bd051a55c4f';
+String _$counterCommandHash() => r'590826f0c8882fd44abcbf5630e68c55e2ef5ed1';
 
 /// See also [CounterCommand].
 @ProviderFor(CounterCommand)

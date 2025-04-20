@@ -2,11 +2,6 @@ import 'package:flutter/foundation.dart';
 
 @immutable
 class UserName {
-  final String lastName;
-  final String firstName;
-  final String kanaLastName;
-  final String kanaFirstName;
-
   const UserName({
     required this.lastName,
     required this.firstName,
@@ -14,7 +9,13 @@ class UserName {
     required this.kanaFirstName,
   });
 
+  final String lastName;
+  final String firstName;
+  final String kanaLastName;
+  final String kanaFirstName;
+
   String get fullName => '$lastName $firstName';
+
   String get kanaFullName => '$kanaLastName $kanaFirstName';
 
   UserName copyWith({
@@ -50,6 +51,7 @@ class UserName {
 
   @override
   String toString() {
-    return 'UserName(lastName: $lastName, firstName: $firstName, kanaLastName: $kanaLastName, kanaFirstName: $kanaFirstName)';
+    return 'UserName(lastName: $lastName, firstName: $firstName, kanaLastName: '
+        '$kanaLastName, kanaFirstName: $kanaFirstName)';
   }
 }

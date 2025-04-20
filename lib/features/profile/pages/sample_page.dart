@@ -99,7 +99,7 @@ class SamplePage extends HookConsumerWidget {
                   child: Text('Error: $error'),
                 ),
               _ => throw UnimplementedError(),
-            }
+            },
           ],
         ),
       ),

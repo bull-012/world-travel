@@ -23,9 +23,7 @@ class WidgetbookApp extends StatelessWidget {
                 WidgetbookUseCase(
                   name: 'Default',
                   builder: (context) => const RouterWrapper(
-                    child: HomePage(
-                      args: HomeArgs(title: 'Home Page'),
-                    ),
+                    child: HomePage(),
                   ),
                 ),
               ],

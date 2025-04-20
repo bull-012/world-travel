@@ -9,10 +9,12 @@ void main() async {
   final (overrideProviders: overrideProviders) =
       await AppInitializer.initialize();
 
-  runApp(ProviderScope(
-    overrides: overrideProviders,
-    child: const MyApp(),
-  ));
+  runApp(
+    ProviderScope(
+      overrides: overrideProviders,
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends ConsumerWidget {

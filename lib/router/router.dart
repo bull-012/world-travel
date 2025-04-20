@@ -28,13 +28,11 @@ GoRouter goRouter(Ref ref) {
   ],
 )
 class HomeRoute extends GoRouteData {
-  const HomeRoute({required this.$extra});
-
-  final HomeArgs $extra;
+  const HomeRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return HomePage(args: $extra);
+    return const HomePage();
   }
 }
 
