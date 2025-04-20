@@ -289,5 +289,5 @@ jobs:
         run: flutter pub get
 
       - name: Build Android with env file
-        run: flutter build apk --dart-define-from-file=dart_defines/qa.env'
+        run: flutter build apk --dart-define-from-file=dart_defines/qa.env
         continue-on-error: true
