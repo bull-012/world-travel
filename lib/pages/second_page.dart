@@ -33,8 +33,8 @@ class SecondPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () => HomeRoute(
-                $extra: const HomeArgs(title: 'Back from Second Page with $extra'),
+              onPressed: () => const HomeRoute(
+                $extra: HomeArgs(title: 'Back from Second Page with Page'),
               ).go(context),
               child: const Text('Go back to Home Page'),
             ),

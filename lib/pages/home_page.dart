@@ -47,8 +47,8 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () => SecondRoute(
-                $extra: const SecondPageArgs(title: 'Page from Home with $extra'),
+              onPressed: () => const SecondRoute(
+                $extra: SecondPageArgs(title: 'Page'),
               ).go(context),
               child: const Text('Go to Second Page'),
             ),
