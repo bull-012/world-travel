@@ -69,9 +69,7 @@ extension $SecondRouteExtension on SecondRoute {
 
 String _$goRouterHash() => r'6000d088687ade3f6d50a16d184e9d3ec20c831b';
 
-/// Router provider
-///
-/// Copied from [goRouter].
+/// See also [goRouter].
 @ProviderFor(goRouter)
 final goRouterProvider = AutoDisposeProvider<GoRouter>.internal(
   goRouter,
