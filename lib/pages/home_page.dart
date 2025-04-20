@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:world_travel/router/router.dart';
+import 'package:world_travel/features/profile/pages/sample_page.dart'
+    show SamplePageArgs;
 import 'package:world_travel/pages/second_page.dart' show SecondPageArgs;
+import 'package:world_travel/router/router.dart';
 
 class HomeArgs {
   const HomeArgs({
@@ -51,6 +52,13 @@ class _HomePageState extends State<HomePage> {
                 $extra: SecondPageArgs(title: 'Page'),
               ).go(context),
               child: const Text('Go to Second Page'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () => const SampleRoute(
+                $extra: SamplePageArgs(title: 'Sample Profile'),
+              ).go(context),
+              child: const Text('Go to Sample Profile'),
             ),
           ],
         ),

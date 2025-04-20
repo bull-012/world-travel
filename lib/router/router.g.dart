@@ -18,6 +18,10 @@ RouteBase get $homeRoute => GoRouteData.$route(
           path: 'second',
           factory: $SecondRouteExtension._fromState,
         ),
+        GoRouteData.$route(
+          path: 'sample',
+          factory: $SampleRouteExtension._fromState,
+        ),
       ],
     );
 
@@ -44,11 +48,32 @@ extension $HomeRouteExtension on HomeRoute {
 
 extension $SecondRouteExtension on SecondRoute {
   static SecondRoute _fromState(GoRouterState state) => SecondRoute(
-        $extra: state.extra as SecondPageArgs?,
+        $extra: state.extra as SecondPageArgs,
       );
 
   String get location => GoRouteData.$location(
         '/second',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $SampleRouteExtension on SampleRoute {
+  static SampleRoute _fromState(GoRouterState state) => SampleRoute(
+        $extra: state.extra as SamplePageArgs?,
+      );
+
+  String get location => GoRouteData.$location(
+        '/sample',
       );
 
   void go(BuildContext context) => context.go(location, extra: $extra);
