@@ -3,7 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:world_travel/pages/home_page.dart';
-import 'package:world_travel/pages/second_page.dart' show SecondPage, SecondPageArgs;
+import 'package:world_travel/pages/second_page.dart'
+    show SecondPage, SecondPageArgs;
 
 part 'router.g.dart';
 
@@ -41,6 +42,7 @@ class SecondRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return SecondPage(args: $extra ?? const SecondPageArgs(title: 'Second Page'));
+    return SecondPage(
+        args: $extra ?? const SecondPageArgs(title: 'Second Page'));
   }
 }
