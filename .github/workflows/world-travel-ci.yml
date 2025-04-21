@@ -1,0 +1,293 @@
+name: World Travel CI
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - '.github/workflows/world-travel-ci.yml'
+      - 'lib/**'
+      - 'test/**'
+      - 'pubspec.yaml'
+      - 'pubspec.lock'
+  pull_request:
+    branches: ["main"]
+    paths:
+      - '.github/workflows/world-travel-ci.yml'
+      - 'lib/**'
+      - 'test/**'
+      - 'pubspec.yaml'
+      - 'pubspec.lock'
+  workflow_dispatch:
+
+# Control concurrent executions
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Flutter static analysis
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: .
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.2'
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Generate code
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Check generated code diff
+        run: |
+          if ! git diff --exit-code; then
+            echo "Error: Generated files are not up to date."
+            echo "Please run the following command and commit the generated files:"
+            echo "  dart run build_runner build --delete-conflicting-outputs"
+            exit 1
+          fi
+
+      - name: Analyze
+        run: flutter analyze
+
+  # Flutter tests
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: .
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.2'
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test
+
+  # Visual Regression Test (if implemented)
+  vrt:
+    needs: [test, analyze]
+    if: |
+      github.event_name == 'pull_request' &&
+      needs.test.result == 'success' &&
+      needs.analyze.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: write
+    defaults:
+      run:
+        working-directory: .
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.2'
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+  #      - name: Run golden tests
+  #        run: |
+  #          if find test -name "*.golden.dart" -o -name "*_golden_test.dart" | grep -q .; then
+  #            flutter test --tags=golden --update-goldens
+  #            flutter test --tags=golden
+  #          else
+  #            echo "No golden tests found. Skipping this step."
+  #          fi
+  #        continue-on-error: true
+  #
+  #      - name: Upload Golden Failure Artifacts
+  #        if: failure()
+  #        uses: actions/upload-artifact@v4
+  #        with:
+  #          name: golden-failure-artifacts
+  #          path: |
+  #            **/test/**/goldens/failures/*.png
+  #            **/test/**/goldens/ci/*.png
+  #        continue-on-error: true
+  #
+  #      - name: Comment PR with Golden Test Results
+  #        if: failure() && github.event_name == 'pull_request'
+  #        uses: actions/github-script@v6
+  #        with:
+  #          script: |
+  #            const artifact_url = `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`;
+  #            github.rest.issues.createComment({
+  #              issue_number: context.issue.number,
+  #              owner: context.repo.owner,
+  #              repo: context.repo.repo,
+  #              body: `❌ Golden test failures detected!\n\nYou can view the differences in the artifacts section here: ${artifact_url}`
+  #            });
+  #        continue-on-error: true
+
+  # Widgetbook build and deploy (if implemented)
+  build_widgetbook:
+    needs: [test, analyze]
+    if: |
+      github.event_name == 'pull_request' &&
+      needs.test.result == 'success' &&
+      needs.analyze.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: write
+    defaults:
+      run:
+        working-directory: .
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.2'
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Check for widgetbook main file
+        id: check_widgetbook
+        run: |
+          if [ -f "widgetbook/main.dart" ]; then
+            echo "widgetbook_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "widgetbook_exists=false" >> $GITHUB_OUTPUT
+            echo "Widgetbook main file not found. Skipping build."
+          fi
+
+      - name: Build Widgetbook
+        if: steps.check_widgetbook.outputs.widgetbook_exists == 'true'
+        run: flutter build web -t widgetbook/main.dart --release
+        continue-on-error: true
+
+      - name: Upload Widgetbook
+        if: steps.check_widgetbook.outputs.widgetbook_exists == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: widgetbook
+          path: ./build/web
+        continue-on-error: true
+
+      - name: Comment PR
+        if: github.event_name == 'pull_request' && steps.check_widgetbook.outputs.widgetbook_exists == 'true'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const artifact_url = `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `📚 Widgetbook has been built!\n\nYou can download it from the artifacts section here: ${artifact_url}`
+            });
+        continue-on-error: true
+
+  build_ios:
+    needs: [test, analyze]
+    if: |
+      needs.test.result == 'success' &&
+      needs.analyze.result == 'success'
+    runs-on: macos-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: .
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.2'
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build iOS (without env file)
+        run: flutter build ios --release --no-codesign
+        continue-on-error: true
+
+  build_android:
+    needs: [test, analyze]
+    if: |
+      needs.test.result == 'success' &&
+      needs.analyze.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.2'
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Android with env file
+        run: flutter build apk --dart-define-from-file=dart_defines/qa.env
+        continue-on-error: true
