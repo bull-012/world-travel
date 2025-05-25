@@ -19,30 +19,27 @@ on:
       - 'pubspec.lock'
   workflow_dispatch:
 
-# Control concurrent executions
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  # Flutter static analysis
   analyze:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: read
-    defaults:
-      run:
-        working-directory: .
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Read Flutter version from .fvmrc
+        id: fvmrc
+        run: |
+          version=$(jq -r .flutter .fvmrc)
+          echo "flutter_version=$version" >> $GITHUB_OUTPUT
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.2'
+          flutter-version: ${{ steps.fvmrc.outputs.flutter_version }}
           channel: 'stable'
           cache: true
 
@@ -67,7 +64,6 @@ jobs:
       - name: Analyze
         run: flutter analyze
 
-  # Flutter tests
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -76,15 +72,20 @@ jobs:
     defaults:
       run:
         working-directory: .
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Read Flutter version from .fvmrc
+        id: fvmrc
+        run: |
+          version=$(jq -r .flutter .fvmrc)
+          echo "flutter_version=$version" >> $GITHUB_OUTPUT
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.2'
+          flutter-version: ${{ steps.fvmrc.outputs.flutter_version }}
           channel: 'stable'
           cache: true
 
@@ -94,7 +95,6 @@ jobs:
       - name: Run tests
         run: flutter test
 
-  # Visual Regression Test (if implemented)
   vrt:
     needs: [test, analyze]
     if: |
@@ -109,56 +109,26 @@ jobs:
     defaults:
       run:
         working-directory: .
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Read Flutter version from .fvmrc
+        id: fvmrc
+        run: |
+          version=$(jq -r .flutter .fvmrc)
+          echo "flutter_version=$version" >> $GITHUB_OUTPUT
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.2'
+          flutter-version: ${{ steps.fvmrc.outputs.flutter_version }}
           channel: 'stable'
           cache: true
 
       - name: Install dependencies
         run: flutter pub get
 
-  #      - name: Run golden tests
-  #        run: |
-  #          if find test -name "*.golden.dart" -o -name "*_golden_test.dart" | grep -q .; then
-  #            flutter test --tags=golden --update-goldens
-  #            flutter test --tags=golden
-  #          else
-  #            echo "No golden tests found. Skipping this step."
-  #          fi
-  #        continue-on-error: true
-  #
-  #      - name: Upload Golden Failure Artifacts
-  #        if: failure()
-  #        uses: actions/upload-artifact@v4
-  #        with:
-  #          name: golden-failure-artifacts
-  #          path: |
-  #            **/test/**/goldens/failures/*.png
-  #            **/test/**/goldens/ci/*.png
-  #        continue-on-error: true
-  #
-  #      - name: Comment PR with Golden Test Results
-  #        if: failure() && github.event_name == 'pull_request'
-  #        uses: actions/github-script@v6
-  #        with:
-  #          script: |
-  #            const artifact_url = `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`;
-  #            github.rest.issues.createComment({
-  #              issue_number: context.issue.number,
-  #              owner: context.repo.owner,
-  #              repo: context.repo.repo,
-  #              body: `❌ Golden test failures detected!\n\nYou can view the differences in the artifacts section here: ${artifact_url}`
-  #            });
-  #        continue-on-error: true
-
-  # Widgetbook build and deploy (if implemented)
   build_widgetbook:
     needs: [test, analyze]
     if: |
@@ -173,15 +143,20 @@ jobs:
     defaults:
       run:
         working-directory: .
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Read Flutter version from .fvmrc
+        id: fvmrc
+        run: |
+          version=$(jq -r .flutter .fvmrc)
+          echo "flutter_version=$version" >> $GITHUB_OUTPUT
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.2'
+          flutter-version: ${{ steps.fvmrc.outputs.flutter_version }}
           channel: 'stable'
           cache: true
 
@@ -237,15 +212,20 @@ jobs:
     defaults:
       run:
         working-directory: .
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Read Flutter version from .fvmrc
+        id: fvmrc
+        run: |
+          version=$(jq -r .flutter .fvmrc)
+          echo "flutter_version=$version" >> $GITHUB_OUTPUT
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.2'
+          flutter-version: ${{ steps.fvmrc.outputs.flutter_version }}
           channel: 'stable'
           cache: true
 
@@ -272,6 +252,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Read Flutter version from .fvmrc
+        id: fvmrc
+        run: |
+          version=$(jq -r .flutter .fvmrc)
+          echo "flutter_version=$version" >> $GITHUB_OUTPUT
+
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
@@ -281,7 +267,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.2'
+          flutter-version: ${{ steps.fvmrc.outputs.flutter_version }}
           channel: 'stable'
           cache: true
 
