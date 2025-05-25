@@ -6,13 +6,11 @@ version: 1.0.0+1
 
 environment:
   sdk: ^3.6.1
-  flutter: 3.29.2
+  flutter: 3.32.0
 
 dependencies:
   flutter:
     sdk: flutter
-
-  cupertino_icons: ^1.0.8
   go_router: ^14.7.1
   go_router_builder: ^2.7.5
   flutter_hooks: ^0.21.0
@@ -31,12 +29,8 @@ dependencies:
   firebase_analytics: ^11.4.4
   firebase_remote_config: ^5.4.2
   flutter_local_notifications: ^19.0.0
-  rive: ^0.13.20 # 現状cocoaPodsに依存。SPMに変更されたらバージョンアップしてcocoaPodsを削除する
   cached_network_image: ^3.4.1
   dio: ^5.8.0+1
-  cronet_http: ^1.3.2
-  cupertino_http: ^2.0.2
-  native_dio_adapter: ^1.4.0
   shared_preferences: ^2.5.2
 
   # For url_launcher
@@ -51,7 +45,6 @@ dependencies:
   mime: ^2.0.0
   material_symbols_icons: ^4.2805.1
   webview_flutter: ^4.0.0
-  permission_handler: ^11.4.0
 
 dev_dependencies:
   flutter_test:
