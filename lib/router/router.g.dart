@@ -7,8 +7,31 @@ part of 'router.dart';
 // **************************************************************************
 
 List<RouteBase> get $appRoutes => [
+      $splashRoute,
       $homeRoute,
     ];
+
+RouteBase get $splashRoute => GoRouteData.$route(
+      path: '/splash',
+      factory: $SplashRouteExtension._fromState,
+    );
+
+extension $SplashRouteExtension on SplashRoute {
+  static SplashRoute _fromState(GoRouterState state) => const SplashRoute();
+
+  String get location => GoRouteData.$location(
+        '/splash',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
 
 RouteBase get $homeRoute => GoRouteData.$route(
       path: '/',
@@ -88,7 +111,7 @@ extension $SampleRouteExtension on SampleRoute {
 // RiverpodGenerator
 // **************************************************************************
 
-String _$goRouterHash() => r'6000d088687ade3f6d50a16d184e9d3ec20c831b';
+String _$goRouterHash() => r'eb35cb33e29526dbc57108722eb5ab719678ff6f';
 
 /// See also [goRouter].
 @ProviderFor(goRouter)
