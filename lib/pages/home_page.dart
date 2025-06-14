@@ -63,18 +63,27 @@ class _HomePageState extends State<HomePage> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    theme.colorScheme.primary,
-                    theme.colorScheme.secondary,
+                    theme.colorScheme.primary.withValues(alpha: 0.9),
+                    theme.colorScheme.secondary.withValues(alpha: 0.8),
+                    theme.colorScheme.primary.withValues(alpha: 0.7),
                   ],
+                  stops: const [0.0, 0.5, 1.0],
                 ),
                 borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -82,17 +91,31 @@ class _HomePageState extends State<HomePage> {
                               'こんにちは！',
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.white70,
+                                color: Colors.white,
                                 fontWeight: FontWeight.w500,
+                                shadows: const [
+                                  Shadow(
+                                    offset: Offset(0, 1),
+                                    blurRadius: 3,
+                                    color: Color.fromRGBO(0, 0, 0, 0.4),
+                                  ),
+                                ],
                               ),
                             ),
-                            SizedBox(height: 4),
+                            const SizedBox(height: 4),
                             Text(
                               '次の冒険を始めよう',
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
+                                shadows: const [
+                                  Shadow(
+                                    offset: Offset(0, 1),
+                                    blurRadius: 4,
+                                    color: Color.fromRGBO(0, 0, 0, 0.5),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -101,8 +124,12 @@ class _HomePageState extends State<HomePage> {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white.withValues(alpha: 0.25),
                           borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.3),
+                            width: 1,
+                          ),
                         ),
                         child: const Icon(
                           Icons.flight_takeoff,
@@ -116,8 +143,11 @@ class _HomePageState extends State<HomePage> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
+                      color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.3),
+                      ),
                     ),
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
@@ -132,7 +162,14 @@ class _HomePageState extends State<HomePage> {
                           '15カ国訪問済み',
                           style: TextStyle(
                             color: Colors.white,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
+                            shadows: [
+                              Shadow(
+                                offset: Offset(0, 1),
+                                blurRadius: 2,
+                                color: Color.fromRGBO(0, 0, 0, 0.3),
+                              ),
+                            ],
                           ),
                         ),
                       ],
