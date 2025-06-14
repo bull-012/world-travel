@@ -575,11 +575,14 @@ class _PopularCard extends StatelessWidget {
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
                         const SizedBox(width: 4),
-                        Text(
-                          visitors,
-                          style: theme.textTheme.bodySmall,
+                        Expanded(
+                          child: Text(
+                            visitors,
+                            style: theme.textTheme.bodySmall,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: 8),
                         Icon(
                           trend > 0 ? Icons.trending_up : Icons.trending_down,
                           size: 14,
