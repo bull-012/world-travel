@@ -7,7 +7,9 @@ class TravelCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.subtitle,
-    required this.imageGradient,
+    this.imageGradient,
+    this.imageUrl,
+    this.price,
     this.icon,
     this.rating,
     this.isFavorite = false,
@@ -19,7 +21,9 @@ class TravelCard extends StatelessWidget {
 
   final String title;
   final String subtitle;
-  final LinearGradient imageGradient;
+  final LinearGradient? imageGradient;
+  final String? imageUrl;
+  final String? price;
   final IconData? icon;
   final double? rating;
   final bool isFavorite;
@@ -43,30 +47,36 @@ class TravelCard extends StatelessWidget {
             Container(
               height: 180,
               width: double.infinity,
-              decoration: BoxDecoration(gradient: imageGradient),
+              decoration: BoxDecoration(
+                gradient: imageGradient ?? LinearGradient(
+                  colors: [
+                    Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
+                    Theme.of(context).colorScheme.secondary.withValues(alpha: 0.6),
+                  ],
+                ),
+              ),
               child: Stack(
                 children: [
                   // お気に入りボタン
-                  if (onFavoriteTap != null)
-                    Positioned(
-                      right: 12,
-                      top: 12,
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.9),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: GestureDetector(
-                          onTap: onFavoriteTap,
-                          child: Icon(
-                            isFavorite ? Icons.favorite : Icons.favorite_border,
-                            color: isFavorite ? Colors.pink : Colors.grey,
-                            size: 20,
-                          ),
+                  Positioned(
+                    right: 12,
+                    top: 12,
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.9),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: GestureDetector(
+                        onTap: onFavoriteTap,
+                        child: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: isFavorite ? Colors.pink : Colors.grey,
+                          size: 20,
                         ),
                       ),
                     ),
+                  ),
                   // アイコン
                   if (icon != null)
                     Center(
@@ -74,6 +84,27 @@ class TravelCard extends StatelessWidget {
                         icon,
                         size: 60,
                         color: Colors.white.withValues(alpha: 0.8),
+                      ),
+                    ),
+                  // 価格表示
+                  if (price != null)
+                    Positioned(
+                      left: 12,
+                      bottom: 12,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withValues(alpha: 0.7),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          price!,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
                 ],
@@ -118,13 +149,25 @@ class TravelCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   
                   // サブタイトル
-                  Text(
-                    subtitle,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.outline,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.location_on,
+                        size: 14,
+                        color: theme.colorScheme.outline,
+                      ),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          subtitle,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.outline,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
                   ),
                   
                   // タグ
