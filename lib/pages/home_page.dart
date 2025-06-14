@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:world_travel/common/widgets/index.dart';
-import 'package:world_travel/pages/explore_page.dart';
-import 'package:world_travel/pages/destinations_page.dart';
 import 'package:world_travel/features/profile/pages/sample_page.dart';
+import 'package:world_travel/pages/destinations_page.dart';
+import 'package:world_travel/pages/explore_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -50,7 +50,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         // ウェルカムセクション
         SliverToBoxAdapter(
           child: Container(
-            margin: const EdgeInsets.all(16),
+            margin:
+                const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 92),
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               children: [
                 Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -87,7 +88,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               fontSize: 16,
                               color: Colors.white,
                               fontWeight: FontWeight.w500,
-                              shadows: const [
+                              shadows: [
                                 Shadow(
                                   offset: Offset(0, 1),
                                   blurRadius: 3,
@@ -96,14 +97,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          SizedBox(height: 4),
                           Text(
                             '次の冒険を始めよう',
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
-                              shadows: const [
+                              shadows: [
                                 Shadow(
                                   offset: Offset(0, 1),
                                   blurRadius: 4,
