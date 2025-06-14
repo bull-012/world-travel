@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vibration/vibration.dart';
 import 'package:world_travel/common/components/animated_text_reveal.dart';
-import 'package:world_travel/router/router.dart';
 
 class SplashPage extends HookConsumerWidget {
   const SplashPage({super.key});
@@ -73,7 +73,7 @@ class SplashPage extends HookConsumerWidget {
       await triggerHapticFeedback(type: HapticFeedbackType.heavyImpact);
 
       if (context.mounted) {
-        const HomeRoute().go(context);
+        GoRouter.of(context).go('/');
       }
     }
 
@@ -123,7 +123,7 @@ class SplashPage extends HookConsumerWidget {
                 type: HapticFeedbackType.heavyImpact,
               );
               if (context.mounted) {
-                const HomeRoute().go(context);
+                GoRouter.of(context).go('/');
               }
             }
           }),
