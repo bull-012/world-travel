@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:world_travel/common/widgets/index.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -249,45 +250,21 @@ class HomePage extends StatelessWidget {
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   final activity = _recentActivities[index];
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    child: Card(
-                      child: ListTile(
-                        leading: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: (activity['color'] as Color).withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Icon(
-                            activity['icon'] as IconData,
-                            color: activity['color'] as Color,
-                          ),
+                  return ActivityCard(
+                    title: activity['title'] as String,
+                    subtitle: activity['subtitle'] as String,
+                    icon: activity['icon'] as IconData,
+                    color: activity['color'] as Color,
+                    time: activity['time'] as String,
+                    animationDelay: Duration(milliseconds: 1000 + (index * 100)),
+                    onTap: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('${activity['title']}の詳細'),
                         ),
-                        title: Text(activity['title'] as String),
-                        subtitle: Text(activity['subtitle'] as String),
-                        trailing: Text(
-                          activity['time'] as String,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.outline,
-                          ),
-                        ),
-                        onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('${activity['title']}の詳細'),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  )
-                      .animate(delay: Duration(milliseconds: 1000 + (index * 100)))
-                      .fadeIn(duration: const Duration(milliseconds: 400))
-                      .slideX(
-                        begin: 0.3,
-                        duration: const Duration(milliseconds: 600),
                       );
+                    },
+                  );
                 },
                 childCount: _recentActivities.length,
               ),

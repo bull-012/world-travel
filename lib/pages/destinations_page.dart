@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:world_travel/common/widgets/index.dart';
 
 class DestinationsPage extends StatelessWidget {
   const DestinationsPage({super.key});
@@ -31,32 +32,32 @@ class DestinationsPage extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: _buildStatCard(
-                        context,
-                        '訪問済み',
-                        '15',
-                        Icons.check_circle,
-                        theme.colorScheme.primary,
+                      child: StatCard(
+                        title: '訪問済み',
+                        value: '15',
+                        icon: Icons.check_circle,
+                        color: theme.colorScheme.primary,
+                        animationDelay: const Duration(milliseconds: 200),
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: _buildStatCard(
-                        context,
-                        '予定',
-                        '8',
-                        Icons.schedule,
-                        theme.colorScheme.secondary,
+                      child: StatCard(
+                        title: '予定',
+                        value: '8',
+                        icon: Icons.schedule,
+                        color: theme.colorScheme.secondary,
+                        animationDelay: const Duration(milliseconds: 400),
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: _buildStatCard(
-                        context,
-                        'お気に入り',
-                        '23',
-                        Icons.favorite,
-                        Colors.pink,
+                      child: StatCard(
+                        title: 'お気に入り',
+                        value: '23',
+                        icon: Icons.favorite,
+                        color: Colors.pink,
+                        animationDelay: const Duration(milliseconds: 600),
                       ),
                     ),
                   ],
@@ -252,44 +253,6 @@ class DestinationsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildStatCard(
-    BuildContext context,
-    String title,
-    String value,
-    IconData icon,
-    Color color,
-  ) {
-    final theme = Theme.of(context);
-    
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              color: color,
-              size: 24,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              value,
-              style: theme.textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              title,
-              style: theme.textTheme.bodySmall,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
 // サンプル目的地データ
@@ -300,7 +263,7 @@ final List<Map<String, dynamic>> _destinations = [
     'description': '東京のシンボルとして親しまれている赤い電波塔。展望台からの景色は絶景です。',
     'rating': 4.3,
     'category': '観光地',
-    'icon': Icons.tower,
+    'icon': Icons.location_city,
     'color': Colors.red,
     'isFavorite': true,
   },
@@ -310,7 +273,7 @@ final List<Map<String, dynamic>> _destinations = [
     'description': 'パリの象徴的な鉄塔。夜のライトアップは特にロマンチックです。',
     'rating': 4.5,
     'category': '名所',
-    'icon': Icons.tower,
+    'icon': Icons.location_city,
     'color': Colors.brown,
     'isFavorite': false,
   },
