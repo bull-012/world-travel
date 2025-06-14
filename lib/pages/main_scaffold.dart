@@ -180,7 +180,7 @@ class _MainScaffoldViewState extends State<MainScaffoldView>
           );
         },
       ).animate().scale(
-        begin: 0,
+        begin: Offset.zero,
         duration: const Duration(milliseconds: 600),
         curve: Curves.elasticOut,
         delay: const Duration(milliseconds: 800),
