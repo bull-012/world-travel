@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:world_travel/common/widgets/index.dart';
+import 'package:world_travel/pages/explore_page.dart';
+import 'package:world_travel/pages/destinations_page.dart';
+import 'package:world_travel/features/profile/pages/sample_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,26 +19,42 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _selectedIndex = index;
     });
-    
-    // タブごとの動作
-    final messages = [
-      'ホームタブが選択されました',
-      '探索タブが選択されました',
-      '目的地タブが選択されました',
-      'プロフィールタブが選択されました',
-    ];
-    
-    if (index < messages.length) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(messages[index])),
-      );
+
+    // 各タブに対応するページに遷移
+    switch (index) {
+      case 0:
+        // ホームタブ - 何もしない（現在のページ）
+        break;
+      case 1:
+        // 探索タブ - ExplorePage に遷移
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(builder: (context) => const ExplorePage()),
+        );
+        break;
+      case 2:
+        // 目的地タブ - DestinationsPage に遷移
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(
+              builder: (context) => const DestinationsPage()),
+        );
+        break;
+      case 3:
+        // プロフィールタブ - SamplePage に遷移
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (context) => const SamplePage(
+              args: SamplePageArgs(title: 'プロフィール'),
+            ),
+          ),
+        );
+        break;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('World Travel'),
@@ -141,7 +160,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12),
@@ -320,7 +340,8 @@ class _HomePageState extends State<HomePage> {
                     icon: activity['icon'] as IconData,
                     color: activity['color'] as Color,
                     time: activity['time'] as String,
-                    animationDelay: Duration(milliseconds: 1000 + (index * 100)),
+                    animationDelay:
+                        Duration(milliseconds: 1000 + (index * 100)),
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -372,11 +393,11 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ).animate().slideY(
-        begin: 1,
-        duration: const Duration(milliseconds: 600),
-        curve: Curves.easeOutCubic,
-        delay: const Duration(milliseconds: 1200),
-      ),
+            begin: 1,
+            duration: const Duration(milliseconds: 600),
+            curve: Curves.easeOutCubic,
+            delay: const Duration(milliseconds: 1200),
+          ),
     );
   }
 }
