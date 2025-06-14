@@ -7,22 +7,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Core Development Workflow
 ```bash
 # Install dependencies
-flutter pub get
+fvm flutter pub get
 
 # Generate code (required after provider/router changes)
-dart run build_runner build --delete-conflicting-outputs
+fvm dart run build_runner build --delete-conflicting-outputs
 
 # Watch mode for continuous code generation
-dart run build_runner watch --delete-conflicting-outputs
+fvm dart run build_runner watch --delete-conflicting-outputs
 
 # Format code (enforced by CI)
-dart format .
+fvm dart format .
 
 # Run static analysis
-flutter analyze
+fvm flutter analyze
 
 # Run tests
-flutter test
+fvm flutter test
 ```
 
 ### Flutter Version Management
@@ -31,16 +31,16 @@ This project uses FVM with Flutter 3.32.0. The version is specified in `.fvmrc`.
 ### Platform Builds
 ```bash
 # Android
-flutter build apk --dart-define-from-file=dart_defines/qa.env
+fvm flutter build apk --dart-define-from-file=dart_defines/qa.env
 
 # iOS
-flutter build ios --release --no-codesign
+fvm flutter build ios --release --no-codesign
 
 # Web
-flutter build web
+fvm flutter build web
 
 # Widgetbook (for component documentation)
-flutter build web -t widgetbook/main.dart --release
+fvm flutter build web -t widgetbook/main.dart --release
 ```
 
 ## Architecture Overview
@@ -267,11 +267,11 @@ rm -rf ~/Library/Caches/org.swift.swiftpm
 # File > Packages > Reset Package Caches
 
 # Clean and rebuild
-flutter clean
+fvm flutter clean
 cd ios
 xcodebuild clean
 cd ..
-flutter pub get
+fvm flutter pub get
 ```
 
 ## Common Development Patterns
@@ -371,9 +371,9 @@ final provider = Provider((ref) => MyClass());
 rm -rf ~/Library/Developer/Xcode/DerivedData
 
 # Reset Flutter iOS build
-flutter clean
+fvm flutter clean
 rm -rf ios/Pods ios/Podfile.lock
-flutter pub get
+fvm flutter pub get
 cd ios && pod install --repo-update
 ```
 

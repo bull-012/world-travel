@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:world_travel/features/profile/pages/sample_page.dart';
 import 'package:world_travel/pages/home_page.dart';
+import 'package:world_travel/pages/main_scaffold.dart';
 import 'package:world_travel/pages/second_page.dart';
 import 'package:world_travel/pages/splash_page.dart';
 
@@ -29,7 +30,7 @@ class SplashRoute extends GoRouteData {
   }
 }
 
-@TypedGoRoute<HomeRoute>(
+@TypedGoRoute<MainRoute>(
   path: '/',
   routes: [
     TypedGoRoute<SecondRoute>(
@@ -40,6 +41,15 @@ class SplashRoute extends GoRouteData {
     ),
   ],
 )
+class MainRoute extends GoRouteData {
+  const MainRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const MainScaffold();
+  }
+}
+
 class HomeRoute extends GoRouteData {
   const HomeRoute();
 
