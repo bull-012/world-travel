@@ -64,6 +64,90 @@ class _MainScaffoldViewState extends State<MainScaffoldView>
     }
   }
 
+  Widget _buildNavItem(
+    BuildContext context,
+    int index,
+    IconData outlinedIcon,
+    IconData filledIcon,
+    String label,
+  ) {
+    final theme = Theme.of(context);
+    final isSelected = _selectedIndex == index;
+    
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => _onItemTapped(index),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // アイコンとインジケーター
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  // 背景インジケーター
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeOutCubic,
+                    width: isSelected ? 40 : 0,
+                    height: isSelected ? 40 : 0,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primaryContainer
+                          .withValues(alpha: 0.8),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  // アイコン
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    transitionBuilder: (child, animation) {
+                      return ScaleTransition(
+                        scale: animation,
+                        child: child,
+                      );
+                    },
+                    child: Icon(
+                      isSelected ? filledIcon : outlinedIcon,
+                      key: ValueKey(
+                        '${isSelected ? 'filled' : 'outlined'}_$index',
+                      ),
+                      color: isSelected 
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.onSurfaceVariant,
+                      size: 24,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              // ラベル
+              AnimatedDefaultTextStyle(
+                duration: const Duration(milliseconds: 200),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                  color: isSelected 
+                      ? theme.colorScheme.primary
+                      : theme.colorScheme.onSurfaceVariant,
+                  height: 1,
+                ),
+                child: Text(label),
+              ),
+            ],
+          ),
+        ),
+      ).animate(
+        target: isSelected ? 1 : 0,
+      ).scale(
+        begin: const Offset(0.95, 0.95),
+        end: const Offset(1, 1),
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOut,
+      ),
+    );
+  }
+
   Widget _buildFAB() {
     switch (_selectedIndex) {
       case 0: // Home
@@ -139,32 +223,56 @@ class _MainScaffoldViewState extends State<MainScaffoldView>
           SamplePage(args: SamplePageArgs(title: 'プロフィール')),
         ],
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: _onItemTapped,
-        animationDuration: const Duration(milliseconds: 500),
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.home_outlined),
-            selectedIcon: const Icon(Icons.home),
-            label: 'ホーム',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          boxShadow: [
+            BoxShadow(
+              color: theme.colorScheme.shadow.withValues(alpha: 0.1),
+              blurRadius: 20,
+              offset: const Offset(0, -5),
+                ),
+          ],
+        ),
+        child: SafeArea(
+          child: Container(
+            height: 80,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildNavItem(
+                  context,
+                  0,
+                  Icons.home_outlined,
+                  Icons.home,
+                  'ホーム',
+                ),
+                _buildNavItem(
+                  context,
+                  1,
+                  Icons.explore_outlined,
+                  Icons.explore,
+                  '探索',
+                ),
+                _buildNavItem(
+                  context,
+                  2,
+                  Icons.place_outlined,
+                  Icons.place,
+                  '目的地',
+                ),
+                _buildNavItem(
+                  context,
+                  3,
+                  Icons.person_outline,
+                  Icons.person,
+                  'プロフィール',
+                ),
+              ],
+            ),
           ),
-          NavigationDestination(
-            icon: const Icon(Icons.explore_outlined),
-            selectedIcon: const Icon(Icons.explore),
-            label: '探索',
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.place_outlined),
-            selectedIcon: const Icon(Icons.place),
-            label: '目的地',
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.person_outline),
-            selectedIcon: const Icon(Icons.person),
-            label: 'プロフィール',
-          ),
-        ],
+        ),
       ).animate().slideY(
         begin: 1,
         duration: const Duration(milliseconds: 800),
