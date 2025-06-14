@@ -2,8 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:world_travel/common/widgets/index.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    
+    // タブごとの動作
+    final messages = [
+      'ホームタブが選択されました',
+      '探索タブが選択されました',
+      '目的地タブが選択されました',
+      'プロフィールタブが選択されました',
+    ];
+    
+    if (index < messages.length) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(messages[index])),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -276,6 +303,42 @@ class HomePage extends StatelessWidget {
             child: SizedBox(height: 100),
           ),
         ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: theme.colorScheme.primary,
+        unselectedItemColor: theme.colorScheme.onSurfaceVariant,
+        backgroundColor: theme.colorScheme.surface,
+        elevation: 8,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
+            label: 'ホーム',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.explore_outlined),
+            activeIcon: Icon(Icons.explore),
+            label: '探索',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.place_outlined),
+            activeIcon: Icon(Icons.place),
+            label: '目的地',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            activeIcon: Icon(Icons.person),
+            label: 'プロフィール',
+          ),
+        ],
+      ).animate().slideY(
+        begin: 1,
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.easeOutCubic,
+        delay: const Duration(milliseconds: 1200),
       ),
     );
   }
