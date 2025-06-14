@@ -5,15 +5,28 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:world_travel/features/profile/pages/sample_page.dart';
 import 'package:world_travel/pages/home_page.dart';
 import 'package:world_travel/pages/second_page.dart';
+import 'package:world_travel/pages/splash_page.dart';
 
 part 'router.g.dart';
 
 @riverpod
 GoRouter goRouter(Ref ref) {
   return GoRouter(
-    initialLocation: '/',
+    initialLocation: '/splash',
     routes: $appRoutes,
   );
+}
+
+@TypedGoRoute<SplashRoute>(
+  path: '/splash',
+)
+class SplashRoute extends GoRouteData {
+  const SplashRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SplashPage();
+  }
 }
 
 @TypedGoRoute<HomeRoute>(
