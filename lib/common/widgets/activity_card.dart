@@ -25,7 +25,7 @@ class ActivityCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     Widget card = Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
@@ -97,7 +97,7 @@ class TimelineActivityCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     Widget card = IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,7 +129,7 @@ class TimelineActivityCard extends StatelessWidget {
             ],
           ),
           const SizedBox(width: 16),
-          
+
           // コンテンツ
           Expanded(
             child: Card(
@@ -217,7 +217,7 @@ class CompactActivityCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cardColor = color ?? theme.colorScheme.primary;
-    
+
     Widget card = Container(
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(

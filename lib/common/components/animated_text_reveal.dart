@@ -31,11 +31,11 @@ class AnimatedTextReveal extends HookWidget {
 
     Future<void> triggerCharacterFeedback() async {
       if (!enableHapticFeedback) return;
-      
+
       try {
         // 軽い触感フィードバック
         await HapticFeedback.selectionClick();
-        
+
         // 短い振動（Android）
         if (await Vibration.hasVibrator() == true) {
           await Vibration.vibrate(duration: 30, amplitude: 80);
@@ -48,19 +48,19 @@ class AnimatedTextReveal extends HookWidget {
     useEffect(() {
       final timer = Timer(delay, () async {
         isStarted.value = true;
-        
+
         for (int i = 0; i <= text.length; i++) {
           if (i > 0) {
             await triggerCharacterFeedback();
           }
           visibleCharacters.value = i;
-          
+
           if (i < text.length) {
             await Future<void>.delayed(characterDelay);
           }
         }
       });
-      
+
       return () {
         timer.cancel();
       };

@@ -53,7 +53,7 @@ class MyApp extends ConsumerWidget {
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
-      
+
       // タイポグラフィ設定（日本語最適化）
       textTheme: const TextTheme(
         displayLarge: TextStyle(
@@ -220,7 +220,8 @@ class MyApp extends ConsumerWidget {
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: colorScheme.primary, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
 
       // ListTile設定
@@ -269,9 +270,9 @@ class MyApp extends ConsumerWidget {
       useMaterial3: true,
       colorScheme: colorScheme,
       textTheme: _buildLightTheme().textTheme.apply(
-        bodyColor: Colors.white,
-        displayColor: Colors.white,
-      ),
+            bodyColor: Colors.white,
+            displayColor: Colors.white,
+          ),
       cardTheme: const CardThemeData(
         elevation: 2,
         shadowColor: Color.fromRGBO(0, 0, 0, 0.3),

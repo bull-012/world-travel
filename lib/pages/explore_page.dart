@@ -9,7 +9,7 @@ class ExplorePage extends StatefulWidget {
   State<ExplorePage> createState() => _ExplorePageState();
 }
 
-class _ExplorePageState extends State<ExplorePage> 
+class _ExplorePageState extends State<ExplorePage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final _searchController = TextEditingController();
@@ -32,7 +32,7 @@ class _ExplorePageState extends State<ExplorePage>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: _isSearching
@@ -142,7 +142,9 @@ class _ExplorePageState extends State<ExplorePage>
                         isSelected: isSelected,
                         onTap: () {
                           setState(() {
-                            _selectedCategory = isSelected ? 'すべて' : category['title'] as String;
+                            _selectedCategory = isSelected
+                                ? 'すべて'
+                                : category['title'] as String;
                           });
                         },
                       ),
@@ -195,9 +197,12 @@ class _ExplorePageState extends State<ExplorePage>
                           const SizedBox(height: 16),
                           Text(
                             '検索結果が見つかりませんでした',
-                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.outline,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.outline,
+                                ),
                           ),
                         ],
                       ),
@@ -222,7 +227,9 @@ class _ExplorePageState extends State<ExplorePage>
                   ),
                 );
               },
-              childCount: filteredDestinations.isEmpty ? 1 : filteredDestinations.length,
+              childCount: filteredDestinations.isEmpty
+                  ? 1
+                  : filteredDestinations.length,
             ),
           ),
         ),
@@ -250,9 +257,10 @@ class _ExplorePageState extends State<ExplorePage>
                 SnackBar(content: Text('${destination['title']}の詳細')),
               );
             },
-          ).animate(delay: Duration(milliseconds: index * 100))
-            .fadeIn(duration: 600.ms)
-            .slideX(begin: 0.2),
+          )
+              .animate(delay: Duration(milliseconds: index * 100))
+              .fadeIn(duration: 600.ms)
+              .slideX(begin: 0.2),
         );
       },
     );
@@ -281,9 +289,10 @@ class _ExplorePageState extends State<ExplorePage>
               SnackBar(content: Text('${destination['title']}の詳細')),
             );
           },
-        ).animate(delay: Duration(milliseconds: index * 50))
-          .fadeIn(duration: 400.ms)
-          .scale(begin: const Offset(0.8, 0.8));
+        )
+            .animate(delay: Duration(milliseconds: index * 50))
+            .fadeIn(duration: 400.ms)
+            .scale(begin: const Offset(0.8, 0.8));
       },
     );
   }
@@ -306,7 +315,10 @@ class _ExplorePageState extends State<ExplorePage>
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
+                color: Theme.of(context)
+                    .colorScheme
+                    .outline
+                    .withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -354,7 +366,8 @@ class _ExplorePageState extends State<ExplorePage>
                         return IconButton(
                           icon: Icon(
                             Icons.star,
-                            color: index < 4 ? Colors.amber : Colors.grey.shade300,
+                            color:
+                                index < 4 ? Colors.amber : Colors.grey.shade300,
                           ),
                           onPressed: () {},
                         );
@@ -433,23 +446,25 @@ class _CategoryCard extends StatelessWidget {
         width: 140,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isSelected 
-            ? theme.colorScheme.primaryContainer 
-            : theme.colorScheme.surface,
+          color: isSelected
+              ? theme.colorScheme.primaryContainer
+              : theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: isSelected 
-              ? theme.colorScheme.primary 
-              : theme.colorScheme.outline.withValues(alpha: 0.2),
+            color: isSelected
+                ? theme.colorScheme.primary
+                : theme.colorScheme.outline.withValues(alpha: 0.2),
             width: isSelected ? 2 : 1,
           ),
-          boxShadow: isSelected ? [
-            BoxShadow(
-              color: theme.colorScheme.primary.withValues(alpha: 0.2),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ] : null,
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : null,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -457,17 +472,17 @@ class _CategoryCard extends StatelessWidget {
             Icon(
               icon,
               size: 32,
-              color: isSelected 
-                ? theme.colorScheme.primary 
-                : theme.colorScheme.onSurfaceVariant,
+              color: isSelected
+                  ? theme.colorScheme.primary
+                  : theme.colorScheme.onSurfaceVariant,
             ),
             const SizedBox(height: 8),
             Text(
               title,
               style: theme.textTheme.titleSmall?.copyWith(
-                color: isSelected 
-                  ? theme.colorScheme.primary 
-                  : theme.colorScheme.onSurface,
+                color: isSelected
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.onSurface,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
               ),
               textAlign: TextAlign.center,
@@ -504,7 +519,7 @@ class _PopularCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isTop3 = rank <= 3;
-    
+
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -519,14 +534,18 @@ class _PopularCard extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: isTop3 ? theme.colorScheme.primary : theme.colorScheme.surfaceContainerHighest,
+                  color: isTop3
+                      ? theme.colorScheme.primary
+                      : theme.colorScheme.surfaceContainerHighest,
                   shape: BoxShape.circle,
                 ),
                 child: Center(
                   child: Text(
                     '$rank',
                     style: TextStyle(
-                      color: isTop3 ? Colors.white : theme.colorScheme.onSurfaceVariant,
+                      color: isTop3
+                          ? Colors.white
+                          : theme.colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -633,7 +652,7 @@ class _NewDestinationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -656,7 +675,8 @@ class _NewDestinationCard extends StatelessWidget {
                     top: 8,
                     left: 8,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.primary,
                         borderRadius: BorderRadius.circular(12),
@@ -773,8 +793,8 @@ class _FilterSection extends StatelessWidget {
         Text(
           title,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+                fontWeight: FontWeight.w600,
+              ),
         ),
         const SizedBox(height: 12),
         child,

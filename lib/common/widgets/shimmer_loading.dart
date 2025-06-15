@@ -17,7 +17,7 @@ class ShimmerLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Container(
       width: width,
       height: height,
@@ -25,9 +25,7 @@ class ShimmerLoading extends StatelessWidget {
         color: theme.colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(borderRadius),
       ),
-    )
-        .animate(onPlay: (controller) => controller.repeat())
-        .shimmer(
+    ).animate(onPlay: (controller) => controller.repeat()).shimmer(
           duration: const Duration(milliseconds: 1500),
           color: Colors.white.withValues(alpha: 0.6),
         );
@@ -51,7 +49,7 @@ class ShimmerTravelCard extends StatelessWidget {
             height: 180,
             borderRadius: 0,
           ),
-          
+
           // コンテンツエリア
           Padding(
             padding: const EdgeInsets.all(16),
@@ -73,7 +71,7 @@ class ShimmerTravelCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                
+
                 // サブタイトル
                 const ShimmerLoading(
                   width: double.infinity,
@@ -85,7 +83,7 @@ class ShimmerTravelCard extends StatelessWidget {
                   height: 14,
                 ),
                 const SizedBox(height: 12),
-                
+
                 // タグ
                 Row(
                   children: [
@@ -235,7 +233,7 @@ class ShimmerPageLoading extends StatelessWidget {
             borderRadius: 20,
           ),
           const SizedBox(height: 24),
-          
+
           // セクションタイトル
           ShimmerLoading(
             width: 150,
@@ -243,7 +241,7 @@ class ShimmerPageLoading extends StatelessWidget {
             borderRadius: 6,
           ),
           const SizedBox(height: 16),
-          
+
           // グリッド
           Row(
             children: [
@@ -261,7 +259,7 @@ class ShimmerPageLoading extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 24),
-          
+
           // もう一つのセクション
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -279,7 +277,7 @@ class ShimmerPageLoading extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          
+
           // リスト
           ...List.generate(
             5,

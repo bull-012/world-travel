@@ -8,7 +8,7 @@ class DestinationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('目的地'),
@@ -65,9 +65,9 @@ class DestinationsPage extends StatelessWidget {
                     .animate()
                     .fadeIn(duration: const Duration(milliseconds: 600))
                     .slideY(begin: 0.2),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // セクションタイトル
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,12 +86,12 @@ class DestinationsPage extends StatelessWidget {
                 )
                     .animate(delay: const Duration(milliseconds: 200))
                     .fadeIn(duration: const Duration(milliseconds: 400)),
-                
+
                 const SizedBox(height: 16),
               ]),
             ),
           ),
-          
+
           // 目的地リスト
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -116,7 +116,8 @@ class DestinationsPage extends StatelessWidget {
                                 end: Alignment.bottomRight,
                                 colors: [
                                   destination['color'] as Color,
-                                  (destination['color'] as Color).withOpacity(0.7),
+                                  (destination['color'] as Color)
+                                      .withOpacity(0.7),
                                 ],
                               ),
                             ),
@@ -132,11 +133,11 @@ class DestinationsPage extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Icon(
-                                      destination['isFavorite'] as bool 
-                                          ? Icons.favorite 
+                                      destination['isFavorite'] as bool
+                                          ? Icons.favorite
                                           : Icons.favorite_border,
-                                      color: destination['isFavorite'] as bool 
-                                          ? Colors.pink 
+                                      color: destination['isFavorite'] as bool
+                                          ? Colors.pink
                                           : Colors.grey,
                                       size: 20,
                                     ),
@@ -152,14 +153,15 @@ class DestinationsPage extends StatelessWidget {
                               ],
                             ),
                           ),
-                          
+
                           Padding(
                             padding: const EdgeInsets.all(16),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       child: Text(
@@ -206,13 +208,14 @@ class DestinationsPage extends StatelessWidget {
                                         destination['category'] as String,
                                         style: const TextStyle(fontSize: 12),
                                       ),
-                                      materialTapTargetSize: 
+                                      materialTapTargetSize:
                                           MaterialTapTargetSize.shrinkWrap,
                                     ),
                                     const Spacer(),
                                     FilledButton.tonal(
                                       onPressed: () {
-                                        ScaffoldMessenger.of(context).showSnackBar(
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
                                           SnackBar(
                                             content: Text(
                                               '${destination['name']}の詳細を表示',
@@ -243,7 +246,7 @@ class DestinationsPage extends StatelessWidget {
               ),
             ),
           ),
-          
+
           // 底部パディング
           const SliverPadding(
             padding: EdgeInsets.only(bottom: 100),
@@ -252,7 +255,6 @@ class DestinationsPage extends StatelessWidget {
       ),
     );
   }
-
 }
 
 // サンプル目的地データ

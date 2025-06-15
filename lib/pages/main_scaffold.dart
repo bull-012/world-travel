@@ -50,7 +50,7 @@ class _MainScaffoldViewState extends State<MainScaffoldView>
       setState(() {
         _selectedIndex = index;
       });
-      
+
       _pageController.animateToPage(
         index,
         duration: const Duration(milliseconds: 300),
@@ -163,11 +163,11 @@ class _MainScaffoldViewState extends State<MainScaffoldView>
           ),
         ],
       ).animate().slideY(
-        begin: 1,
-        duration: const Duration(milliseconds: 800),
-        curve: Curves.easeOutCubic,
-        delay: const Duration(milliseconds: 400),
-      ),
+            begin: 1,
+            duration: const Duration(milliseconds: 800),
+            curve: Curves.easeOutCubic,
+            delay: const Duration(milliseconds: 400),
+          ),
       floatingActionButton: AnimatedBuilder(
         animation: _fabAnimationController,
         builder: (context, child) {
@@ -177,11 +177,11 @@ class _MainScaffoldViewState extends State<MainScaffoldView>
           );
         },
       ).animate().scale(
-        begin: Offset.zero,
-        duration: const Duration(milliseconds: 600),
-        curve: Curves.elasticOut,
-        delay: const Duration(milliseconds: 800),
-      ),
+            begin: Offset.zero,
+            duration: const Duration(milliseconds: 600),
+            curve: Curves.elasticOut,
+            delay: const Duration(milliseconds: 800),
+          ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }

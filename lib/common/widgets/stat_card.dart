@@ -25,7 +25,7 @@ class StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     Widget card = Card(
       child: InkWell(
         onTap: onTap,
@@ -49,7 +49,7 @@ class StatCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12),
-              
+
               // 値
               Text(
                 value,
@@ -59,7 +59,7 @@ class StatCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4),
-              
+
               // タイトル
               Text(
                 title,
@@ -68,7 +68,7 @@ class StatCard extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              
+
               // サブタイトル
               if (subtitle != null) ...[
                 const SizedBox(height: 2),
@@ -131,7 +131,7 @@ class HorizontalStatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     Widget card = Card(
       child: InkWell(
         onTap: onTap,
@@ -154,7 +154,7 @@ class HorizontalStatCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              
+
               // テキスト情報
               Expanded(
                 child: Column(
@@ -176,7 +176,8 @@ class HorizontalStatCard extends StatelessWidget {
                                 ? Icons.trending_up
                                 : Icons.trending_down,
                             size: 16,
-                            color: trend!.isPositive ? Colors.green : Colors.red,
+                            color:
+                                trend!.isPositive ? Colors.green : Colors.red,
                           ),
                         ],
                       ],

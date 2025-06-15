@@ -35,7 +35,7 @@ class TravelCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     Widget card = Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -48,12 +48,19 @@ class TravelCard extends StatelessWidget {
               height: 180,
               width: double.infinity,
               decoration: BoxDecoration(
-                gradient: imageGradient ?? LinearGradient(
-                  colors: [
-                    Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
-                    Theme.of(context).colorScheme.secondary.withValues(alpha: 0.6),
-                  ],
-                ),
+                gradient: imageGradient ??
+                    LinearGradient(
+                      colors: [
+                        Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withValues(alpha: 0.8),
+                        Theme.of(context)
+                            .colorScheme
+                            .secondary
+                            .withValues(alpha: 0.6),
+                      ],
+                    ),
               ),
               child: Stack(
                 children: [
@@ -92,7 +99,8 @@ class TravelCard extends StatelessWidget {
                       left: 12,
                       bottom: 12,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: Colors.black.withValues(alpha: 0.7),
                           borderRadius: BorderRadius.circular(12),
@@ -110,7 +118,7 @@ class TravelCard extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             // コンテンツエリア
             Padding(
               padding: const EdgeInsets.all(16),
@@ -147,7 +155,7 @@ class TravelCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 4),
-                  
+
                   // サブタイトル
                   Row(
                     children: [
@@ -169,7 +177,7 @@ class TravelCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
+
                   // タグ
                   if (tags.isNotEmpty) ...[
                     const SizedBox(height: 12),
@@ -237,7 +245,7 @@ class CompactTravelCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     Widget card = Card(
       child: InkWell(
         onTap: onTap,
@@ -261,7 +269,7 @@ class CompactTravelCard extends StatelessWidget {
                   ),
                 ),
               const SizedBox(width: 12),
-              
+
               // テキスト情報
               Expanded(
                 child: Column(
@@ -283,7 +291,7 @@ class CompactTravelCard extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               // 矢印アイコン
               Icon(
                 Icons.arrow_forward_ios,
