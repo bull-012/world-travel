@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:world_travel/features/profile/pages/sample_page.dart';
+import 'package:world_travel/features/profile/pages/profile_page.dart';
 import 'package:world_travel/pages/destinations_page.dart';
 import 'package:world_travel/pages/explore_page.dart';
 import 'package:world_travel/pages/home_page.dart';
@@ -103,13 +103,13 @@ class _MainScaffoldViewState extends State<MainScaffoldView>
       case 3: // Profile
         return FloatingActionButton(
           onPressed: () {
-            // 設定画面
+            // プロフィール編集
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('設定画面')),
+              const SnackBar(content: Text('プロフィール編集')),
             );
           },
           heroTag: 'profileFab',
-          child: const Icon(Icons.settings_outlined),
+          child: const Icon(Icons.edit),
         );
       default:
         return FloatingActionButton(
@@ -134,7 +134,7 @@ class _MainScaffoldViewState extends State<MainScaffoldView>
           HomePage(),
           ExplorePage(),
           DestinationsPage(),
-          SamplePage(args: SamplePageArgs(title: 'プロフィール')),
+          ProfilePage(args: ProfilePageArgs(title: 'プロフィール')),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
