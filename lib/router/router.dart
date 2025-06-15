@@ -6,6 +6,7 @@ import 'package:world_travel/features/profile/pages/sample_page.dart';
 import 'package:world_travel/features/travel_checklist/models/checklist_item.dart';
 import 'package:world_travel/features/travel_checklist/pages/checklist_detail_page.dart';
 import 'package:world_travel/features/travel_checklist/pages/travel_checklist_page.dart';
+import 'package:world_travel/pages/create_travel_plan_page.dart';
 import 'package:world_travel/pages/home_page.dart';
 import 'package:world_travel/pages/main_scaffold.dart';
 import 'package:world_travel/pages/second_page.dart';
@@ -49,6 +50,9 @@ class SplashRoute extends GoRouteData {
           path: 'detail',
         ),
       ],
+    ),
+    TypedGoRoute<CreateTravelPlanRoute>(
+      path: 'create-travel-plan',
     ),
   ],
 )
@@ -113,5 +117,14 @@ class ChecklistDetailRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return ChecklistDetailPage(item: $extra);
+  }
+}
+
+class CreateTravelPlanRoute extends GoRouteData {
+  const CreateTravelPlanRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const CreateTravelPlanPage();
   }
 }

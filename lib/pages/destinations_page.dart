@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:world_travel/common/widgets/index.dart';
+import 'package:world_travel/router/router.dart';
 
 class DestinationsPage extends StatelessWidget {
   const DestinationsPage({super.key});
@@ -17,10 +18,7 @@ class DestinationsPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              // 新しい旅行計画を作成
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('新しい旅行計画を作成（機能準備中）')),
-              );
+              const CreateTravelPlanRoute().push<void>(context);
             },
           ),
         ],
@@ -105,9 +103,7 @@ class DestinationsPage extends StatelessWidget {
                         const SizedBox(height: 16),
                         FilledButton(
                           onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('新しい計画を作成（機能準備中）')),
-                            );
+                            const CreateTravelPlanRoute().push<void>(context);
                           },
                           child: const Row(
                             mainAxisSize: MainAxisSize.min,
@@ -370,29 +366,35 @@ class DestinationsPage extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            children: [
-                              Icon(
-                                Icons.weekend,
-                                size: 40,
-                                color: theme.colorScheme.primary,
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                '週末旅行',
-                                style: theme.textTheme.titleMedium,
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                '2-3日間',
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.colorScheme.outline,
+                        child: InkWell(
+                          onTap: () {
+                            const CreateTravelPlanRoute().push<void>(context);
+                          },
+                          borderRadius: BorderRadius.circular(12),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.weekend,
+                                  size: 40,
+                                  color: theme.colorScheme.primary,
                                 ),
-                              ),
-                            ],
+                                const SizedBox(height: 8),
+                                Text(
+                                  '週末旅行',
+                                  style: theme.textTheme.titleMedium,
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  '2-3日間',
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: theme.colorScheme.outline,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -400,29 +402,35 @@ class DestinationsPage extends StatelessWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            children: [
-                              Icon(
-                                Icons.beach_access,
-                                size: 40,
-                                color: theme.colorScheme.secondary,
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'リゾート旅行',
-                                style: theme.textTheme.titleMedium,
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                '5-7日間',
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.colorScheme.outline,
+                        child: InkWell(
+                          onTap: () {
+                            const CreateTravelPlanRoute().push<void>(context);
+                          },
+                          borderRadius: BorderRadius.circular(12),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.beach_access,
+                                  size: 40,
+                                  color: theme.colorScheme.secondary,
                                 ),
-                              ),
-                            ],
+                                const SizedBox(height: 8),
+                                Text(
+                                  'リゾート旅行',
+                                  style: theme.textTheme.titleMedium,
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  '5-7日間',
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: theme.colorScheme.outline,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

@@ -55,6 +55,10 @@ RouteBase get $mainRoute => GoRouteData.$route(
             ),
           ],
         ),
+        GoRouteData.$route(
+          path: 'create-travel-plan',
+          factory: $CreateTravelPlanRouteExtension._fromState,
+        ),
       ],
     );
 
@@ -155,6 +159,24 @@ extension $ChecklistDetailRouteExtension on ChecklistDetailRoute {
 
   void replace(BuildContext context) =>
       context.replace(location, extra: $extra);
+}
+
+extension $CreateTravelPlanRouteExtension on CreateTravelPlanRoute {
+  static CreateTravelPlanRoute _fromState(GoRouterState state) =>
+      const CreateTravelPlanRoute();
+
+  String get location => GoRouteData.$location(
+        '/create-travel-plan',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
 }
 
 // **************************************************************************
