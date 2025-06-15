@@ -51,13 +51,13 @@ class DestinationsPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    Expanded(
+                    const Expanded(
                       child: StatCard(
                         title: 'お気に入り',
                         value: '23',
                         icon: Icons.favorite,
                         color: Colors.pink,
-                        animationDelay: const Duration(milliseconds: 600),
+                        animationDelay: Duration(milliseconds: 600),
                       ),
                     ),
                   ],
@@ -117,7 +117,7 @@ class DestinationsPage extends StatelessWidget {
                                 colors: [
                                   destination['color'] as Color,
                                   (destination['color'] as Color)
-                                      .withOpacity(0.7),
+                                      .withValues(alpha: 0.7),
                                 ],
                               ),
                             ),
@@ -129,7 +129,8 @@ class DestinationsPage extends StatelessWidget {
                                   child: Container(
                                     padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.9),
+                                      color:
+                                          Colors.white.withValues(alpha: 0.9),
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Icon(
@@ -147,7 +148,7 @@ class DestinationsPage extends StatelessWidget {
                                   child: Icon(
                                     destination['icon'] as IconData,
                                     size: 60,
-                                    color: Colors.white.withOpacity(0.8),
+                                    color: Colors.white.withValues(alpha: 0.8),
                                   ),
                                 ),
                               ],

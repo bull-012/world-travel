@@ -71,9 +71,7 @@ class _ExplorePageState extends State<ExplorePage>
           ),
           IconButton(
             icon: const Icon(Icons.filter_list),
-            onPressed: () {
-              _showFilterBottomSheet();
-            },
+            onPressed: _showFilterBottomSheet,
           ),
         ],
         bottom: TabBar(
@@ -186,7 +184,7 @@ class _ExplorePageState extends State<ExplorePage>
                 if (filteredDestinations.isEmpty) {
                   return Center(
                     child: Padding(
-                      padding: const EdgeInsets.all(32.0),
+                      padding: const EdgeInsets.all(32),
                       child: Column(
                         children: [
                           Icon(
@@ -298,7 +296,7 @@ class _ExplorePageState extends State<ExplorePage>
   }
 
   void _showFilterBottomSheet() {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
@@ -352,7 +350,6 @@ class _ExplorePageState extends State<ExplorePage>
                       children: ['低価格', '中価格', '高価格', 'プレミアム'].map((price) {
                         return FilterChip(
                           label: Text(price),
-                          selected: false,
                           onSelected: (selected) {},
                         );
                       }).toList(),
@@ -388,7 +385,6 @@ class _ExplorePageState extends State<ExplorePage>
                         ),
                         Slider(
                           value: 500,
-                          min: 0,
                           max: 1000,
                           onChanged: (value) {},
                         ),
@@ -665,7 +661,7 @@ class _NewDestinationCard extends StatelessWidget {
               flex: 3,
               child: Stack(
                 children: [
-                  Container(
+                  ColoredBox(
                     color: theme.colorScheme.surfaceContainerHighest,
                     child: const Center(
                       child: Icon(Icons.image, size: 40),
@@ -676,7 +672,9 @@ class _NewDestinationCard extends StatelessWidget {
                     left: 8,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.primary,
                         borderRadius: BorderRadius.circular(12),

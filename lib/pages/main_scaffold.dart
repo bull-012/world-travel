@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:world_travel/pages/home_page.dart';
-import 'package:world_travel/pages/explore_page.dart';
-import 'package:world_travel/pages/destinations_page.dart';
 import 'package:world_travel/features/profile/pages/sample_page.dart';
+import 'package:world_travel/pages/destinations_page.dart';
+import 'package:world_travel/pages/explore_page.dart';
+import 'package:world_travel/pages/home_page.dart';
 
 class MainScaffold extends HookConsumerWidget {
   const MainScaffold({super.key});
@@ -86,8 +86,8 @@ class _MainScaffoldViewState extends State<MainScaffoldView>
               const SnackBar(content: Text('検索機能')),
             );
           },
-          child: const Icon(Icons.search),
           heroTag: 'exploreFab',
+          child: const Icon(Icons.search),
         );
       case 2: // Destinations
         return FloatingActionButton(
@@ -97,8 +97,8 @@ class _MainScaffoldViewState extends State<MainScaffoldView>
               const SnackBar(content: Text('お気に入りに追加')),
             );
           },
-          child: const Icon(Icons.favorite_border),
           heroTag: 'destinationsFab',
+          child: const Icon(Icons.favorite_border),
         );
       case 3: // Profile
         return FloatingActionButton(
@@ -108,14 +108,14 @@ class _MainScaffoldViewState extends State<MainScaffoldView>
               const SnackBar(content: Text('設定画面')),
             );
           },
-          child: const Icon(Icons.settings_outlined),
           heroTag: 'profileFab',
+          child: const Icon(Icons.settings_outlined),
         );
       default:
         return FloatingActionButton(
           onPressed: () {},
-          child: const Icon(Icons.add),
           heroTag: 'defaultFab',
+          child: const Icon(Icons.add),
         );
     }
   }

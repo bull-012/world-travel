@@ -4,9 +4,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 /// 旅行先や目的地を表示するためのカードコンポーネント
 class TravelCard extends StatelessWidget {
   const TravelCard({
-    super.key,
     required this.title,
     required this.subtitle,
+    super.key,
     this.imageGradient,
     this.imageUrl,
     this.price,
@@ -100,7 +100,9 @@ class TravelCard extends StatelessWidget {
                       bottom: 12,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.black.withValues(alpha: 0.7),
                           borderRadius: BorderRadius.circular(12),
@@ -210,7 +212,7 @@ class TravelCard extends StatelessWidget {
     // アニメーション適用
     if (animationDelay != null) {
       card = card
-          .animate(delay: animationDelay!)
+          .animate(delay: animationDelay)
           .fadeIn(duration: const Duration(milliseconds: 600))
           .slideY(
             begin: 0.3,
@@ -226,10 +228,10 @@ class TravelCard extends StatelessWidget {
 /// コンパクトなサイズの旅行カード
 class CompactTravelCard extends StatelessWidget {
   const CompactTravelCard({
-    super.key,
     required this.title,
     required this.subtitle,
     required this.color,
+    super.key,
     this.icon,
     this.onTap,
     this.animationDelay,
@@ -307,7 +309,7 @@ class CompactTravelCard extends StatelessWidget {
     // アニメーション適用
     if (animationDelay != null) {
       card = card
-          .animate(delay: animationDelay!)
+          .animate(delay: animationDelay)
           .fadeIn(duration: const Duration(milliseconds: 400))
           .slideX(
             begin: 0.3,

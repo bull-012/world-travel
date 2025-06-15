@@ -4,9 +4,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 /// Shimmer効果付きのローディングコンポーネント
 class ShimmerLoading extends StatelessWidget {
   const ShimmerLoading({
-    super.key,
     required this.width,
     required this.height,
+    super.key,
     this.borderRadius = 8,
   });
 
@@ -38,13 +38,13 @@ class ShimmerTravelCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return const Card(
       clipBehavior: Clip.antiAlias,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 画像エリアのShimmer
-          const ShimmerLoading(
+          ShimmerLoading(
             width: double.infinity,
             height: 180,
             borderRadius: 0,
@@ -52,37 +52,36 @@ class ShimmerTravelCard extends StatelessWidget {
 
           // コンテンツエリア
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // タイトル
                 Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       child: ShimmerLoading(width: double.infinity, height: 20),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12),
                     ShimmerLoading(
                       width: 50,
                       height: 16,
-                      borderRadius: 8,
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
 
                 // サブタイトル
-                const ShimmerLoading(
+                ShimmerLoading(
                   width: double.infinity,
                   height: 14,
                 ),
-                const SizedBox(height: 4),
-                const ShimmerLoading(
+                SizedBox(height: 4),
+                ShimmerLoading(
                   width: 200,
                   height: 14,
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
 
                 // タグ
                 Row(
@@ -92,13 +91,13 @@ class ShimmerTravelCard extends StatelessWidget {
                       height: 24,
                       borderRadius: 12,
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8),
                     ShimmerLoading(
                       width: 80,
                       height: 24,
                       borderRadius: 12,
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8),
                     ShimmerLoading(
                       width: 50,
                       height: 24,
@@ -121,21 +120,20 @@ class ShimmerActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+    return const Card(
+      margin: EdgeInsets.only(bottom: 12),
       child: ListTile(
         leading: ShimmerLoading(
           width: 40,
           height: 40,
-          borderRadius: 8,
         ),
-        title: const ShimmerLoading(
+        title: ShimmerLoading(
           width: double.infinity,
           height: 16,
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             SizedBox(height: 4),
             ShimmerLoading(
               width: double.infinity,
@@ -164,9 +162,9 @@ class ShimmerStatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return const Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         child: Column(
           children: [
             ShimmerLoading(
@@ -174,13 +172,13 @@ class ShimmerStatCard extends StatelessWidget {
               height: 40,
               borderRadius: 12,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             ShimmerLoading(
               width: 60,
               height: 24,
               borderRadius: 6,
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             ShimmerLoading(
               width: 80,
               height: 14,
@@ -196,9 +194,9 @@ class ShimmerStatCard extends StatelessWidget {
 /// リスト形式のShimmerローディング
 class ShimmerList extends StatelessWidget {
   const ShimmerList({
-    super.key,
     required this.itemCount,
     required this.itemBuilder,
+    super.key,
   });
 
   final int itemCount;
@@ -227,7 +225,7 @@ class ShimmerPageLoading extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // ヒーロー部分
-          ShimmerLoading(
+          const ShimmerLoading(
             width: double.infinity,
             height: 200,
             borderRadius: 20,
@@ -235,7 +233,7 @@ class ShimmerPageLoading extends StatelessWidget {
           const SizedBox(height: 24),
 
           // セクションタイトル
-          ShimmerLoading(
+          const ShimmerLoading(
             width: 150,
             height: 24,
             borderRadius: 6,
@@ -243,25 +241,25 @@ class ShimmerPageLoading extends StatelessWidget {
           const SizedBox(height: 16),
 
           // グリッド
-          Row(
+          const Row(
             children: [
               Expanded(child: ShimmerStatCard()),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(child: ShimmerStatCard()),
             ],
           ),
           const SizedBox(height: 12),
-          Row(
+          const Row(
             children: [
               Expanded(child: ShimmerStatCard()),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(child: ShimmerStatCard()),
             ],
           ),
           const SizedBox(height: 24),
 
           // もう一つのセクション
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ShimmerLoading(
@@ -281,7 +279,7 @@ class ShimmerPageLoading extends StatelessWidget {
           // リスト
           ...List.generate(
             5,
-            (index) => ShimmerActivityCard(),
+            (index) => const ShimmerActivityCard(),
           ),
         ],
       ),

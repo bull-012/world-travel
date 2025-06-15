@@ -4,11 +4,11 @@ import 'package:flutter_animate/flutter_animate.dart';
 /// 統計情報を表示するためのカードコンポーネント
 class StatCard extends StatelessWidget {
   const StatCard({
-    super.key,
     required this.title,
     required this.value,
     required this.icon,
     required this.color,
+    super.key,
     this.subtitle,
     this.onTap,
     this.animationDelay,
@@ -91,7 +91,7 @@ class StatCard extends StatelessWidget {
     // アニメーション適用
     if (animationDelay != null) {
       card = card
-          .animate(delay: animationDelay!)
+          .animate(delay: animationDelay)
           .fadeIn(duration: const Duration(milliseconds: 600))
           .slideY(begin: 0.2)
           .scale(
@@ -108,11 +108,11 @@ class StatCard extends StatelessWidget {
 /// 横向きレイアウトの統計カード
 class HorizontalStatCard extends StatelessWidget {
   const HorizontalStatCard({
-    super.key,
     required this.title,
     required this.value,
     required this.icon,
     required this.color,
+    super.key,
     this.subtitle,
     this.trend,
     this.onTap,
@@ -208,7 +208,7 @@ class HorizontalStatCard extends StatelessWidget {
     // アニメーション適用
     if (animationDelay != null) {
       card = card
-          .animate(delay: animationDelay!)
+          .animate(delay: animationDelay)
           .fadeIn(duration: const Duration(milliseconds: 400))
           .slideX(begin: 0.3);
     }

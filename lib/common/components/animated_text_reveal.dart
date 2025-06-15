@@ -40,31 +40,32 @@ class AnimatedTextReveal extends HookWidget {
         if (await Vibration.hasVibrator() == true) {
           await Vibration.vibrate(duration: 30, amplitude: 80);
         }
-      } catch (e) {
+      } on Exception catch (e) {
         debugPrint('Haptic feedback error: $e');
       }
     }
 
-    useEffect(() {
-      final timer = Timer(delay, () async {
-        isStarted.value = true;
+    useEffect(
+      () {
+        final timer = Timer(delay, () async {
+          isStarted.value = true;
 
-        for (int i = 0; i <= text.length; i++) {
-          if (i > 0) {
-            await triggerCharacterFeedback();
+          for (var i = 0; i <= text.length; i++) {
+            if (i > 0) {
+              await triggerCharacterFeedback();
+            }
+            visibleCharacters.value = i;
+
+            if (i < text.length) {
+              await Future<void>.delayed(characterDelay);
+            }
           }
-          visibleCharacters.value = i;
+        });
 
-          if (i < text.length) {
-            await Future<void>.delayed(characterDelay);
-          }
-        }
-      });
-
-      return () {
-        timer.cancel();
-      };
-    }, []);
+        return timer.cancel;
+      },
+      [],
+    );
 
     if (!isStarted.value) {
       return SizedBox(
@@ -125,18 +126,21 @@ class PulsingIcon extends HookWidget {
     final shouldStart = useState(false);
     final timer = useRef<Timer?>(null);
 
-    useEffect(() {
-      timer.value = Timer(delay, () {
-        if (shouldStart.value == false) {
-          shouldStart.value = true;
-          animationController.repeat(reverse: true);
-        }
-      });
+    useEffect(
+      () {
+        timer.value = Timer(delay, () {
+          if (shouldStart.value == false) {
+            shouldStart.value = true;
+            animationController.repeat(reverse: true);
+          }
+        });
 
-      return () {
-        timer.value?.cancel();
-      };
-    }, []);
+        return () {
+          timer.value?.cancel();
+        };
+      },
+      [],
+    );
 
     if (!shouldStart.value) {
       return SizedBox(width: size, height: size);
@@ -202,16 +206,19 @@ class BouncingDots extends HookWidget {
     final shouldStart = useState(false);
     final timer = useRef<Timer?>(null);
 
-    useEffect(() {
-      timer.value = Timer(delay, () {
-        if (shouldStart.value == false) {
-          shouldStart.value = true;
-        }
-      });
-      return () {
-        timer.value?.cancel();
-      };
-    }, []);
+    useEffect(
+      () {
+        timer.value = Timer(delay, () {
+          if (shouldStart.value == false) {
+            shouldStart.value = true;
+          }
+        });
+        return () {
+          timer.value?.cancel();
+        };
+      },
+      [],
+    );
 
     if (!shouldStart.value) {
       return SizedBox(

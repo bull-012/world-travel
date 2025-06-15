@@ -123,7 +123,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
                           color: Colors.white.withValues(alpha: 0.3),
-                          width: 1,
                         ),
                       ),
                       child: const Icon(

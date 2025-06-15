@@ -4,12 +4,12 @@ import 'package:flutter_animate/flutter_animate.dart';
 /// 活動履歴を表示するためのカードコンポーネント
 class ActivityCard extends StatelessWidget {
   const ActivityCard({
-    super.key,
     required this.title,
     required this.subtitle,
     required this.icon,
     required this.color,
     required this.time,
+    super.key,
     this.onTap,
     this.animationDelay,
   });
@@ -59,7 +59,7 @@ class ActivityCard extends StatelessWidget {
     // アニメーション適用
     if (animationDelay != null) {
       card = card
-          .animate(delay: animationDelay!)
+          .animate(delay: animationDelay)
           .fadeIn(duration: const Duration(milliseconds: 400))
           .slideX(
             begin: 0.3,
@@ -74,12 +74,12 @@ class ActivityCard extends StatelessWidget {
 /// タイムライン形式の活動カード
 class TimelineActivityCard extends StatelessWidget {
   const TimelineActivityCard({
-    super.key,
     required this.title,
     required this.subtitle,
     required this.icon,
     required this.color,
     required this.time,
+    super.key,
     this.isLast = false,
     this.onTap,
     this.animationDelay,
@@ -179,7 +179,7 @@ class TimelineActivityCard extends StatelessWidget {
     // アニメーション適用
     if (animationDelay != null) {
       card = card
-          .animate(delay: animationDelay!)
+          .animate(delay: animationDelay)
           .fadeIn(duration: const Duration(milliseconds: 600))
           .slideX(
             begin: 0.3,
@@ -195,9 +195,9 @@ class TimelineActivityCard extends StatelessWidget {
 /// コンパクトな活動通知カード
 class CompactActivityCard extends StatelessWidget {
   const CompactActivityCard({
-    super.key,
     required this.title,
     required this.time,
+    super.key,
     this.icon,
     this.color,
     this.onTap,
@@ -278,7 +278,7 @@ class CompactActivityCard extends StatelessWidget {
     // アニメーション適用
     if (animationDelay != null) {
       card = card
-          .animate(delay: animationDelay!)
+          .animate(delay: animationDelay)
           .fadeIn(duration: const Duration(milliseconds: 300))
           .slideY(begin: -0.2);
     }

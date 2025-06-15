@@ -28,7 +28,6 @@ class MyApp extends ConsumerWidget {
       title: 'World Travel',
       theme: _buildLightTheme(),
       darkTheme: _buildDarkTheme(),
-      themeMode: ThemeMode.system,
       routerConfig: router,
     );
   }
@@ -40,7 +39,6 @@ class MyApp extends ConsumerWidget {
 
     final colorScheme = ColorScheme.fromSeed(
       seedColor: travelBlue,
-      brightness: Brightness.light,
       primary: travelBlue,
       primaryContainer: const Color(0xFFE3F2FD),
       secondary: skyBlue,
@@ -139,7 +137,7 @@ class MyApp extends ConsumerWidget {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           elevation: 2,
-          shadowColor: Color.fromRGBO(30, 136, 229, 0.2),
+          shadowColor: const Color.fromRGBO(30, 136, 229, 0.2),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -178,7 +176,7 @@ class MyApp extends ConsumerWidget {
       navigationBarTheme: NavigationBarThemeData(
         height: 80,
         elevation: 3,
-        shadowColor: Color.fromRGBO(30, 136, 229, 0.1),
+        shadowColor: const Color.fromRGBO(30, 136, 229, 0.1),
         backgroundColor: Colors.white,
         indicatorColor: colorScheme.primaryContainer,
         indicatorShape: RoundedRectangleBorder(
@@ -212,7 +210,7 @@ class MyApp extends ConsumerWidget {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: Color.fromRGBO(224, 224, 224, 0.2),
           ),
         ),
