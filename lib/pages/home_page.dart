@@ -173,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                         subtitle: 'プランを作成',
                         color: theme.colorScheme.primary,
                         onTap: () {
-                          context.push('/travel-checklist');
+                          context.push('/create-travel-plan');
                         },
                       ),
                     ),
