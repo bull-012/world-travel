@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:world_travel/common/widgets/index.dart';
-import 'package:world_travel/features/profile/pages/sample_page.dart';
-import 'package:world_travel/pages/destinations_page.dart';
-import 'package:world_travel/pages/explore_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,35 +10,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  int _selectedIndex = 0;
-  late PageController _pageController;
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  void _onItemTapped(int index) {
-    if (_selectedIndex != index) {
-      setState(() {
-        _selectedIndex = index;
-      });
-
-      _pageController.animateToPage(
-        index,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
+class _HomePageState extends State<HomePage> {
 
   Widget _buildHomeContent() {
     final theme = Theme.of(context);
@@ -339,64 +308,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        children: [
-          // ホームタブ
-          _buildHomeContent(),
-          // 探索タブ
-          const ExplorePage(),
-          // 目的地タブ
-          const DestinationsPage(),
-          // プロフィールタブ
-          const SamplePage(args: SamplePageArgs(title: 'プロフィール')),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: theme.colorScheme.primary,
-        unselectedItemColor: theme.colorScheme.onSurfaceVariant,
-        backgroundColor: theme.colorScheme.surface,
-        elevation: 8,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
-            label: 'ホーム',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore_outlined),
-            activeIcon: Icon(Icons.explore),
-            label: '探索',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.place_outlined),
-            activeIcon: Icon(Icons.place),
-            label: '目的地',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: 'プロフィール',
-          ),
-        ],
-      ).animate().slideY(
-            begin: 1,
-            duration: const Duration(milliseconds: 600),
-            curve: Curves.easeOutCubic,
-            delay: const Duration(milliseconds: 1200),
-          ),
-    );
+    return _buildHomeContent();
   }
 }
 
