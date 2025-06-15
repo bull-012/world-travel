@@ -384,3 +384,6 @@ cd ios && pod install --repo-update
 - Use `AsyncValueGroup` for combining multiple async operations
 - Avoid creating providers in widget build methods
 - Use `ref.read()` for one-time access, `ref.watch()` for reactive access
+
+## role
+- fvm flutter analyzeを実行して、コードの静的解析を行うこと
