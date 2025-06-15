@@ -11,6 +11,8 @@ import 'package:world_travel/pages/home_page.dart';
 import 'package:world_travel/pages/main_scaffold.dart';
 import 'package:world_travel/pages/second_page.dart';
 import 'package:world_travel/pages/splash_page.dart';
+import 'package:world_travel/pages/transportation_booking_page.dart';
+import 'package:world_travel/pages/pdf_viewer_page.dart';
 
 part 'router.g.dart';
 
@@ -53,6 +55,12 @@ class SplashRoute extends GoRouteData {
     ),
     TypedGoRoute<CreateTravelPlanRoute>(
       path: 'create-travel-plan',
+    ),
+    TypedGoRoute<TransportationBookingRoute>(
+      path: 'transportation-booking',
+    ),
+    TypedGoRoute<PdfViewerRoute>(
+      path: 'pdf-viewer',
     ),
   ],
 )
@@ -126,5 +134,43 @@ class CreateTravelPlanRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const CreateTravelPlanPage();
+  }
+}
+
+class TransportationBookingRoute extends GoRouteData {
+  const TransportationBookingRoute({this.$extra});
+
+  final TransportationBooking? $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return TransportationBookingPage(
+      booking: $extra,
+      isEditing: $extra != null,
+    );
+  }
+}
+
+class PdfViewerArgs {
+  const PdfViewerArgs({
+    required this.pdfPath,
+    required this.title,
+  });
+
+  final String pdfPath;
+  final String title;
+}
+
+class PdfViewerRoute extends GoRouteData {
+  const PdfViewerRoute({required this.$extra});
+
+  final PdfViewerArgs $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return PdfViewerPage(
+      pdfPath: $extra.pdfPath,
+      title: $extra.title,
+    );
   }
 }

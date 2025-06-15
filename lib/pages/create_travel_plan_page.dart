@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:world_travel/pages/transportation_booking_page.dart';
 
 class CreateTravelPlanPage extends HookConsumerWidget {
   const CreateTravelPlanPage({super.key});
@@ -11,7 +12,7 @@ class CreateTravelPlanPage extends HookConsumerWidget {
     final theme = Theme.of(context);
     final pageController = usePageController();
     final currentStep = useState(0);
-    
+
     // フォームの状態管理
     final titleController = useTextEditingController();
     final destinationController = useTextEditingController();
@@ -23,6 +24,7 @@ class CreateTravelPlanPage extends HookConsumerWidget {
     final endDate = useState<DateTime?>(null);
     final participants = useState(1);
     final selectedTemplate = useState<String?>(null);
+    final transportationBookings = useState<List<TransportationBooking>>([]);
 
     // ステップ管理
     final steps = [
@@ -79,10 +81,9 @@ class CreateTravelPlanPage extends HookConsumerWidget {
                 Row(
                   children: steps.asMap().entries.map((entry) {
                     final index = entry.key;
-                    final step = entry.value;
                     final isActive = index <= currentStep.value;
                     final isCurrent = index == currentStep.value;
-                    
+
                     return Expanded(
                       child: Row(
                         children: [
@@ -91,9 +92,10 @@ class CreateTravelPlanPage extends HookConsumerWidget {
                             width: 32,
                             height: 32,
                             decoration: BoxDecoration(
-                              color: isActive 
-                                  ? theme.colorScheme.primary 
-                                  : theme.colorScheme.outline.withValues(alpha: 0.3),
+                              color: isActive
+                                  ? theme.colorScheme.primary
+                                  : theme.colorScheme.outline
+                                      .withValues(alpha: 0.3),
                               shape: BoxShape.circle,
                             ),
                             child: Center(
@@ -117,10 +119,12 @@ class CreateTravelPlanPage extends HookConsumerWidget {
                             Expanded(
                               child: Container(
                                 height: 2,
-                                margin: const EdgeInsets.symmetric(horizontal: 8),
-                                color: isActive 
-                                    ? theme.colorScheme.primary 
-                                    : theme.colorScheme.outline.withValues(alpha: 0.3),
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                color: isActive
+                                    ? theme.colorScheme.primary
+                                    : theme.colorScheme.outline
+                                        .withValues(alpha: 0.3),
                               ),
                             ),
                         ],
@@ -133,16 +137,16 @@ class CreateTravelPlanPage extends HookConsumerWidget {
                   children: steps.asMap().entries.map((entry) {
                     final index = entry.key;
                     final step = entry.value;
-                    
+
                     return Expanded(
                       child: Text(
                         step,
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: index <= currentStep.value 
-                              ? theme.colorScheme.primary 
+                          color: index <= currentStep.value
+                              ? theme.colorScheme.primary
                               : theme.colorScheme.outline,
-                          fontWeight: index == currentStep.value 
-                              ? FontWeight.bold 
+                          fontWeight: index == currentStep.value
+                              ? FontWeight.bold
                               : FontWeight.normal,
                         ),
                         textAlign: TextAlign.center,
@@ -172,7 +176,7 @@ class CreateTravelPlanPage extends HookConsumerWidget {
                   selectedCategory,
                   selectedTemplate,
                 ),
-                
+
                 // ステップ2: 日程・予算
                 _buildScheduleBudgetStep(
                   context,
@@ -182,15 +186,16 @@ class CreateTravelPlanPage extends HookConsumerWidget {
                   endDate,
                   budgetController,
                   participants,
+                  transportationBookings,
                 ),
-                
+
                 // ステップ3: 詳細設定
                 _buildDetailStep(
                   context,
                   theme,
                   descriptionController,
                 ),
-                
+
                 // ステップ4: 確認
                 _buildConfirmStep(
                   context,
@@ -224,13 +229,11 @@ class CreateTravelPlanPage extends HookConsumerWidget {
                 if (currentStep.value > 0) const SizedBox(width: 16),
                 Expanded(
                   child: FilledButton(
-                    onPressed: currentStep.value == steps.length - 1 
-                        ? createPlan 
+                    onPressed: currentStep.value == steps.length - 1
+                        ? createPlan
                         : nextStep,
                     child: Text(
-                      currentStep.value == steps.length - 1 
-                          ? '計画を作成' 
-                          : '次へ',
+                      currentStep.value == steps.length - 1 ? '計画を作成' : '次へ',
                     ),
                   ),
                 ),
@@ -263,7 +266,11 @@ Widget _buildBasicInfoStep(
 
   final templates = [
     {'name': '週末旅行', 'description': '2-3日の短期旅行', 'icon': Icons.weekend},
-    {'name': 'リゾート旅行', 'description': '5-7日のリラックス旅行', 'icon': Icons.beach_access},
+    {
+      'name': 'リゾート旅行',
+      'description': '5-7日のリラックス旅行',
+      'icon': Icons.beach_access,
+    },
     {'name': '文化探訪', 'description': '歴史と文化を学ぶ旅', 'icon': Icons.temple_buddhist},
     {'name': '冒険旅行', 'description': 'アウトドア活動中心の旅', 'icon': Icons.hiking},
   ];
@@ -282,9 +289,9 @@ Widget _buildBasicInfoStep(
             .animate()
             .fadeIn(delay: const Duration(milliseconds: 200))
             .slideX(begin: -0.3),
-        
+
         const SizedBox(height: 24),
-        
+
         // テンプレート選択
         Text(
           'テンプレートから選択（オプション）',
@@ -306,21 +313,22 @@ Widget _buildBasicInfoStep(
           itemBuilder: (context, index) {
             final template = templates[index];
             final isSelected = selectedTemplate.value == template['name'];
-            
+
             return GestureDetector(
               onTap: () {
-                selectedTemplate.value = isSelected ? null : template['name'] as String;
+                selectedTemplate.value =
+                    isSelected ? null : template['name'] as String;
               },
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: isSelected 
-                      ? theme.colorScheme.primaryContainer 
+                  color: isSelected
+                      ? theme.colorScheme.primaryContainer
                       : theme.colorScheme.surface,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: isSelected 
-                        ? theme.colorScheme.primary 
+                    color: isSelected
+                        ? theme.colorScheme.primary
                         : theme.colorScheme.outline.withValues(alpha: 0.3),
                     width: isSelected ? 2 : 1,
                   ),
@@ -332,8 +340,8 @@ Widget _buildBasicInfoStep(
                       children: [
                         Icon(
                           template['icon'] as IconData,
-                          color: isSelected 
-                              ? theme.colorScheme.primary 
+                          color: isSelected
+                              ? theme.colorScheme.primary
                               : theme.colorScheme.onSurface,
                           size: 20,
                         ),
@@ -343,8 +351,8 @@ Widget _buildBasicInfoStep(
                             template['name'] as String,
                             style: theme.textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.w600,
-                              color: isSelected 
-                                  ? theme.colorScheme.primary 
+                              color: isSelected
+                                  ? theme.colorScheme.primary
                                   : theme.colorScheme.onSurface,
                             ),
                           ),
@@ -366,9 +374,9 @@ Widget _buildBasicInfoStep(
         )
             .animate(delay: const Duration(milliseconds: 400))
             .fadeIn(duration: const Duration(milliseconds: 600)),
-        
+
         const SizedBox(height: 24),
-        
+
         // 旅行タイトル
         Text(
           '旅行タイトル',
@@ -390,9 +398,9 @@ Widget _buildBasicInfoStep(
             .animate(delay: const Duration(milliseconds: 600))
             .fadeIn(duration: const Duration(milliseconds: 600))
             .slideX(begin: 0.3),
-        
+
         const SizedBox(height: 16),
-        
+
         // 目的地
         Text(
           '目的地',
@@ -414,9 +422,9 @@ Widget _buildBasicInfoStep(
             .animate(delay: const Duration(milliseconds: 800))
             .fadeIn(duration: const Duration(milliseconds: 600))
             .slideX(begin: 0.3),
-        
+
         const SizedBox(height: 24),
-        
+
         // カテゴリー選択
         Text(
           'カテゴリー',
@@ -438,7 +446,7 @@ Widget _buildBasicInfoStep(
           itemBuilder: (context, index) {
             final category = categories[index];
             final isSelected = selectedCategory.value == category['name'];
-            
+
             return GestureDetector(
               onTap: () {
                 selectedCategory.value = category['name'] as String;
@@ -446,13 +454,13 @@ Widget _buildBasicInfoStep(
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: isSelected 
-                      ? (category['color'] as Color).withValues(alpha: 0.1) 
+                  color: isSelected
+                      ? (category['color'] as Color).withValues(alpha: 0.1)
                       : theme.colorScheme.surface,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: isSelected 
-                        ? category['color'] as Color 
+                    color: isSelected
+                        ? category['color'] as Color
                         : theme.colorScheme.outline.withValues(alpha: 0.3),
                     width: isSelected ? 2 : 1,
                   ),
@@ -461,8 +469,8 @@ Widget _buildBasicInfoStep(
                   children: [
                     Icon(
                       category['icon'] as IconData,
-                      color: isSelected 
-                          ? category['color'] as Color 
+                      color: isSelected
+                          ? category['color'] as Color
                           : theme.colorScheme.onSurface,
                       size: 20,
                     ),
@@ -472,8 +480,8 @@ Widget _buildBasicInfoStep(
                         category['name'] as String,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: isSelected 
-                              ? category['color'] as Color 
+                          color: isSelected
+                              ? category['color'] as Color
                               : theme.colorScheme.onSurface,
                         ),
                       ),
@@ -500,6 +508,7 @@ Widget _buildScheduleBudgetStep(
   ValueNotifier<DateTime?> endDate,
   TextEditingController budgetController,
   ValueNotifier<int> participants,
+  ValueNotifier<List<TransportationBooking>> transportationBookings,
 ) {
   final durations = ['1日', '2-3日', '4-5日', '1週間', '1-2週間', '1ヶ月以上'];
 
@@ -517,9 +526,9 @@ Widget _buildScheduleBudgetStep(
             .animate()
             .fadeIn(delay: const Duration(milliseconds: 200))
             .slideX(begin: -0.3),
-        
+
         const SizedBox(height: 24),
-        
+
         // 期間選択
         Text(
           '旅行期間',
@@ -538,24 +547,24 @@ Widget _buildScheduleBudgetStep(
                 selectedDuration.value = duration;
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                  color: isSelected 
-                      ? theme.colorScheme.primary 
+                  color: isSelected
+                      ? theme.colorScheme.primary
                       : theme.colorScheme.surface,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: isSelected 
-                        ? theme.colorScheme.primary 
+                    color: isSelected
+                        ? theme.colorScheme.primary
                         : theme.colorScheme.outline.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Text(
                   duration,
                   style: TextStyle(
-                    color: isSelected 
-                        ? Colors.white 
-                        : theme.colorScheme.onSurface,
+                    color:
+                        isSelected ? Colors.white : theme.colorScheme.onSurface,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -565,9 +574,9 @@ Widget _buildScheduleBudgetStep(
         )
             .animate(delay: const Duration(milliseconds: 400))
             .fadeIn(duration: const Duration(milliseconds: 600)),
-        
+
         const SizedBox(height: 24),
-        
+
         // 日程選択
         Text(
           '出発・帰国日',
@@ -608,7 +617,7 @@ Widget _buildScheduleBudgetStep(
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          startDate.value != null 
+                          startDate.value != null
                               ? '${startDate.value!.month}/${startDate.value!.day}'
                               : '出発日',
                           style: theme.textTheme.bodyMedium,
@@ -625,8 +634,9 @@ Widget _buildScheduleBudgetStep(
                 onTap: () async {
                   final date = await showDatePicker(
                     context: context,
-                    initialDate: startDate.value?.add(const Duration(days: 1)) ?? 
-                        DateTime.now().add(const Duration(days: 1)),
+                    initialDate:
+                        startDate.value?.add(const Duration(days: 1)) ??
+                            DateTime.now().add(const Duration(days: 1)),
                     firstDate: startDate.value ?? DateTime.now(),
                     lastDate: DateTime.now().add(const Duration(days: 365)),
                   );
@@ -651,7 +661,7 @@ Widget _buildScheduleBudgetStep(
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          endDate.value != null 
+                          endDate.value != null
                               ? '${endDate.value!.month}/${endDate.value!.day}'
                               : '帰国日',
                           style: theme.textTheme.bodyMedium,
@@ -667,9 +677,9 @@ Widget _buildScheduleBudgetStep(
             .animate(delay: const Duration(milliseconds: 600))
             .fadeIn(duration: const Duration(milliseconds: 600))
             .slideY(begin: 0.3),
-        
+
         const SizedBox(height: 24),
-        
+
         // 予算
         Text(
           '予算',
@@ -693,9 +703,9 @@ Widget _buildScheduleBudgetStep(
             .animate(delay: const Duration(milliseconds: 800))
             .fadeIn(duration: const Duration(milliseconds: 600))
             .slideX(begin: 0.3),
-        
+
         const SizedBox(height: 24),
-        
+
         // 参加者数
         Text(
           '参加者数',
@@ -723,9 +733,8 @@ Widget _buildScheduleBudgetStep(
                 ),
               ),
               IconButton(
-                onPressed: participants.value > 1 
-                    ? () => participants.value-- 
-                    : null,
+                onPressed:
+                    participants.value > 1 ? () => participants.value-- : null,
                 icon: const Icon(Icons.remove),
               ),
               IconButton(
@@ -736,6 +745,156 @@ Widget _buildScheduleBudgetStep(
           ),
         )
             .animate(delay: const Duration(milliseconds: 1000))
+            .fadeIn(duration: const Duration(milliseconds: 600))
+            .slideY(begin: 0.3),
+
+        const SizedBox(height: 24),
+
+        // 交通機関予約セクション
+        Text(
+          '交通機関の予約',
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 12),
+
+        // 交通機関予約リスト
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: theme.colorScheme.outline.withValues(alpha: 0.3),
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            children: [
+              if (transportationBookings.value.isEmpty) ...{
+                Icon(
+                  Icons.directions_transit,
+                  size: 48,
+                  color: theme.colorScheme.outline.withValues(alpha: 0.5),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '交通機関の予約を追加',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.outline,
+                  ),
+                ),
+                const SizedBox(height: 16),
+              } else ...{
+                ...transportationBookings.value.map((booking) {
+                  final typeIcon = _getTransportationIcon(booking.type);
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          typeIcon,
+                          color: theme.colorScheme.primary,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                booking.type,
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              if (booking.departureLocation != null &&
+                                  booking.arrivalLocation != null) ...{
+                                Text(
+                                  '${booking.departureLocation} → ${booking.arrivalLocation}',
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: theme.colorScheme.outline,
+                                  ),
+                                ),
+                              },
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () async {
+                            final result = await Navigator.of(context)
+                                .push<TransportationBooking>(
+                              MaterialPageRoute(
+                                builder: (context) => TransportationBookingPage(
+                                  booking: booking,
+                                  isEditing: true,
+                                ),
+                              ),
+                            );
+                            if (result != null) {
+                              final bookings = List<TransportationBooking>.from(
+                                transportationBookings.value,
+                              );
+                              final index = bookings.indexOf(booking);
+                              bookings[index] = result;
+                              transportationBookings.value = bookings;
+                            }
+                          },
+                          icon: const Icon(Icons.edit, size: 20),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            final bookings = List<TransportationBooking>.from(
+                              transportationBookings.value,
+                            )..remove(booking);
+                            transportationBookings.value = bookings;
+                          },
+                          icon: const Icon(Icons.delete, size: 20),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+                const SizedBox(height: 8),
+              },
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton.tonal(
+                  onPressed: () async {
+                    final result =
+                        await Navigator.of(context).push<TransportationBooking>(
+                      MaterialPageRoute(
+                        builder: (context) => const TransportationBookingPage(),
+                      ),
+                    );
+                    if (result != null) {
+                      transportationBookings.value = [
+                        ...transportationBookings.value,
+                        result,
+                      ];
+                    }
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.add),
+                      const SizedBox(width: 8),
+                      Text(
+                        transportationBookings.value.isEmpty
+                            ? '交通機関を追加'
+                            : '別の交通機関を追加',
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+            .animate(delay: const Duration(milliseconds: 1200))
             .fadeIn(duration: const Duration(milliseconds: 600))
             .slideY(begin: 0.3),
       ],
@@ -763,9 +922,9 @@ Widget _buildDetailStep(
             .animate()
             .fadeIn(delay: const Duration(milliseconds: 200))
             .slideX(begin: -0.3),
-        
+
         const SizedBox(height: 24),
-        
+
         // 旅行の説明
         Text(
           '旅行の説明',
@@ -791,9 +950,9 @@ Widget _buildDetailStep(
             .animate(delay: const Duration(milliseconds: 400))
             .fadeIn(duration: const Duration(milliseconds: 600))
             .slideY(begin: 0.3),
-        
+
         const SizedBox(height: 24),
-        
+
         // 旅行のポイント
         Text(
           '旅行のポイント',
@@ -922,9 +1081,7 @@ Widget _buildConfirmStep(
             .animate()
             .fadeIn(delay: const Duration(milliseconds: 200))
             .slideX(begin: -0.3),
-        
         const SizedBox(height: 24),
-        
         Card(
           child: Padding(
             padding: const EdgeInsets.all(20),
@@ -935,14 +1092,18 @@ Widget _buildConfirmStep(
                   theme,
                   Icons.title,
                   'タイトル',
-                  titleController.text.isNotEmpty ? titleController.text : '未設定',
+                  titleController.text.isNotEmpty
+                      ? titleController.text
+                      : '未設定',
                 ),
                 const Divider(height: 24),
                 _buildConfirmRow(
                   theme,
                   Icons.location_on,
                   '目的地',
-                  destinationController.text.isNotEmpty ? destinationController.text : '未設定',
+                  destinationController.text.isNotEmpty
+                      ? destinationController.text
+                      : '未設定',
                 ),
                 const Divider(height: 24),
                 _buildConfirmRow(
@@ -972,7 +1133,9 @@ Widget _buildConfirmStep(
                   theme,
                   Icons.currency_yen,
                   '予算',
-                  budgetController.text.isNotEmpty ? '¥${budgetController.text}' : '未設定',
+                  budgetController.text.isNotEmpty
+                      ? '¥${budgetController.text}'
+                      : '未設定',
                 ),
                 const Divider(height: 24),
                 _buildConfirmRow(
@@ -1040,4 +1203,26 @@ Widget _buildConfirmRow(
       ),
     ],
   );
+}
+
+// 交通機関タイプに応じたアイコンを取得
+IconData _getTransportationIcon(String type) {
+  switch (type) {
+    case '航空機':
+      return Icons.flight;
+    case '新幹線':
+      return Icons.train;
+    case '電車':
+      return Icons.directions_railway;
+    case 'バス':
+      return Icons.directions_bus;
+    case '船':
+      return Icons.directions_boat;
+    case 'レンタカー':
+      return Icons.car_rental;
+    case 'タクシー':
+      return Icons.local_taxi;
+    default:
+      return Icons.more_horiz;
+  }
 }

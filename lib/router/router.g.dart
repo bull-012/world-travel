@@ -59,6 +59,14 @@ RouteBase get $mainRoute => GoRouteData.$route(
           path: 'create-travel-plan',
           factory: $CreateTravelPlanRouteExtension._fromState,
         ),
+        GoRouteData.$route(
+          path: 'transportation-booking',
+          factory: $TransportationBookingRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'pdf-viewer',
+          factory: $PdfViewerRouteExtension._fromState,
+        ),
       ],
     );
 
@@ -177,6 +185,49 @@ extension $CreateTravelPlanRouteExtension on CreateTravelPlanRoute {
       context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
+}
+
+extension $TransportationBookingRouteExtension on TransportationBookingRoute {
+  static TransportationBookingRoute _fromState(GoRouterState state) =>
+      TransportationBookingRoute(
+        $extra: state.extra as TransportationBooking?,
+      );
+
+  String get location => GoRouteData.$location(
+        '/transportation-booking',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $PdfViewerRouteExtension on PdfViewerRoute {
+  static PdfViewerRoute _fromState(GoRouterState state) => PdfViewerRoute(
+        $extra: state.extra as PdfViewerArgs,
+      );
+
+  String get location => GoRouteData.$location(
+        '/pdf-viewer',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
 }
 
 // **************************************************************************

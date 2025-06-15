@@ -47,22 +47,33 @@ class AnimatedTextReveal extends HookWidget {
 
     useEffect(
       () {
-        final timer = Timer(delay, () async {
+        Timer? timer;
+        var isCancelled = false;
+        
+        timer = Timer(delay, () async {
+          if (isCancelled) return;
           isStarted.value = true;
 
           for (var i = 0; i <= text.length; i++) {
+            if (isCancelled) break;
+            
             if (i > 0) {
               await triggerCharacterFeedback();
             }
+            
+            if (isCancelled) break;
             visibleCharacters.value = i;
 
-            if (i < text.length) {
+            if (i < text.length && !isCancelled) {
               await Future<void>.delayed(characterDelay);
             }
           }
         });
 
-        return timer.cancel;
+        return () {
+          isCancelled = true;
+          timer?.cancel();
+        };
       },
       [],
     );
