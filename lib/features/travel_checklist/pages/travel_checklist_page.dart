@@ -53,20 +53,18 @@ class _TravelChecklistPageState extends ConsumerState<TravelChecklistPage>
     });
   }
 
-  void _handleSwipeLeft() {
-    // まだ準備が必要
-    final item = _pendingItems[_currentIndex];
-    ref
-        .read(checklistNotifierProvider.notifier)
-        .updateItemStatus(item.id, isCompleted: false);
+  bool _handleSwipeLeft() {
+    // 左スワイプ: 前のカードに戻る
+    if (_currentIndex > 0) {
+      _handlePrevious();
+      return true; // 処理が実行された
+    }
+    return false; // 最初のカードなので処理しない
   }
 
   void _handleSwipeRight() {
-    // 準備完了
-    final item = _pendingItems[_currentIndex];
-    ref
-        .read(checklistNotifierProvider.notifier)
-        .updateItemStatus(item.id, isCompleted: true);
+    // 右スワイプ: 次のカードに進む
+    _handleNext();
   }
 
   void _handlePrevious() {
@@ -255,12 +253,13 @@ class _TravelChecklistPageState extends ConsumerState<TravelChecklistPage>
                             child: SwipeableChecklistCard(
                               item: _pendingItems[_currentIndex + 1],
                               onSwipeComplete: () {},
-                              onSwipeLeft: () {},
+                              onSwipeLeft: () => false,
                               onSwipeRight: () {},
                               onEditTap: () {},
                               cardIndex: _currentIndex + 1,
                               totalCards: _pendingItems.length,
                               isInteractable: false,
+                              currentIndex: _currentIndex + 1,
                             ),
                           ),
                         ),
@@ -273,7 +272,7 @@ class _TravelChecklistPageState extends ConsumerState<TravelChecklistPage>
                     child: SwipeableChecklistCard(
                       key: ValueKey(_pendingItems[_currentIndex].id),
                       item: _pendingItems[_currentIndex],
-                      onSwipeComplete: _handleSwipeComplete,
+                      onSwipeComplete: () {}, // 空の実装（SwipeableCard内で直接呼び出される）
                       onSwipeLeft: _handleSwipeLeft,
                       onSwipeRight: _handleSwipeRight,
                       onEditTap: () {
@@ -285,6 +284,7 @@ class _TravelChecklistPageState extends ConsumerState<TravelChecklistPage>
                       },
                       cardIndex: _currentIndex,
                       totalCards: _pendingItems.length,
+                      currentIndex: _currentIndex,
                     ),
                   ),
                 ],

@@ -14,16 +14,18 @@ class SwipeableChecklistCard extends StatefulWidget {
     this.cardIndex = 0,
     this.totalCards = 0,
     this.isInteractable = true,
+    this.currentIndex = 0,
   });
 
   final ChecklistItem item;
   final VoidCallback onSwipeComplete;
-  final VoidCallback onSwipeLeft;
+  final bool Function() onSwipeLeft;
   final VoidCallback onSwipeRight;
   final VoidCallback onEditTap;
   final int cardIndex;
   final int totalCards;
   final bool isInteractable;
+  final int currentIndex;
 
   @override
   State<SwipeableChecklistCard> createState() => _SwipeableChecklistCardState();
@@ -97,6 +99,30 @@ class _SwipeableChecklistCardState extends State<SwipeableChecklistCard>
     });
   }
 
+  void _resetCard() {
+    setState(() {
+      _isDragging = false;
+      _dragOffset = Offset.zero;
+    });
+    _controller.reset();
+    
+    // アニメーションも初期状態にリセット
+    _animation = Tween<Offset>(
+      begin: Offset.zero,
+      end: Offset.zero,
+    ).animate(_controller);
+    
+    _rotationAnimation = Tween<double>(
+      begin: 0.0,
+      end: 0.0,
+    ).animate(_controller);
+    
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.0,
+    ).animate(_controller);
+  }
+
   void _onPanEnd(DragEndDetails details) {
     if (!widget.isInteractable) return;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -131,9 +157,21 @@ class _SwipeableChecklistCardState extends State<SwipeableChecklistCard>
       _controller.forward(from: 0).then((_) {
         if (_dragOffset.dx > 0) {
           widget.onSwipeRight();
+          widget.onSwipeComplete();
         } else {
-          widget.onSwipeLeft();
+          // 左スワイプの場合、戻り値で処理が成功したかチェック
+          final handled = widget.onSwipeLeft();
+          if (handled) {
+            widget.onSwipeComplete();
+          }
         }
+        
+        // 短い遅延後にカードをリセット
+        Future.delayed(const Duration(milliseconds: 100), () {
+          if (mounted) {
+            _resetCard();
+          }
+        });
       });
     } else {
       // 元の位置に戻る
@@ -363,18 +401,18 @@ class _SwipeableChecklistCardState extends State<SwipeableChecklistCard>
                               child: Container(
                                 padding: const EdgeInsets.all(16),
                                 decoration: const BoxDecoration(
-                                  color: Colors.green,
+                                  color: Colors.blue,
                                   shape: BoxShape.circle,
                                 ),
                                 child: const Icon(
-                                  Icons.check,
+                                  Icons.arrow_forward,
                                   color: Colors.white,
                                   size: 40,
                                 ),
                               ),
                             ),
                           ),
-                        if (_isDragging && widget.isInteractable)
+                        if (_isDragging && widget.isInteractable && widget.currentIndex > 0)
                           Positioned(
                             bottom: 16,
                             left: 40,
@@ -384,11 +422,11 @@ class _SwipeableChecklistCardState extends State<SwipeableChecklistCard>
                               child: Container(
                                 padding: const EdgeInsets.all(16),
                                 decoration: const BoxDecoration(
-                                  color: Colors.red,
+                                  color: Colors.orange,
                                   shape: BoxShape.circle,
                                 ),
                                 child: const Icon(
-                                  Icons.close,
+                                  Icons.arrow_back,
                                   color: Colors.white,
                                   size: 40,
                                 ),
