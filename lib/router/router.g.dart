@@ -8,7 +8,7 @@ part of 'router.dart';
 
 List<RouteBase> get $appRoutes => [
       $splashRoute,
-      $homeRoute,
+      $mainRoute,
     ];
 
 RouteBase get $splashRoute => GoRouteData.$route(
@@ -33,9 +33,9 @@ extension $SplashRouteExtension on SplashRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $homeRoute => GoRouteData.$route(
+RouteBase get $mainRoute => GoRouteData.$route(
       path: '/',
-      factory: $HomeRouteExtension._fromState,
+      factory: $MainRouteExtension._fromState,
       routes: [
         GoRouteData.$route(
           path: 'second',
@@ -48,8 +48,8 @@ RouteBase get $homeRoute => GoRouteData.$route(
       ],
     );
 
-extension $HomeRouteExtension on HomeRoute {
-  static HomeRoute _fromState(GoRouterState state) => const HomeRoute();
+extension $MainRouteExtension on MainRoute {
+  static MainRoute _fromState(GoRouterState state) => const MainRoute();
 
   String get location => GoRouteData.$location(
         '/',
