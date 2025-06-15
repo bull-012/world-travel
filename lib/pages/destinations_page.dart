@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 import 'package:world_travel/common/widgets/index.dart';
 import 'package:world_travel/router/router.dart';
 
@@ -79,7 +80,8 @@ class DestinationsPage extends StatelessWidget {
                         end: Alignment.bottomRight,
                         colors: [
                           theme.colorScheme.primaryContainer,
-                          theme.colorScheme.primaryContainer.withValues(alpha: 0.8),
+                          theme.colorScheme.primaryContainer
+                              .withValues(alpha: 0.8),
                         ],
                       ),
                     ),
@@ -97,7 +99,8 @@ class DestinationsPage extends StatelessWidget {
                         Text(
                           '旅行計画を立てて、素晴らしい冒険に出かけましょう',
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onPrimaryContainer.withValues(alpha: 0.8),
+                            color: theme.colorScheme.onPrimaryContainer
+                                .withValues(alpha: 0.8),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -118,7 +121,117 @@ class DestinationsPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                
+
+                const SizedBox(height: 24),
+
+                // 旅行の前にセクション
+                Text(
+                  '旅行の前に',
+                  style: theme.textTheme.headlineMedium,
+                )
+                    .animate(delay: const Duration(milliseconds: 200))
+                    .fadeIn(duration: const Duration(milliseconds: 400)),
+
+                const SizedBox(height: 16),
+
+                // 旅行準備カード
+                Card(
+                  clipBehavior: Clip.antiAlias,
+                  child: InkWell(
+                    onTap: () {
+                      // チェックリストページに遷移
+                      context.push('/travel-checklist');
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.orange.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Icon(
+                              Icons.checklist_rtl,
+                              color: Colors.orange,
+                              size: 32,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '旅行準備チェックリスト',
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  '出発前の準備を確認しましょう',
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: theme.colorScheme.onSurfaceVariant,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color:
+                                            Colors.green.withValues(alpha: 0.1),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Text(
+                                        '8/10 完了',
+                                        style:
+                                            theme.textTheme.bodySmall?.copyWith(
+                                          color: Colors.green,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: LinearProgressIndicator(
+                                        value: 8 / 10,
+                                        backgroundColor: theme
+                                            .colorScheme.outline
+                                            .withValues(alpha: 0.2),
+                                        valueColor:
+                                            const AlwaysStoppedAnimation(
+                                          Colors.green,
+                                        ),
+                                        minHeight: 6,
+                                        borderRadius: BorderRadius.circular(3),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: theme.colorScheme.outline,
+                            size: 16,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+                    .animate(delay: const Duration(milliseconds: 400))
+                    .fadeIn(duration: const Duration(milliseconds: 600))
+                    .slideY(begin: 0.2),
+
                 const SizedBox(height: 24),
 
                 // セクションタイトル
@@ -137,7 +250,7 @@ class DestinationsPage extends StatelessWidget {
                     ),
                   ],
                 )
-                    .animate(delay: const Duration(milliseconds: 200))
+                    .animate(delay: const Duration(milliseconds: 600))
                     .fadeIn(duration: const Duration(milliseconds: 400)),
 
                 const SizedBox(height: 16),
@@ -186,7 +299,8 @@ class DestinationsPage extends StatelessWidget {
                                       vertical: 4,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: Colors.white.withValues(alpha: 0.9),
+                                      color:
+                                          Colors.white.withValues(alpha: 0.9),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: Text(
@@ -213,8 +327,10 @@ class DestinationsPage extends StatelessWidget {
                                   right: 0,
                                   child: LinearProgressIndicator(
                                     value: plan['progress'] as double,
-                                    backgroundColor: Colors.white.withValues(alpha: 0.3),
-                                    valueColor: const AlwaysStoppedAnimation(Colors.white),
+                                    backgroundColor:
+                                        Colors.white.withValues(alpha: 0.3),
+                                    valueColor: const AlwaysStoppedAnimation(
+                                        Colors.white),
                                     minHeight: 3,
                                   ),
                                 ),
@@ -245,12 +361,14 @@ class DestinationsPage extends StatelessWidget {
                                         vertical: 4,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: theme.colorScheme.secondaryContainer,
+                                        color: theme
+                                            .colorScheme.secondaryContainer,
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Text(
                                         plan['duration'] as String,
-                                        style: theme.textTheme.bodySmall?.copyWith(
+                                        style:
+                                            theme.textTheme.bodySmall?.copyWith(
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
@@ -270,7 +388,8 @@ class DestinationsPage extends StatelessWidget {
                                     Expanded(
                                       child: Text(
                                         plan['destination'] as String,
-                                        style: theme.textTheme.bodyMedium?.copyWith(
+                                        style: theme.textTheme.bodyMedium
+                                            ?.copyWith(
                                           color: theme.colorScheme.outline,
                                         ),
                                       ),
@@ -298,18 +417,21 @@ class DestinationsPage extends StatelessWidget {
                                   children: [
                                     // 予算と参加者
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           plan['budget'] as String,
-                                          style: theme.textTheme.bodyMedium?.copyWith(
+                                          style: theme.textTheme.bodyMedium
+                                              ?.copyWith(
                                             fontWeight: FontWeight.w600,
                                             color: theme.colorScheme.primary,
                                           ),
                                         ),
                                         Text(
                                           '${plan['participants']}名参加',
-                                          style: theme.textTheme.bodySmall?.copyWith(
+                                          style: theme.textTheme.bodySmall
+                                              ?.copyWith(
                                             color: theme.colorScheme.outline,
                                           ),
                                         ),
