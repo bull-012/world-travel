@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:world_travel/features/profile/models/achievement.dart';
+import 'package:world_travel/features/profile/providers/achievement_provider.dart';
 
 class ProfilePageArgs {
   const ProfilePageArgs({
@@ -21,6 +23,8 @@ class ProfilePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final achievements = ref.watch(achievementNotifierProvider);
+    final latestAchievement = ref.watch(achievementNotifierProvider.notifier).latestAchievement;
     
     return CustomScrollView(
       slivers: [
@@ -111,12 +115,47 @@ class ProfilePage extends HookConsumerWidget {
                             .slideX(begin: -0.3, duration: const Duration(milliseconds: 600))
                             .fadeIn(),
                         const SizedBox(height: 4),
-                        // ステータス
-                        Text(
-                          '冒険家 • 12ヶ国訪問済み',
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: Colors.white.withValues(alpha: 0.9),
-                          ),
+                        // ステータス（現在の称号）
+                        Row(
+                          children: [
+                            if (latestAchievement != null) ...[
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: latestAchievement.color.withValues(alpha: 0.9),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      latestAchievement.icon,
+                                      color: Colors.white,
+                                      size: 14,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      latestAchievement.title,
+                                      style: theme.textTheme.bodySmall?.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                            ],
+                            Text(
+                              '12ヶ国訪問済み',
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: Colors.white.withValues(alpha: 0.9),
+                              ),
+                            ),
+                          ],
                         )
                             .animate(delay: const Duration(milliseconds: 700))
                             .slideX(begin: -0.3, duration: const Duration(milliseconds: 600))
@@ -175,13 +214,26 @@ class ProfilePage extends HookConsumerWidget {
                         color: Colors.green,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
                     Expanded(
                       child: _StatCard(
                         icon: Icons.flight_takeoff,
                         title: '総移動距離',
                         value: '15.2K km',
                         color: Colors.orange,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _StatCard(
+                        icon: Icons.emoji_events,
+                        title: '獲得称号',
+                        value: '${ref.watch(achievementNotifierProvider.notifier).totalUnlockedCount}',
+                        color: Colors.amber,
                       ),
                     ),
                   ],
@@ -309,6 +361,74 @@ class ProfilePage extends HookConsumerWidget {
                     },
                   ),
                 ),
+              ],
+            ),
+          ),
+        ),
+        
+        // 称号セクション
+        SliverToBoxAdapter(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '称号・実績',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        showDialog<void>(
+                          context: context,
+                          builder: (context) => _AchievementsDialog(),
+                        );
+                      },
+                      child: const Text('すべて見る'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  height: 120,
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      final unlockedAchievements = ref
+                          .watch(achievementNotifierProvider.notifier)
+                          .unlockedAchievements
+                          .take(5)
+                          .toList();
+                      
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: unlockedAchievements.length,
+                        itemBuilder: (context, index) {
+                          final achievement = unlockedAchievements[index];
+                          
+                          return Container(
+                            width: 100,
+                            margin: EdgeInsets.only(
+                              right: index < unlockedAchievements.length - 1 ? 12 : 0,
+                            ),
+                            child: _AchievementCard(
+                              achievement: achievement,
+                              isCompact: true,
+                            ),
+                          )
+                              .animate(delay: Duration(milliseconds: 1500 + (index * 100)))
+                              .scale(duration: const Duration(milliseconds: 400))
+                              .fadeIn();
+                        },
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 16),
               ],
             ),
           ),
@@ -504,6 +624,145 @@ class _ActionButton extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AchievementCard extends StatelessWidget {
+  const _AchievementCard({
+    required this.achievement,
+    this.isCompact = false,
+  });
+
+  final Achievement achievement;
+  final bool isCompact;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return Container(
+      padding: EdgeInsets.all(isCompact ? 8 : 12),
+      decoration: BoxDecoration(
+        color: achievement.isUnlocked
+            ? achievement.color.withValues(alpha: 0.1)
+            : theme.colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: achievement.isUnlocked
+              ? achievement.color.withValues(alpha: 0.3)
+              : theme.colorScheme.outline.withValues(alpha: 0.2),
+        ),
+      ),
+      child: Column(
+        children: [
+          Icon(
+            achievement.icon,
+            size: isCompact ? 24 : 32,
+            color: achievement.isUnlocked
+                ? achievement.color
+                : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            achievement.title,
+            style: (isCompact ? theme.textTheme.bodySmall : theme.textTheme.bodyMedium)?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: achievement.isUnlocked
+                  ? theme.colorScheme.onSurface
+                  : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+            ),
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          if (!isCompact) ...[
+            const SizedBox(height: 4),
+            Text(
+              achievement.description,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+          if (!achievement.isUnlocked && achievement.maxProgress > 1) ...[
+            const SizedBox(height: 8),
+            LinearProgressIndicator(
+              value: achievement.progressPercentage,
+              backgroundColor: theme.colorScheme.surfaceContainerHighest,
+              valueColor: AlwaysStoppedAnimation(achievement.color),
+              minHeight: 4,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              '${achievement.progress}/${achievement.maxProgress}',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _AchievementsDialog extends HookConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final achievements = ref.watch(achievementNotifierProvider);
+    
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        height: MediaQuery.of(context).size.height * 0.7,
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '称号・実績',
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: const Icon(Icons.close),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 1.0,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                ),
+                itemCount: achievements.length,
+                itemBuilder: (context, index) {
+                  final achievement = achievements[index];
+                  return _AchievementCard(
+                    achievement: achievement,
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
