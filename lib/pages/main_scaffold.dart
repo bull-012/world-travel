@@ -152,9 +152,9 @@ class _MainScaffoldViewState extends State<MainScaffoldView>
             label: '探索',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.place_outlined),
-            activeIcon: Icon(Icons.place),
-            label: '目的地',
+            icon: Icon(Icons.edit_calendar_outlined),
+            activeIcon: Icon(Icons.edit_calendar),
+            label: '旅の計画',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),

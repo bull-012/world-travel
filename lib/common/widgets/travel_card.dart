@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-/// 旅行先や目的地を表示するためのカードコンポーネント
+/// 旅行先や旅行プランを表示するためのカードコンポーネント
 class TravelCard extends StatelessWidget {
   const TravelCard({
     required this.title,

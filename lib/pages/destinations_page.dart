@@ -11,13 +11,16 @@ class DestinationsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('目的地'),
+        title: const Text('旅の計画'),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: const Icon(Icons.filter_list),
+            icon: const Icon(Icons.add),
             onPressed: () {
-              // フィル機能
+              // 新しい旅行計画を作成
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('新しい旅行計画を作成（機能準備中）')),
+              );
             },
           ),
         ],
@@ -33,9 +36,9 @@ class DestinationsPage extends StatelessWidget {
                   children: [
                     Expanded(
                       child: StatCard(
-                        title: '訪問済み',
-                        value: '15',
-                        icon: Icons.check_circle,
+                        title: '進行中',
+                        value: '3',
+                        icon: Icons.edit_calendar,
                         color: theme.colorScheme.primary,
                         animationDelay: const Duration(milliseconds: 200),
                       ),
@@ -43,9 +46,9 @@ class DestinationsPage extends StatelessWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: StatCard(
-                        title: '予定',
-                        value: '8',
-                        icon: Icons.schedule,
+                        title: '完了済み',
+                        value: '12',
+                        icon: Icons.check_circle,
                         color: theme.colorScheme.secondary,
                         animationDelay: const Duration(milliseconds: 400),
                       ),
@@ -53,10 +56,10 @@ class DestinationsPage extends StatelessWidget {
                     const SizedBox(width: 12),
                     const Expanded(
                       child: StatCard(
-                        title: 'お気に入り',
-                        value: '23',
-                        icon: Icons.favorite,
-                        color: Colors.pink,
+                        title: '保存済み',
+                        value: '8',
+                        icon: Icons.bookmark,
+                        color: Colors.orange,
                         animationDelay: Duration(milliseconds: 600),
                       ),
                     ),
@@ -68,12 +71,66 @@ class DestinationsPage extends StatelessWidget {
 
                 const SizedBox(height: 24),
 
+                // クイックアクションセクション
+                Card(
+                  clipBehavior: Clip.antiAlias,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          theme.colorScheme.primaryContainer,
+                          theme.colorScheme.primaryContainer.withValues(alpha: 0.8),
+                        ],
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '新しい旅を始めよう',
+                          style: theme.textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          '旅行計画を立てて、素晴らしい冒険に出かけましょう',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onPrimaryContainer.withValues(alpha: 0.8),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        FilledButton(
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('新しい計画を作成（機能準備中）')),
+                            );
+                          },
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.add),
+                              SizedBox(width: 8),
+                              Text('新しい計画を作成'),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                
+                const SizedBox(height: 24),
+
                 // セクションタイトル
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '人気の目的地',
+                      '進行中の旅行計画',
                       style: theme.textTheme.headlineMedium,
                     ),
                     TextButton(
@@ -92,13 +149,13 @@ class DestinationsPage extends StatelessWidget {
             ),
           ),
 
-          // 目的地リスト
+          // 旅行プランリスト
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-                  final destination = _destinations[index];
+                  final plan = _travelPlans[index];
                   return Container(
                     margin: const EdgeInsets.only(bottom: 16),
                     child: Card(
@@ -106,49 +163,63 @@ class DestinationsPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // 画像プレースホルダー
+                          // ヘッダー部分
                           Container(
-                            height: 180,
+                            height: 120,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                                 colors: [
-                                  destination['color'] as Color,
-                                  (destination['color'] as Color)
+                                  plan['color'] as Color,
+                                  (plan['color'] as Color)
                                       .withValues(alpha: 0.7),
                                 ],
                               ),
                             ),
                             child: Stack(
                               children: [
+                                // ステータスバッジ
                                 Positioned(
                                   right: 12,
                                   top: 12,
                                   child: Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color:
-                                          Colors.white.withValues(alpha: 0.9),
-                                      borderRadius: BorderRadius.circular(20),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
                                     ),
-                                    child: Icon(
-                                      destination['isFavorite'] as bool
-                                          ? Icons.favorite
-                                          : Icons.favorite_border,
-                                      color: destination['isFavorite'] as bool
-                                          ? Colors.pink
-                                          : Colors.grey,
-                                      size: 20,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withValues(alpha: 0.9),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Text(
+                                      plan['status'] as String,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
                                   ),
                                 ),
+                                // アイコン
                                 Center(
                                   child: Icon(
-                                    destination['icon'] as IconData,
-                                    size: 60,
-                                    color: Colors.white.withValues(alpha: 0.8),
+                                    plan['icon'] as IconData,
+                                    size: 50,
+                                    color: Colors.white.withValues(alpha: 0.9),
+                                  ),
+                                ),
+                                // 進捗バー（下部）
+                                Positioned(
+                                  bottom: 0,
+                                  left: 0,
+                                  right: 0,
+                                  child: LinearProgressIndicator(
+                                    value: plan['progress'] as double,
+                                    backgroundColor: Colors.white.withValues(alpha: 0.3),
+                                    valueColor: const AlwaysStoppedAnimation(Colors.white),
+                                    minHeight: 3,
                                   ),
                                 ),
                               ],
@@ -160,66 +231,103 @@ class DestinationsPage extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                // タイトルと期間
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        destination['name'] as String,
+                                        plan['title'] as String,
                                         style: theme.textTheme.titleLarge,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                          size: 16,
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: theme.colorScheme.secondaryContainer,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Text(
+                                        plan['duration'] as String,
+                                        style: theme.textTheme.bodySmall?.copyWith(
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          destination['rating'].toString(),
-                                          style: theme.textTheme.bodyMedium,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 4),
+                                // 目的地と日程
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on,
+                                      size: 16,
+                                      color: theme.colorScheme.outline,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Expanded(
+                                      child: Text(
+                                        plan['destination'] as String,
+                                        style: theme.textTheme.bodyMedium?.copyWith(
+                                          color: theme.colorScheme.outline,
                                         ),
-                                      ],
+                                      ),
                                     ),
                                   ],
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  destination['location'] as String,
-                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                  '${plan['startDate']} - ${plan['endDate']}',
+                                  style: theme.textTheme.bodySmall?.copyWith(
                                     color: theme.colorScheme.outline,
                                   ),
                                 ),
                                 const SizedBox(height: 8),
+                                // 説明
                                 Text(
-                                  destination['description'] as String,
+                                  plan['description'] as String,
                                   style: theme.textTheme.bodyMedium,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 const SizedBox(height: 12),
+                                // 下部情報とアクション
                                 Row(
                                   children: [
-                                    Chip(
-                                      label: Text(
-                                        destination['category'] as String,
-                                        style: const TextStyle(fontSize: 12),
-                                      ),
-                                      materialTapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
+                                    // 予算と参加者
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          plan['budget'] as String,
+                                          style: theme.textTheme.bodyMedium?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            color: theme.colorScheme.primary,
+                                          ),
+                                        ),
+                                        Text(
+                                          '${plan['participants']}名参加',
+                                          style: theme.textTheme.bodySmall?.copyWith(
+                                            color: theme.colorScheme.outline,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     const Spacer(),
+                                    // アクションボタン
                                     FilledButton.tonal(
                                       onPressed: () {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           SnackBar(
                                             content: Text(
-                                              '${destination['name']}の詳細を表示',
+                                              '${plan['title']}の詳細を表示',
                                             ),
                                           ),
                                         );
@@ -243,8 +351,85 @@ class DestinationsPage extends StatelessWidget {
                         curve: Curves.easeOut,
                       );
                 },
-                childCount: _destinations.length,
+                childCount: _travelPlans.length,
               ),
+            ),
+          ),
+
+          // テンプレート計画セクション
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                Text(
+                  '人気のテンプレート',
+                  style: theme.textTheme.headlineMedium,
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.weekend,
+                                size: 40,
+                                color: theme.colorScheme.primary,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                '週末旅行',
+                                style: theme.textTheme.titleMedium,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '2-3日間',
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.colorScheme.outline,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.beach_access,
+                                size: 40,
+                                color: theme.colorScheme.secondary,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'リゾート旅行',
+                                style: theme.textTheme.titleMedium,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '5-7日間',
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.colorScheme.outline,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ]),
             ),
           ),
 
@@ -258,56 +443,66 @@ class DestinationsPage extends StatelessWidget {
   }
 }
 
-// サンプル目的地データ
-final List<Map<String, dynamic>> _destinations = [
+// サンプル旅行プランデータ
+final List<Map<String, dynamic>> _travelPlans = [
   {
-    'name': '東京タワー',
-    'location': '東京, 日本',
-    'description': '東京のシンボルとして親しまれている赤い電波塔。展望台からの景色は絶景です。',
-    'rating': 4.3,
-    'category': '観光地',
-    'icon': Icons.location_city,
-    'color': Colors.red,
-    'isFavorite': true,
+    'title': '春の京都桜巡りツアー',
+    'destination': '京都, 日本',
+    'description': '古都京都の美しい桜を巡る3日間の旅。清水寺、金閣寺、嵐山を訪問予定。',
+    'duration': '3日間',
+    'startDate': '2024年4月5日',
+    'endDate': '2024年4月7日',
+    'status': '進行中',
+    'progress': 0.7,
+    'category': '文化・歴史',
+    'icon': Icons.temple_buddhist,
+    'color': Colors.pink,
+    'budget': '¥85,000',
+    'participants': 2,
   },
   {
-    'name': 'エッフェル塔',
-    'location': 'パリ, フランス',
-    'description': 'パリの象徴的な鉄塔。夜のライトアップは特にロマンチックです。',
-    'rating': 4.5,
-    'category': '名所',
-    'icon': Icons.location_city,
-    'color': Colors.brown,
-    'isFavorite': false,
+    'title': 'パリ美術館巡りの旅',
+    'destination': 'パリ, フランス',
+    'description': 'ルーヴル美術館、オルセー美術館を中心としたアート鑑賞の旅。',
+    'duration': '5日間',
+    'startDate': '2024年6月15日',
+    'endDate': '2024年6月19日',
+    'status': '計画中',
+    'progress': 0.4,
+    'category': 'アート・文化',
+    'icon': Icons.museum,
+    'color': Colors.purple,
+    'budget': '¥320,000',
+    'participants': 1,
   },
   {
-    'name': 'グランドキャニオン',
-    'location': 'アリゾナ, アメリカ',
-    'description': '壮大な大自然の景観。地球の歴史を感じることができる圧倒的な峡谷です。',
-    'rating': 4.7,
-    'category': '自然',
-    'icon': Icons.landscape,
-    'color': Colors.orange,
-    'isFavorite': true,
-  },
-  {
-    'name': 'サントリーニ島',
-    'location': 'ギリシャ',
-    'description': '青い海と白い建物のコントラストが美しいエーゲ海の島。',
-    'rating': 4.6,
-    'category': 'リゾート',
+    'title': 'ハワイリゾート満喫プラン',
+    'destination': 'ハワイ, アメリカ',
+    'description': 'ワイキキビーチでのんびり過ごす癒しの休暇。ダイヤモンドヘッド登山も予定。',
+    'duration': '7日間',
+    'startDate': '2024年8月10日',
+    'endDate': '2024年8月16日',
+    'status': '計画中',
+    'progress': 0.2,
+    'category': 'リゾート・ビーチ',
     'icon': Icons.beach_access,
     'color': Colors.blue,
-    'isFavorite': false,
+    'budget': '¥450,000',
+    'participants': 4,
   },
   {
-    'name': 'マチュピチュ',
-    'location': 'ペルー',
-    'description': '空中都市として知られる古代インカの遺跡。神秘的な雰囲気に包まれています。',
-    'rating': 4.8,
-    'category': '世界遺産',
-    'icon': Icons.museum,
+    'title': '北欧オーロラ観測ツアー',
+    'destination': 'フィンランド・ノルウェー',
+    'description': '神秘的なオーロラを観測する特別な旅。サーミ文化体験も含まれます。',
+    'duration': '6日間',
+    'startDate': '2025年1月20日',
+    'endDate': '2025年1月25日',
+    'status': '保存済み',
+    'progress': 0.1,
+    'category': '自然・アドベンチャー',
+    'icon': Icons.nightlight,
     'color': Colors.green,
-    'isFavorite': true,
+    'budget': '¥380,000',
+    'participants': 2,
   },
 ];
