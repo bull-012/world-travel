@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vibration/vibration.dart';
 import 'package:world_travel/common/components/animated_text_reveal.dart';
-import 'package:world_travel/router/router.dart';
 
 class SplashPage extends HookConsumerWidget {
   const SplashPage({super.key});
@@ -73,7 +73,7 @@ class SplashPage extends HookConsumerWidget {
       await triggerHapticFeedback(type: HapticFeedbackType.heavyImpact);
 
       if (context.mounted) {
-        const HomeRoute().go(context);
+        GoRouter.of(context).go('/');
       }
     }
 
@@ -123,7 +123,7 @@ class SplashPage extends HookConsumerWidget {
                 type: HapticFeedbackType.heavyImpact,
               );
               if (context.mounted) {
-                const HomeRoute().go(context);
+                GoRouter.of(context).go('/');
               }
             }
           }),
@@ -249,7 +249,7 @@ class SplashPage extends HookConsumerWidget {
                                   // Pulsing background
                                   PulsingIcon(
                                     icon: Icons.circle,
-                                    size: 160,
+                                    size: 120,
                                     color: Colors.blue.shade100.withValues(
                                       alpha: 0.3,
                                     ),
@@ -259,8 +259,8 @@ class SplashPage extends HookConsumerWidget {
                                   ),
                                   // Main logo container
                                   Container(
-                                    width: 140,
-                                    height: 140,
+                                    width: 100,
+                                    height: 100,
                                     decoration: BoxDecoration(
                                       color: Colors.blue.shade600,
                                       borderRadius: BorderRadius.circular(32),
@@ -276,7 +276,7 @@ class SplashPage extends HookConsumerWidget {
                                     ),
                                     child: const Icon(
                                       Icons.flight_takeoff,
-                                      size: 70,
+                                      size: 50,
                                       color: Colors.white,
                                     ),
                                   )
@@ -300,7 +300,7 @@ class SplashPage extends HookConsumerWidget {
                                 ],
                               ),
 
-                            const SizedBox(height: 40),
+                            const SizedBox(height: 24),
 
                             // App Title with character reveal animation
                             if (showTitle.value)
@@ -320,7 +320,7 @@ class SplashPage extends HookConsumerWidget {
                                     const Duration(milliseconds: 80),
                               ),
 
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 16),
 
                             // Subtitle with character reveal animation
                             if (showSubtitle.value)
@@ -399,7 +399,7 @@ class SplashPage extends HookConsumerWidget {
                                   curve: Curves.easeOut,
                                 ),
 
-                            const SizedBox(height: 32),
+                            const SizedBox(height: 20),
 
                             // Loading text with bouncing dots
                             Row(
