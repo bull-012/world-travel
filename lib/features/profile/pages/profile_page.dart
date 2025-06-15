@@ -23,15 +23,16 @@ class ProfilePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final achievements = ref.watch(achievementNotifierProvider);
-    final latestAchievement = ref.watch(achievementNotifierProvider.notifier).latestAchievement;
-    
+    final latestAchievement =
+        ref.watch(achievementNotifierProvider.notifier).latestAchievement;
+    final totalUnlockedCount =
+        ref.watch(achievementNotifierProvider.notifier).totalUnlockedCount;
+
     return CustomScrollView(
       slivers: [
         // プロフィールヘッダー
         SliverAppBar(
           expandedHeight: 280,
-          floating: false,
           pinned: true,
           backgroundColor: theme.colorScheme.primary,
           flexibleSpace: FlexibleSpaceBar(
@@ -55,7 +56,9 @@ class ProfilePage extends HookConsumerWidget {
                       child: Container(
                         decoration: const BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage('assets/images/world_map_pattern.png'),
+                            image: AssetImage(
+                              'assets/images/world_map_pattern.png',
+                            ),
                             fit: BoxFit.cover,
                             opacity: 0.3,
                           ),
@@ -101,7 +104,9 @@ class ProfilePage extends HookConsumerWidget {
                         )
                             .animate()
                             .scale(delay: const Duration(milliseconds: 300))
-                            .fadeIn(duration: const Duration(milliseconds: 600)),
+                            .fadeIn(
+                              duration: const Duration(milliseconds: 600),
+                            ),
                         const SizedBox(height: 16),
                         // 名前
                         Text(
@@ -112,7 +117,10 @@ class ProfilePage extends HookConsumerWidget {
                           ),
                         )
                             .animate(delay: const Duration(milliseconds: 500))
-                            .slideX(begin: -0.3, duration: const Duration(milliseconds: 600))
+                            .slideX(
+                              begin: -0.3,
+                              duration: const Duration(milliseconds: 600),
+                            )
                             .fadeIn(),
                         const SizedBox(height: 4),
                         // ステータス（現在の称号）
@@ -125,7 +133,8 @@ class ProfilePage extends HookConsumerWidget {
                                   vertical: 4,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: latestAchievement.color.withValues(alpha: 0.9),
+                                  color: latestAchievement.color
+                                      .withValues(alpha: 0.9),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Row(
@@ -139,7 +148,8 @@ class ProfilePage extends HookConsumerWidget {
                                     const SizedBox(width: 4),
                                     Text(
                                       latestAchievement.title,
-                                      style: theme.textTheme.bodySmall?.copyWith(
+                                      style:
+                                          theme.textTheme.bodySmall?.copyWith(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -158,7 +168,10 @@ class ProfilePage extends HookConsumerWidget {
                           ],
                         )
                             .animate(delay: const Duration(milliseconds: 700))
-                            .slideX(begin: -0.3, duration: const Duration(milliseconds: 600))
+                            .slideX(
+                              begin: -0.3,
+                              duration: const Duration(milliseconds: 600),
+                            )
                             .fadeIn(),
                       ],
                     ),
@@ -168,7 +181,7 @@ class ProfilePage extends HookConsumerWidget {
             ),
           ),
         ),
-        
+
         // 統計情報
         SliverToBoxAdapter(
           child: Container(
@@ -195,7 +208,7 @@ class ProfilePage extends HookConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Row(
+                const Row(
                   children: [
                     Expanded(
                       child: _StatCard(
@@ -205,7 +218,7 @@ class ProfilePage extends HookConsumerWidget {
                         color: Colors.blue,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12),
                     Expanded(
                       child: _StatCard(
                         icon: Icons.location_city,
@@ -219,7 +232,7 @@ class ProfilePage extends HookConsumerWidget {
                 const SizedBox(height: 12),
                 Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                       child: _StatCard(
                         icon: Icons.flight_takeoff,
                         title: '総移動距離',
@@ -232,7 +245,7 @@ class ProfilePage extends HookConsumerWidget {
                       child: _StatCard(
                         icon: Icons.emoji_events,
                         title: '獲得称号',
-                        value: '${ref.watch(achievementNotifierProvider.notifier).totalUnlockedCount}',
+                        value: '$totalUnlockedCount',
                         color: Colors.amber,
                       ),
                     ),
@@ -245,7 +258,7 @@ class ProfilePage extends HookConsumerWidget {
               .slideY(begin: 0.3, duration: const Duration(milliseconds: 800))
               .fadeIn(),
         ),
-        
+
         // 最近の旅行
         SliverToBoxAdapter(
           child: Container(
@@ -269,12 +282,27 @@ class ProfilePage extends HookConsumerWidget {
                     itemCount: 3,
                     itemBuilder: (context, index) {
                       final trips = [
-                        {'city': '東京', 'country': '日本', 'date': '2024年3月', 'image': '🗼'},
-                        {'city': 'パリ', 'country': 'フランス', 'date': '2024年1月', 'image': '🗼'},
-                        {'city': 'ニューヨーク', 'country': 'アメリカ', 'date': '2023年11月', 'image': '🗽'},
+                        {
+                          'city': '東京',
+                          'country': '日本',
+                          'date': '2024年3月',
+                          'image': '🗼',
+                        },
+                        {
+                          'city': 'パリ',
+                          'country': 'フランス',
+                          'date': '2024年1月',
+                          'image': '🗼',
+                        },
+                        {
+                          'city': 'ニューヨーク',
+                          'country': 'アメリカ',
+                          'date': '2023年11月',
+                          'image': '🗽',
+                        },
                       ];
                       final trip = trips[index];
-                      
+
                       return Container(
                         width: 160,
                         margin: EdgeInsets.only(
@@ -329,7 +357,8 @@ class ProfilePage extends HookConsumerWidget {
                                     ),
                                   ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
@@ -343,7 +372,8 @@ class ProfilePage extends HookConsumerWidget {
                                       Text(
                                         '${trip['country']} • ${trip['date']}',
                                         style: TextStyle(
-                                          color: Colors.white.withValues(alpha: 0.8),
+                                          color: Colors.white
+                                              .withValues(alpha: 0.8),
                                           fontSize: 12,
                                         ),
                                       ),
@@ -355,8 +385,13 @@ class ProfilePage extends HookConsumerWidget {
                           ),
                         ),
                       )
-                          .animate(delay: Duration(milliseconds: 1100 + (index * 200)))
-                          .slideX(begin: 0.3, duration: const Duration(milliseconds: 600))
+                          .animate(
+                            delay: Duration(milliseconds: 1100 + (index * 200)),
+                          )
+                          .slideX(
+                            begin: 0.3,
+                            duration: const Duration(milliseconds: 600),
+                          )
                           .fadeIn();
                     },
                   ),
@@ -365,7 +400,7 @@ class ProfilePage extends HookConsumerWidget {
             ),
           ),
         ),
-        
+
         // 称号セクション
         SliverToBoxAdapter(
           child: Container(
@@ -403,25 +438,33 @@ class ProfilePage extends HookConsumerWidget {
                           .unlockedAchievements
                           .take(5)
                           .toList();
-                      
+
                       return ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: unlockedAchievements.length,
                         itemBuilder: (context, index) {
                           final achievement = unlockedAchievements[index];
-                          
+
                           return Container(
                             width: 100,
                             margin: EdgeInsets.only(
-                              right: index < unlockedAchievements.length - 1 ? 12 : 0,
+                              right: index < unlockedAchievements.length - 1
+                                  ? 12
+                                  : 0,
                             ),
                             child: _AchievementCard(
                               achievement: achievement,
                               isCompact: true,
                             ),
                           )
-                              .animate(delay: Duration(milliseconds: 1500 + (index * 100)))
-                              .scale(duration: const Duration(milliseconds: 400))
+                              .animate(
+                                delay: Duration(
+                                  milliseconds: 1500 + (index * 100),
+                                ),
+                              )
+                              .scale(
+                                duration: const Duration(milliseconds: 400),
+                              )
                               .fadeIn();
                         },
                       );
@@ -433,7 +476,7 @@ class ProfilePage extends HookConsumerWidget {
             ),
           ),
         ),
-        
+
         // アクションボタン
         SliverToBoxAdapter(
           child: Container(
@@ -512,7 +555,7 @@ class _StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -520,7 +563,6 @@ class _StatCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: color.withValues(alpha: 0.2),
-          width: 1,
         ),
       ),
       child: Column(
@@ -568,7 +610,7 @@ class _ActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Material(
       color: theme.colorScheme.surface,
       borderRadius: BorderRadius.circular(12),
@@ -642,7 +684,7 @@ class _AchievementCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Container(
       padding: EdgeInsets.all(isCompact ? 8 : 12),
       decoration: BoxDecoration(
@@ -668,7 +710,10 @@ class _AchievementCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             achievement.title,
-            style: (isCompact ? theme.textTheme.bodySmall : theme.textTheme.bodyMedium)?.copyWith(
+            style: (isCompact
+                    ? theme.textTheme.bodySmall
+                    : theme.textTheme.bodyMedium)
+                ?.copyWith(
               fontWeight: FontWeight.w600,
               color: achievement.isUnlocked
                   ? theme.colorScheme.onSurface
@@ -717,7 +762,7 @@ class _AchievementsDialog extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final achievements = ref.watch(achievementNotifierProvider);
-    
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -749,7 +794,6 @@ class _AchievementsDialog extends HookConsumerWidget {
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 1.0,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
                 ),

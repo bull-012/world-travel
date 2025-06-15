@@ -64,7 +64,8 @@ class Achievement {
     );
   }
 
-  double get progressPercentage => maxProgress > 0 ? progress / maxProgress : 0.0;
+  double get progressPercentage =>
+      maxProgress > 0 ? progress / maxProgress : 0.0;
 }
 
 /// デフォルトの称号リスト
@@ -94,7 +95,7 @@ final List<Achievement> defaultAchievements = [
     progress: 12,
     maxProgress: 5,
   ),
-  Achievement(
+  const Achievement(
     id: 'world_traveler',
     title: '世界旅行者',
     description: '15の国を制覇',
@@ -102,11 +103,10 @@ final List<Achievement> defaultAchievements = [
     color: Colors.orange,
     type: AchievementType.travel,
     requirement: '15ヶ国を訪問',
-    isUnlocked: false,
     progress: 12,
     maxProgress: 15,
   ),
-  Achievement(
+  const Achievement(
     id: 'globe_trotter',
     title: 'グローブトロッター',
     description: '全大陸を制覇',
@@ -114,7 +114,6 @@ final List<Achievement> defaultAchievements = [
     color: Colors.purple,
     type: AchievementType.travel,
     requirement: '7大陸すべてを訪問',
-    isUnlocked: false,
     progress: 4,
     maxProgress: 7,
   ),
@@ -131,7 +130,7 @@ final List<Achievement> defaultAchievements = [
     isUnlocked: true,
     unlockedAt: DateTime(2024, 2, 10),
   ),
-  Achievement(
+  const Achievement(
     id: 'thrill_seeker',
     title: 'スリルシーカー',
     description: '5つの極限アクティビティを体験',
@@ -139,13 +138,12 @@ final List<Achievement> defaultAchievements = [
     color: Colors.red,
     type: AchievementType.adventure,
     requirement: 'バンジージャンプ、スカイダイビングなど',
-    isUnlocked: false,
     progress: 2,
     maxProgress: 5,
   ),
 
   // ソーシャル関連
-  Achievement(
+  const Achievement(
     id: 'social_butterfly',
     title: 'ソーシャルバタフライ',
     description: '10人の旅行仲間を作る',
@@ -153,7 +151,6 @@ final List<Achievement> defaultAchievements = [
     color: Colors.pink,
     type: AchievementType.social,
     requirement: '10人の友達と旅行',
-    isUnlocked: false,
     progress: 6,
     maxProgress: 10,
   ),
@@ -181,9 +178,9 @@ final List<Achievement> defaultAchievements = [
     type: AchievementType.special,
     requirement: 'β版から利用',
     isUnlocked: true,
-    unlockedAt: DateTime(2023, 12, 1),
+    unlockedAt: DateTime(2023, 12),
   ),
-  Achievement(
+  const Achievement(
     id: 'master_traveler',
     title: 'マスタートラベラー',
     description: '究極の旅行者',
@@ -191,7 +188,6 @@ final List<Achievement> defaultAchievements = [
     color: Colors.deepOrange,
     type: AchievementType.special,
     requirement: '全ての基本称号を獲得',
-    isUnlocked: false,
     progress: 5,
     maxProgress: 8,
   ),

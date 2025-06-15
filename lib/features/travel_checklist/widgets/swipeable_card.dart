@@ -105,21 +105,21 @@ class _SwipeableChecklistCardState extends State<SwipeableChecklistCard>
       _dragOffset = Offset.zero;
     });
     _controller.reset();
-    
+
     // アニメーションも初期状態にリセット
     _animation = Tween<Offset>(
       begin: Offset.zero,
       end: Offset.zero,
     ).animate(_controller);
-    
+
     _rotationAnimation = Tween<double>(
-      begin: 0.0,
-      end: 0.0,
+      begin: 0,
+      end: 0,
     ).animate(_controller);
-    
+
     _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 1.0,
+      begin: 1,
+      end: 1,
     ).animate(_controller);
   }
 
@@ -165,7 +165,7 @@ class _SwipeableChecklistCardState extends State<SwipeableChecklistCard>
             widget.onSwipeComplete();
           }
         }
-        
+
         // 短い遅延後にカードをリセット
         Future.delayed(const Duration(milliseconds: 100), () {
           if (mounted) {
@@ -188,7 +188,7 @@ class _SwipeableChecklistCardState extends State<SwipeableChecklistCard>
     final screenWidth = MediaQuery.of(context).size.width;
     final cardWidth = screenWidth * 0.9;
     final screenHeight = MediaQuery.of(context).size.height;
-    final swipeHintHeight = 70 + 40; // スワイプヒントの高さ + bottom位置
+    const swipeHintHeight = 70 + 40; // スワイプヒントの高さ + bottom位置
     final availableHeight = screenHeight -
         100 -
         36 -
@@ -412,7 +412,9 @@ class _SwipeableChecklistCardState extends State<SwipeableChecklistCard>
                               ),
                             ),
                           ),
-                        if (_isDragging && widget.isInteractable && widget.currentIndex > 0)
+                        if (_isDragging &&
+                            widget.isInteractable &&
+                            widget.currentIndex > 0)
                           Positioned(
                             bottom: 16,
                             left: 40,
@@ -442,57 +444,6 @@ class _SwipeableChecklistCardState extends State<SwipeableChecklistCard>
           },
         ),
       ),
-    );
-  }
-}
-
-/// スワイプヒントウィジェット
-class _SwipeHint extends StatelessWidget {
-  const _SwipeHint({
-    required this.icon,
-    required this.label,
-    required this.color,
-    required this.isLeft,
-  });
-
-  final IconData icon;
-  final String label;
-  final Color color;
-  final bool isLeft;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Column(
-      children: [
-        Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.1),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            icon,
-            color: color,
-            size: 30,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Icon(
-          isLeft ? Icons.arrow_back : Icons.arrow_forward,
-          color: theme.colorScheme.onSurfaceVariant,
-          size: 16,
-        ),
-      ],
     );
   }
 }

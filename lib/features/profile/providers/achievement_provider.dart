@@ -53,7 +53,10 @@ class AchievementNotifier extends _$AchievementNotifier {
     final unlocked = unlockedAchievements;
     if (unlocked.isEmpty) return null;
     
-    unlocked.sort((a, b) => (b.unlockedAt ?? DateTime(0)).compareTo(a.unlockedAt ?? DateTime(0)));
+    unlocked.sort(
+      (a, b) => (b.unlockedAt ?? DateTime(0))
+          .compareTo(a.unlockedAt ?? DateTime(0)),
+    );
     return unlocked.first;
   }
 
