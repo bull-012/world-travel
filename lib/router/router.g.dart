@@ -45,6 +45,16 @@ RouteBase get $mainRoute => GoRouteData.$route(
           path: 'sample',
           factory: $SampleRouteExtension._fromState,
         ),
+        GoRouteData.$route(
+          path: 'travel-checklist',
+          factory: $TravelChecklistRouteExtension._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: 'detail',
+              factory: $ChecklistDetailRouteExtension._fromState,
+            ),
+          ],
+        ),
       ],
     );
 
@@ -93,6 +103,46 @@ extension $SampleRouteExtension on SampleRoute {
 
   String get location => GoRouteData.$location(
         '/sample',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $TravelChecklistRouteExtension on TravelChecklistRoute {
+  static TravelChecklistRoute _fromState(GoRouterState state) =>
+      const TravelChecklistRoute();
+
+  String get location => GoRouteData.$location(
+        '/travel-checklist',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ChecklistDetailRouteExtension on ChecklistDetailRoute {
+  static ChecklistDetailRoute _fromState(GoRouterState state) =>
+      ChecklistDetailRoute(
+        $extra: state.extra as ChecklistItem,
+      );
+
+  String get location => GoRouteData.$location(
+        '/travel-checklist/detail',
       );
 
   void go(BuildContext context) => context.go(location, extra: $extra);

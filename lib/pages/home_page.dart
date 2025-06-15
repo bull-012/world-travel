@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 import 'package:world_travel/common/widgets/index.dart';
 import 'package:world_travel/features/profile/pages/sample_page.dart';
 import 'package:world_travel/pages/destinations_page.dart';
@@ -203,9 +204,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         subtitle: 'プランを作成',
                         color: theme.colorScheme.primary,
                         onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('新しい旅行プラン作成')),
-                          );
+                          context.push('/travel-checklist');
                         },
                       ),
                     ),

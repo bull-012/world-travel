@@ -3,6 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:world_travel/features/profile/pages/sample_page.dart';
+import 'package:world_travel/features/travel_checklist/models/checklist_item.dart';
+import 'package:world_travel/features/travel_checklist/pages/checklist_detail_page.dart';
+import 'package:world_travel/features/travel_checklist/pages/travel_checklist_page.dart';
 import 'package:world_travel/pages/home_page.dart';
 import 'package:world_travel/pages/main_scaffold.dart';
 import 'package:world_travel/pages/second_page.dart';
@@ -38,6 +41,14 @@ class SplashRoute extends GoRouteData {
     ),
     TypedGoRoute<SampleRoute>(
       path: 'sample',
+    ),
+    TypedGoRoute<TravelChecklistRoute>(
+      path: 'travel-checklist',
+      routes: [
+        TypedGoRoute<ChecklistDetailRoute>(
+          path: 'detail',
+        ),
+      ],
     ),
   ],
 )
@@ -82,5 +93,25 @@ class SampleRoute extends GoRouteData {
     return SamplePage(
       args: $extra ?? const SamplePageArgs(title: 'Sample Profile'),
     );
+  }
+}
+
+class TravelChecklistRoute extends GoRouteData {
+  const TravelChecklistRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const TravelChecklistPage();
+  }
+}
+
+class ChecklistDetailRoute extends GoRouteData {
+  const ChecklistDetailRoute({required this.$extra});
+
+  final ChecklistItem $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ChecklistDetailPage(item: $extra);
   }
 }
