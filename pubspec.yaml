@@ -49,6 +49,16 @@ dependencies:
   # For splash screen and animations
   flutter_animate: ^4.5.2
   vibration: ^2.0.0
+  
+  # For MapBox integration (using stable version to avoid iOS dependency conflicts)
+  mapbox_maps_flutter: 2.1.0
+  
+  # For location services
+  geolocator: ^13.0.2
+  geocoding: ^4.0.0
+  
+  # For permission handling
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:

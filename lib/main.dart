@@ -1,10 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:world_travel/common/app_initializer.dart';
 import 'package:world_travel/router/router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize MapBox with access token from environment variable
+  const mapboxToken = String.fromEnvironment('MAPBOX_ACCESS_TOKEN');
+
+  if (mapboxToken.isEmpty) {
+    debugPrint('ERROR: MAPBOX_ACCESS_TOKEN not found in environment variables');
+    debugPrint(
+        'Make sure to run with --dart-define-from-file=dart_defines/[env].env');
+  } else {
+    try {
+      MapboxOptions.setAccessToken(mapboxToken);
+      debugPrint('MapBox initialized with token from environment');
+
+      // Verify token was set
+      final verifyToken = await MapboxOptions.getAccessToken();
+      if (verifyToken.isEmpty) {
+        debugPrint(
+            'WARNING: MapBox token verification failed - token is empty');
+      } else {
+        debugPrint('MapBox token verified: ${verifyToken.substring(0, 10)}...');
+      }
+    } on Exception catch (e) {
+      debugPrint('ERROR: Failed to set MapBox token: $e');
+    }
+  }
 
   final (overrideProviders: overrideProviders) =
       await AppInitializer.initialize();

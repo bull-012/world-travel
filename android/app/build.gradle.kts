@@ -9,6 +9,10 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
     // coreLibraryDesugaring を有効にする AGP7.4.0以上
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+    
+    // AndroidX Lifecycle dependency for MapBox
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
 }
 
 android {
@@ -35,6 +39,10 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        
+        // MapBox Access Token - provided via dart-define at build time
+        // The token is passed through dart-define and doesn't need to be hardcoded here
+        manifestPlaceholders["MAPBOX_ACCESS_TOKEN"] = ""
     }
 
     buildTypes {

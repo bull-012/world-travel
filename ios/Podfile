@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, '12.0'
+platform :ios, '12.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -39,5 +39,23 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
+    
+    # Fix for Xcode 16 and MapBox SDK
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+      # Remove arm64 exclusion for M1/M2 Macs
+      config.build_settings.delete('EXCLUDED_ARCHS[sdk=iphonesimulator*]')
+      # Ensure proper Swift version
+      config.build_settings['SWIFT_VERSION'] = '5.0'
+    end
+  end
+  
+  # Fix file paths for generated headers
+  installer.generated_projects.each do |project|
+    project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['HEADER_SEARCH_PATHS'] = '$(inherited) "${PODS_CONFIGURATION_BUILD_DIR}"'
+      end
+    end
   end
 end
