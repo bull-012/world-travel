@@ -69,6 +69,18 @@ class _TravelChecklistPageState extends ConsumerState<TravelChecklistPage>
         .updateItemStatus(item.id, isCompleted: true);
   }
 
+  void _handlePrevious() {
+    if (_currentIndex > 0) {
+      setState(() {
+        _currentIndex--;
+      });
+    }
+  }
+
+  void _handleNext() {
+    _handleSwipeComplete();
+  }
+
   void _showCompletionDialog() {
     final notifier = ref.read(checklistNotifierProvider.notifier);
     final progress = notifier.progress;
@@ -289,18 +301,26 @@ class _TravelChecklistPageState extends ConsumerState<TravelChecklistPage>
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
+                  children: [
+                    // 戻るボタン（最初のカードでは非表示）
+                    if (_currentIndex > 0)
+                      _SwipeHint(
+                        icon: Icons.arrow_back,
+                        label: '戻る',
+                        color: Colors.orange,
+                        isLeft: true,
+                        onTap: _handlePrevious,
+                      )
+                    else
+                      const SizedBox(width: 50), // スペースを保持
+
+                    // 次へボタン
                     _SwipeHint(
-                      icon: Icons.close,
-                      label: 'まだ準備が必要',
-                      color: Colors.red,
-                      isLeft: true,
-                    ),
-                    _SwipeHint(
-                      icon: Icons.check,
-                      label: '準備完了',
-                      color: Colors.green,
+                      icon: Icons.arrow_forward,
+                      label: '次へ',
+                      color: Colors.blue,
                       isLeft: false,
+                      onTap: _handleNext,
                     ),
                   ],
                 ),
@@ -319,46 +339,45 @@ class _SwipeHint extends StatelessWidget {
     required this.label,
     required this.color,
     required this.isLeft,
+    this.onTap,
   });
 
   final IconData icon;
   final String label;
   final Color color;
   final bool isLeft;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Column(
-      children: [
-        Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.1),
-            shape: BoxShape.circle,
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              icon,
+              color: color,
+              size: 30,
+            ),
           ),
-          child: Icon(
-            icon,
-            color: color,
-            size: 30,
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
           ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Icon(
-          isLeft ? Icons.arrow_back : Icons.arrow_forward,
-          color: theme.colorScheme.onSurfaceVariant,
-          size: 16,
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -355,7 +355,7 @@ class _SwipeableChecklistCardState extends State<SwipeableChecklistCard>
                         // スワイプインジケーター
                         if (_isDragging && widget.isInteractable)
                           Positioned(
-                            top: 40,
+                            bottom: 16,
                             right: 40,
                             child: AnimatedOpacity(
                               opacity: _dragOffset.dx > 50 ? 1.0 : 0.0,
@@ -376,7 +376,7 @@ class _SwipeableChecklistCardState extends State<SwipeableChecklistCard>
                           ),
                         if (_isDragging && widget.isInteractable)
                           Positioned(
-                            top: 40,
+                            bottom: 16,
                             left: 40,
                             child: AnimatedOpacity(
                               opacity: _dragOffset.dx < -50 ? 1.0 : 0.0,
