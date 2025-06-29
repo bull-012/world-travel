@@ -272,11 +272,30 @@ cp dart_defines/dev.env.sample dart_defines/dev.env
 cp dart_defines/qa.env.sample dart_defines/qa.env
 cp dart_defines/prod.env.sample dart_defines/prod.env
 
-# 2. 各ファイルを編集して、実際の MapBox アクセストークンを設定
-# MapBox アクセストークンは https://account.mapbox.com/access-tokens/ から取得できます
+# 2. 各ファイルを編集して、実際の MapBox トークンを設定
+# MapBox アカウントから以下の2つのトークンを取得：
+# - Public Access Token (pk.*): https://account.mapbox.com/access-tokens/
+# - Secret Download Token (sk.*): https://account.mapbox.com/access-tokens/
 ```
 
-**重要**: 環境変数ファイル（`.env`）は Git に含まれません。各開発者が自分のトークンを設定する必要があります。
+**Android 追加設定**:
+```bash
+# Android ビルド用に MapBox SDK ダウンロードトークンを設定
+
+# local.properties を使用（推奨）
+cp android/local.properties.sample android/local.properties
+
+# local.properties を編集して、ファイルの最後に以下を追加：
+# MAPBOX_DOWNLOADS_TOKEN=sk.your_secret_token_here
+
+# 注意: local.properties は .gitignore に含まれているため、
+# 各開発者が自分の環境で設定する必要があります
+```
+
+**重要**: 
+- 環境変数ファイル（`.env`）と `local.properties` は Git に含まれません
+- 各開発者が自分のトークンを設定する必要があります
+- Public Token (pk.*) と Secret Token (sk.*) は異なるトークンです
 
 #### 3. 用意されたコマンド
 ```bash
