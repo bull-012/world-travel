@@ -11,7 +11,7 @@ class SearchFilterBar extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final searchController = useTextEditingController();
     final filter = ref.watch(spotsFilterProvider);
-    
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -38,7 +38,9 @@ class SearchFilterBar extends HookConsumerWidget {
                       icon: const Icon(Icons.clear),
                       onPressed: () {
                         searchController.clear();
-                        ref.read(spotsFilterProvider.notifier).updateSearchQuery('');
+                        ref
+                            .read(spotsFilterProvider.notifier)
+                            .updateSearchQuery('');
                       },
                     )
                   : null,
@@ -55,7 +57,7 @@ class SearchFilterBar extends HookConsumerWidget {
             },
           ),
           const SizedBox(height: 12),
-          
+
           // Filter chips
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -68,7 +70,7 @@ class SearchFilterBar extends HookConsumerWidget {
                   onTap: () => _showDistanceRangeDialog(context, ref),
                 ),
                 const SizedBox(width: 8),
-                
+
                 // Category filter
                 _FilterChip(
                   label: filter.categories.isEmpty
@@ -79,14 +81,14 @@ class SearchFilterBar extends HookConsumerWidget {
                   onTap: () => _showCategoryDialog(context, ref),
                 ),
                 const SizedBox(width: 8),
-                
+
                 // Sort order
                 _FilterChip(
                   label: filter.sortOrder.displayName,
                   icon: Icons.sort,
                   onTap: () => _showSortOrderDialog(context, ref),
                 ),
-                
+
                 if (filter.hasActiveFilters) ...[
                   const SizedBox(width: 8),
                   _FilterChip(
@@ -107,7 +109,7 @@ class SearchFilterBar extends HookConsumerWidget {
   }
 
   void _showDistanceRangeDialog(BuildContext context, WidgetRef ref) {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       builder: (context) {
         return SafeArea(
@@ -125,12 +127,15 @@ class SearchFilterBar extends HookConsumerWidget {
                 return ListTile(
                   title: Text(range.displayName),
                   onTap: () {
-                    ref.read(spotsFilterProvider.notifier).updateDistanceRange(range);
+                    ref
+                        .read(spotsFilterProvider.notifier)
+                        .updateDistanceRange(range);
                     Navigator.pop(context);
                   },
-                  trailing: ref.watch(spotsFilterProvider).distanceRange == range
-                      ? const Icon(Icons.check, color: Colors.blue)
-                      : null,
+                  trailing:
+                      ref.watch(spotsFilterProvider).distanceRange == range
+                          ? const Icon(Icons.check, color: Colors.blue)
+                          : null,
                 );
               }),
             ],
@@ -141,13 +146,14 @@ class SearchFilterBar extends HookConsumerWidget {
   }
 
   void _showCategoryDialog(BuildContext context, WidgetRef ref) {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       builder: (context) {
         return Consumer(
           builder: (context, ref, _) {
-            final selectedCategories = ref.watch(spotsFilterProvider).categories;
-            
+            final selectedCategories =
+                ref.watch(spotsFilterProvider).categories;
+
             return SafeArea(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -156,23 +162,26 @@ class SearchFilterBar extends HookConsumerWidget {
                     padding: EdgeInsets.all(16),
                     child: Text(
                       'カテゴリ',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
                   ...SpotCategory.values.map((category) {
                     final isSelected = selectedCategories.contains(category);
-                    
+
                     return CheckboxListTile(
                       title: Text(category.displayName),
                       value: isSelected,
                       onChanged: (value) {
                         final updatedCategories = [...selectedCategories];
-                        if (value == true) {
+                        if (value ?? false) {
                           updatedCategories.add(category);
                         } else {
                           updatedCategories.remove(category);
                         }
-                        ref.read(spotsFilterProvider.notifier).updateCategories(updatedCategories);
+                        ref
+                            .read(spotsFilterProvider.notifier)
+                            .updateCategories(updatedCategories);
                       },
                     );
                   }),
@@ -193,7 +202,7 @@ class SearchFilterBar extends HookConsumerWidget {
   }
 
   void _showSortOrderDialog(BuildContext context, WidgetRef ref) {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       builder: (context) {
         return SafeArea(
@@ -211,7 +220,9 @@ class SearchFilterBar extends HookConsumerWidget {
                 return ListTile(
                   title: Text(order.displayName),
                   onTap: () {
-                    ref.read(spotsFilterProvider.notifier).updateSortOrder(order);
+                    ref
+                        .read(spotsFilterProvider.notifier)
+                        .updateSortOrder(order);
                     Navigator.pop(context);
                   },
                   trailing: ref.watch(spotsFilterProvider).sortOrder == order
@@ -243,7 +254,9 @@ class _FilterChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: isActive ? Theme.of(context).primaryColor : Colors.grey.withValues(alpha: 0.1),
+      color: isActive
+          ? Theme.of(context).primaryColor
+          : Colors.grey.withValues(alpha: 0.1),
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
         onTap: onTap,

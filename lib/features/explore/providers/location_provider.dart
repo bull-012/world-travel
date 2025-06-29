@@ -1,4 +1,5 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'location_provider.g.dart';
@@ -19,7 +20,7 @@ class LocationService extends _$LocationService {
           distanceFilter: 100,
         ),
       );
-    } catch (e) {
+    } on Exception {
       return null;
     }
   }
@@ -75,9 +76,9 @@ class LocationService extends _$LocationService {
 }
 
 @riverpod
-Stream<Position> positionStream(PositionStreamRef ref) async* {
+Stream<Position> positionStream(Ref ref) async* {
   final locationService = ref.watch(locationServiceProvider.notifier);
-  
+
   // First check permissions
   final currentPosition = await ref.watch(locationServiceProvider.future);
   if (currentPosition == null) {

@@ -49,18 +49,18 @@ class AnimatedTextReveal extends HookWidget {
       () {
         Timer? timer;
         var isCancelled = false;
-        
+
         timer = Timer(delay, () async {
           if (isCancelled) return;
           isStarted.value = true;
 
           for (var i = 0; i <= text.length; i++) {
             if (isCancelled) break;
-            
+
             if (i > 0) {
               await triggerCharacterFeedback();
             }
-            
+
             if (isCancelled) break;
             visibleCharacters.value = i;
 

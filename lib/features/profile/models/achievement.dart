@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 /// 称号・実績の種類
 enum AchievementType {
-  travel,    // 旅行関連
+  travel, // 旅行関連
   adventure, // 冒険関連
-  social,    // ソーシャル関連
-  special,   // 特別な称号
+  social, // ソーシャル関連
+  special, // 特別な称号
 }
 
 /// 称号・実績のモデル

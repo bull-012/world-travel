@@ -128,17 +128,18 @@ enum SpotCategory {
 
   static SpotCategory fromString(String category) {
     return SpotCategory.values.firstWhereOrNull(
-      (e) => e.name == category || e.displayName == category,
-    ) ?? SpotCategory.other;
+          (e) => e.name == category || e.displayName == category,
+        ) ??
+        SpotCategory.other;
   }
 }
 
 enum DistanceRange {
   m500('500m', 0.5),
-  km1('1km', 1.0),
-  km3('3km', 3.0),
-  km5('5km', 5.0),
-  km10('10km', 10.0);
+  km1('1km', 1),
+  km3('3km', 3),
+  km5('5km', 5),
+  km10('10km', 10);
 
   const DistanceRange(this.displayName, this.kilometers);
   final String displayName;

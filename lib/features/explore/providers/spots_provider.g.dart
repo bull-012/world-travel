@@ -22,7 +22,7 @@ final spotsProvider = AutoDisposeFutureProvider<List<Spot>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef SpotsRef = AutoDisposeFutureProviderRef<List<Spot>>;
-String _$rankedSpotsHash() => r'a413fe8e537cb52474ebecf665ffef1102c3fe92';
+String _$rankedSpotsHash() => r'841f820a0b4812b0b5bea352b7351d59c5db0f94';
 
 /// See also [rankedSpots].
 @ProviderFor(rankedSpots)
@@ -38,7 +38,7 @@ final rankedSpotsProvider = AutoDisposeFutureProvider<List<Spot>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef RankedSpotsRef = AutoDisposeFutureProviderRef<List<Spot>>;
-String _$spotsFilterHash() => r'4479d7e6397ee53146c281cf252f9b8047137226';
+String _$spotsFilterHash() => r'dfbb37bbd3e7fc9fffebff9b79441507bddb7c86';
 
 /// See also [SpotsFilter].
 @ProviderFor(SpotsFilter)

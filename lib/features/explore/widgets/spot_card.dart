@@ -4,9 +4,9 @@ import 'package:world_travel/features/explore/models/spot.dart';
 
 class SpotCard extends StatelessWidget {
   const SpotCard({
-    super.key,
     required this.spot,
     required this.onTap,
+    super.key,
     this.isSelected = false,
   });
 
@@ -40,20 +40,20 @@ class SpotCard extends StatelessWidget {
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,
-                  placeholder: (context, url) => Container(
+                  placeholder: (context, url) => ColoredBox(
                     color: Colors.grey.withValues(alpha: 0.3),
                     child: const Center(
                       child: CircularProgressIndicator(),
                     ),
                   ),
-                  errorWidget: (context, url, error) => Container(
+                  errorWidget: (context, url, error) => ColoredBox(
                     color: Colors.grey.withValues(alpha: 0.3),
                     child: const Icon(Icons.image_not_supported),
                   ),
                 ),
               ),
               const SizedBox(width: 12),
-              
+
               // Content
               Expanded(
                 child: Column(
@@ -84,7 +84,8 @@ class SpotCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
-                            SpotCategory.fromString(spot.category.first).displayName,
+                            SpotCategory.fromString(spot.category.first)
+                                .displayName,
                             style: TextStyle(
                               fontSize: 12,
                               color: _getCategoryColor(spot.category.first),
@@ -94,7 +95,7 @@ class SpotCard extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 4),
-                    
+
                     // Address
                     Text(
                       spot.address,
@@ -106,7 +107,7 @@ class SpotCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 8),
-                    
+
                     // Rating and stats
                     Row(
                       children: [
@@ -129,7 +130,7 @@ class SpotCard extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(width: 16),
-                        
+
                         // Reviews
                         Row(
                           children: [
@@ -149,7 +150,7 @@ class SpotCard extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(width: 16),
-                        
+
                         // Likes
                         Row(
                           children: [

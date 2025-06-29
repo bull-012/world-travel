@@ -30,7 +30,8 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
     try {
       // PDFファイルの存在確認
       final file = File(widget.pdfPath);
-      if (!await file.exists()) {
+      // ファイルの存在確認を同期的に行う
+      if (!file.existsSync()) {
         setState(() {
           _errorMessage = 'PDFファイルが見つかりません';
           _isLoading = false;
@@ -51,7 +52,7 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
       setState(() {
         _isLoading = false;
       });
-    } catch (e) {
+    } on Exception catch (e) {
       setState(() {
         _errorMessage = 'PDFの読み込みに失敗しました: $e';
         _isLoading = false;
@@ -69,10 +70,7 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.share),
-            onPressed: () {
-              // PDF共有機能
-              _sharePdf();
-            },
+            onPressed: _sharePdf,
           ),
         ],
       ),
@@ -139,7 +137,7 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.picture_as_pdf,
                     size: 48,
                     color: Colors.red,
@@ -164,9 +162,9 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
               ),
             ),
           ),
-          
+
           const SizedBox(height: 24),
-          
+
           // アクションボタン
           Column(
             children: [
@@ -195,9 +193,9 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
               ),
             ],
           ),
-          
+
           const Spacer(),
-          
+
           // PDF表示ライブラリについての案内
           Container(
             padding: const EdgeInsets.all(16),

@@ -11,7 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   Widget _buildHomeContent() {
     final theme = Theme.of(context);
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:world_travel/features/explore/models/spot.dart';
 import 'package:world_travel/features/explore/providers/location_provider.dart';
@@ -27,7 +26,7 @@ class ExplorePage extends HookConsumerWidget {
           children: [
             // Search and filter bar
             const SearchFilterBar(),
-            
+
             // View mode toggle
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -62,7 +61,7 @@ class ExplorePage extends HookConsumerWidget {
                 ],
               ),
             ),
-            
+
             // Main content
             Expanded(
               child: Stack(
@@ -71,78 +70,88 @@ class ExplorePage extends HookConsumerWidget {
                   if (viewMode.value == ViewMode.map)
                     switch (spotsAsync) {
                       AsyncData(:final value) => MapBoxMapView(
-                        spots: value,
-                        onSpotSelected: (spot) {
-                          selectedSpot.value = spot;
-                          SpotDetailSheet.show(context, spot);
-                        },
-                        initialPosition: locationAsync.valueOrNull,
-                      ),
-                      AsyncLoading() => const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      AsyncError(:final error) => Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.error_outline, size: 48, color: Colors.red),
-                            const SizedBox(height: 16),
-                            Text('エラーが発生しました: $error'),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: () => ref.refresh(spotsProvider),
-                              child: const Text('再試行'),
-                            ),
-                          ],
+                          spots: value,
+                          onSpotSelected: (spot) {
+                            selectedSpot.value = spot;
+                            SpotDetailSheet.show(context, spot);
+                          },
+                          initialPosition: locationAsync.valueOrNull,
                         ),
-                      ),
+                      AsyncLoading() => const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      AsyncError(:final error) => Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.error_outline,
+                                size: 48,
+                                color: Colors.red,
+                              ),
+                              const SizedBox(height: 16),
+                              Text('エラーが発生しました: $error'),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: () => ref.refresh(spotsProvider),
+                                child: const Text('再試行'),
+                              ),
+                            ],
+                          ),
+                        ),
                       _ => const SizedBox.shrink(),
                     },
-                  
+
                   // List view
                   if (viewMode.value == ViewMode.list)
                     switch (spotsAsync) {
                       AsyncData(:final value) => ListView.builder(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        itemCount: value.length,
-                        itemBuilder: (context, index) {
-                          final spot = value[index];
-                          return SpotCard(
-                            spot: spot,
-                            onTap: () => SpotDetailSheet.show(context, spot),
-                            isSelected: selectedSpot.value?.id == spot.id,
-                          );
-                        },
-                      ),
-                      AsyncLoading() => const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      AsyncError(:final error) => Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.error_outline, size: 48, color: Colors.red),
-                            const SizedBox(height: 16),
-                            Text('エラーが発生しました: $error'),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: () => ref.refresh(spotsProvider),
-                              child: const Text('再試行'),
-                            ),
-                          ],
+                          padding: const EdgeInsets.only(bottom: 16),
+                          itemCount: value.length,
+                          itemBuilder: (context, index) {
+                            final spot = value[index];
+                            return SpotCard(
+                              spot: spot,
+                              onTap: () => SpotDetailSheet.show(context, spot),
+                              isSelected: selectedSpot.value?.id == spot.id,
+                            );
+                          },
                         ),
-                      ),
+                      AsyncLoading() => const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      AsyncError(:final error) => Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.error_outline,
+                                size: 48,
+                                color: Colors.red,
+                              ),
+                              const SizedBox(height: 16),
+                              Text('エラーが発生しました: $error'),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: () => ref.refresh(spotsProvider),
+                                child: const Text('再試行'),
+                              ),
+                            ],
+                          ),
+                        ),
                       _ => const SizedBox.shrink(),
                     },
-                  
+
                   // Ranking view
                   if (viewMode.value == ViewMode.ranking)
                     const SingleChildScrollView(
                       child: SpotRankingList(),
                     ),
-                  
-                  // Location permission prompt - only show when loaded and permission denied
-                  if (!locationAsync.isLoading && (locationAsync.hasError || locationAsync.value == null))
+
+                  // Location permission prompt - only show when loaded and
+                  // permission denied
+                  if (!locationAsync.isLoading &&
+                      (locationAsync.hasError || locationAsync.value == null))
                     Positioned(
                       bottom: 16,
                       left: 16,
@@ -173,7 +182,8 @@ class ExplorePage extends HookConsumerWidget {
                                     Text(
                                       '現在地周辺のスポットを表示するには位置情報を有効にしてください',
                                       style: TextStyle(
-                                        color: Colors.white.withValues(alpha: 0.9),
+                                        color:
+                                            Colors.white.withValues(alpha: 0.9),
                                         fontSize: 12,
                                       ),
                                     ),
@@ -187,13 +197,15 @@ class ExplorePage extends HookConsumerWidget {
                                   await ref
                                       .read(locationServiceProvider.notifier)
                                       .requestLocationPermission();
-                                  
+
                                   // Refresh location provider to check status
+                                  // ignore: unused_result
                                   ref.refresh(locationServiceProvider);
                                 },
                                 style: TextButton.styleFrom(
                                   backgroundColor: Colors.white,
-                                  foregroundColor: Theme.of(context).primaryColor,
+                                  foregroundColor:
+                                      Theme.of(context).primaryColor,
                                 ),
                                 child: const Text('有効にする'),
                               ),

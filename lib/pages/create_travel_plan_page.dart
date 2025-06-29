@@ -317,7 +317,7 @@ Widget _buildBasicInfoStep(
             return GestureDetector(
               onTap: () {
                 selectedTemplate.value =
-                    isSelected ? null : template['name'] as String;
+                    isSelected ? null : template['name']! as String;
               },
               child: Container(
                 padding: const EdgeInsets.all(12),
@@ -339,7 +339,7 @@ Widget _buildBasicInfoStep(
                     Row(
                       children: [
                         Icon(
-                          template['icon'] as IconData,
+                          template['icon']! as IconData,
                           color: isSelected
                               ? theme.colorScheme.primary
                               : theme.colorScheme.onSurface,
@@ -348,7 +348,7 @@ Widget _buildBasicInfoStep(
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            template['name'] as String,
+                            template['name']! as String,
                             style: theme.textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.w600,
                               color: isSelected
@@ -361,7 +361,7 @@ Widget _buildBasicInfoStep(
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      template['description'] as String,
+                      template['description']! as String,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
@@ -449,18 +449,18 @@ Widget _buildBasicInfoStep(
 
             return GestureDetector(
               onTap: () {
-                selectedCategory.value = category['name'] as String;
+                selectedCategory.value = category['name']! as String;
               },
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? (category['color'] as Color).withValues(alpha: 0.1)
+                      ? (category['color']! as Color).withValues(alpha: 0.1)
                       : theme.colorScheme.surface,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: isSelected
-                        ? category['color'] as Color
+                        ? category['color']! as Color
                         : theme.colorScheme.outline.withValues(alpha: 0.3),
                     width: isSelected ? 2 : 1,
                   ),
@@ -468,20 +468,20 @@ Widget _buildBasicInfoStep(
                 child: Row(
                   children: [
                     Icon(
-                      category['icon'] as IconData,
+                      category['icon']! as IconData,
                       color: isSelected
-                          ? category['color'] as Color
+                          ? category['color']! as Color
                           : theme.colorScheme.onSurface,
                       size: 20,
                     ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        category['name'] as String,
+                        category['name']! as String,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: isSelected
-                              ? category['color'] as Color
+                              ? category['color']! as Color
                               : theme.colorScheme.onSurface,
                         ),
                       ),
@@ -814,7 +814,8 @@ Widget _buildScheduleBudgetStep(
                               if (booking.departureLocation != null &&
                                   booking.arrivalLocation != null) ...{
                                 Text(
-                                  '${booking.departureLocation} → ${booking.arrivalLocation}',
+                                  '${booking.departureLocation} → '
+                                  '${booking.arrivalLocation}',
                                   style: theme.textTheme.bodySmall?.copyWith(
                                     color: theme.colorScheme.outline,
                                   ),

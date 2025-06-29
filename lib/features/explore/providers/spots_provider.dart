@@ -14,9 +14,7 @@ class SpotsFilter extends _$SpotsFilter {
   @override
   SpotFilter build() => SpotFilter();
 
-  void updateFilter(SpotFilter filter) {
-    state = filter;
-  }
+  SpotFilter get filter => state;
 
   void updateCategories(List<SpotCategory> categories) {
     state = state.copyWith(categories: categories);
@@ -180,8 +178,8 @@ List<Spot> _generateMockSpots() {
             '日曜日': '10:00 - 21:00',
           },
           price: '¥¥',
-          phone:
-              '03-${random.nextInt(9000) + 1000}-${random.nextInt(9000) + 1000}',
+          phone: '03-${random.nextInt(9000) + 1000}-'
+              '${random.nextInt(9000) + 1000}',
           website: 'https://example.com',
         ),
       ),
@@ -192,7 +190,7 @@ List<Spot> _generateMockSpots() {
 }
 
 @riverpod
-Future<List<Spot>> rankedSpots(RankedSpotsRef ref) async {
+Future<List<Spot>> rankedSpots(Ref ref) async {
   final spots = await ref.watch(spotsProvider.future);
   final filter = ref.watch(spotsFilterProvider);
 

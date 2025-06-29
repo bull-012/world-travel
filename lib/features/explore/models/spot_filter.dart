@@ -27,6 +27,5 @@ class SpotFilter {
     );
   }
 
-  bool get hasActiveFilters =>
-      categories.isNotEmpty || searchQuery.isNotEmpty;
+  bool get hasActiveFilters => categories.isNotEmpty || searchQuery.isNotEmpty;
 }

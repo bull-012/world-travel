@@ -1,9 +1,8 @@
-import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:file_picker/file_picker.dart';
 
 // 交通機関予約情報のモデル
 class TransportationBooking {
@@ -79,24 +78,31 @@ class TransportationBookingPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    
+
     // フォームコントローラー
     final typeController = useTextEditingController(text: booking?.type ?? '');
-    final providerController = useTextEditingController(text: booking?.provider ?? '');
+    final providerController =
+        useTextEditingController(text: booking?.provider ?? '');
     final urlController = useTextEditingController(text: booking?.url ?? '');
-    final departureLocationController = useTextEditingController(text: booking?.departureLocation ?? '');
-    final arrivalLocationController = useTextEditingController(text: booking?.arrivalLocation ?? '');
-    final departureTimeController = useTextEditingController(text: booking?.departureTime ?? '');
-    final arrivalTimeController = useTextEditingController(text: booking?.arrivalTime ?? '');
-    final bookingReferenceController = useTextEditingController(text: booking?.bookingReference ?? '');
-    final notesController = useTextEditingController(text: booking?.notes ?? '');
-    
+    final departureLocationController =
+        useTextEditingController(text: booking?.departureLocation ?? '');
+    final arrivalLocationController =
+        useTextEditingController(text: booking?.arrivalLocation ?? '');
+    final departureTimeController =
+        useTextEditingController(text: booking?.departureTime ?? '');
+    final arrivalTimeController =
+        useTextEditingController(text: booking?.arrivalTime ?? '');
+    final bookingReferenceController =
+        useTextEditingController(text: booking?.bookingReference ?? '');
+    final notesController =
+        useTextEditingController(text: booking?.notes ?? '');
+
     // 状態管理
     final selectedPdfPath = useState<String?>(booking?.pdfPath);
     final departureDate = useState<DateTime?>(booking?.departureDate);
     final arrivalDate = useState<DateTime?>(booking?.arrivalDate);
     final selectedTransportationType = useState<String?>(booking?.type);
-    
+
     // 交通機関の種類
     final transportationTypes = [
       {'name': '航空機', 'icon': Icons.flight, 'color': Colors.blue},
@@ -108,7 +114,7 @@ class TransportationBookingPage extends HookConsumerWidget {
       {'name': 'タクシー', 'icon': Icons.local_taxi, 'color': Colors.amber},
       {'name': 'その他', 'icon': Icons.more_horiz, 'color': Colors.grey},
     ];
-    
+
     // 予約サイトの種類
     final bookingSites = [
       '楽天トラベル',
@@ -130,14 +136,16 @@ class TransportationBookingPage extends HookConsumerWidget {
           type: FileType.custom,
           allowedExtensions: ['pdf'],
         );
-        
+
         if (result != null) {
           selectedPdfPath.value = result.files.single.path;
         }
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('ファイル選択エラー: $e')),
-        );
+      } on Exception catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('ファイル選択エラー: $e')),
+          );
+        }
       }
     }
 
@@ -157,7 +165,7 @@ class TransportationBookingPage extends HookConsumerWidget {
         bookingReference: bookingReferenceController.text,
         notes: notesController.text,
       );
-      
+
       Navigator.of(context).pop(newBooking);
     }
 
@@ -191,27 +199,27 @@ class TransportationBookingPage extends HookConsumerWidget {
                 crossAxisCount: 4,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
-                childAspectRatio: 1,
               ),
               itemCount: transportationTypes.length,
               itemBuilder: (context, index) {
                 final type = transportationTypes[index];
-                final isSelected = selectedTransportationType.value == type['name'];
-                
+                final isSelected =
+                    selectedTransportationType.value == type['name'];
+
                 return GestureDetector(
                   onTap: () {
-                    selectedTransportationType.value = type['name'] as String;
-                    typeController.text = type['name'] as String;
+                    selectedTransportationType.value = type['name']! as String;
+                    typeController.text = type['name']! as String;
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: isSelected 
-                          ? (type['color'] as Color).withValues(alpha: 0.1)
+                      color: isSelected
+                          ? (type['color']! as Color).withValues(alpha: 0.1)
                           : theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: isSelected 
-                            ? type['color'] as Color
+                        color: isSelected
+                            ? type['color']! as Color
                             : theme.colorScheme.outline.withValues(alpha: 0.3),
                         width: isSelected ? 2 : 1,
                       ),
@@ -220,20 +228,22 @@ class TransportationBookingPage extends HookConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          type['icon'] as IconData,
-                          color: isSelected 
-                              ? type['color'] as Color
+                          type['icon']! as IconData,
+                          color: isSelected
+                              ? type['color']! as Color
                               : theme.colorScheme.onSurface,
                           size: 24,
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          type['name'] as String,
+                          type['name']! as String,
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: isSelected 
-                                ? type['color'] as Color
+                            color: isSelected
+                                ? type['color']! as Color
                                 : theme.colorScheme.onSurface,
-                            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                            fontWeight: isSelected
+                                ? FontWeight.w600
+                                : FontWeight.normal,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -245,9 +255,9 @@ class TransportationBookingPage extends HookConsumerWidget {
             )
                 .animate(delay: const Duration(milliseconds: 200))
                 .fadeIn(duration: const Duration(milliseconds: 600)),
-            
+
             const SizedBox(height: 24),
-            
+
             // 予約サイト選択
             Text(
               '予約サイト',
@@ -257,8 +267,8 @@ class TransportationBookingPage extends HookConsumerWidget {
             ),
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
-              value: bookingSites.contains(providerController.text) 
-                  ? providerController.text 
+              value: bookingSites.contains(providerController.text)
+                  ? providerController.text
                   : null,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -281,9 +291,9 @@ class TransportationBookingPage extends HookConsumerWidget {
                 .animate(delay: const Duration(milliseconds: 400))
                 .fadeIn(duration: const Duration(milliseconds: 600))
                 .slideX(begin: 0.3),
-            
+
             const SizedBox(height: 16),
-            
+
             // 予約URL
             Text(
               '予約URL',
@@ -306,9 +316,9 @@ class TransportationBookingPage extends HookConsumerWidget {
                 .animate(delay: const Duration(milliseconds: 600))
                 .fadeIn(duration: const Duration(milliseconds: 600))
                 .slideX(begin: 0.3),
-            
+
             const SizedBox(height: 24),
-            
+
             // PDFファイル
             Text(
               '予約確認書（PDF）',
@@ -331,7 +341,7 @@ class TransportationBookingPage extends HookConsumerWidget {
                   if (selectedPdfPath.value != null) ...[
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.picture_as_pdf,
                           color: Colors.red,
                           size: 24,
@@ -359,7 +369,9 @@ class TransportationBookingPage extends HookConsumerWidget {
                       children: [
                         const Icon(Icons.upload_file),
                         const SizedBox(width: 8),
-                        Text(selectedPdfPath.value != null ? 'ファイルを変更' : 'PDFを選択'),
+                        Text(
+                          selectedPdfPath.value != null ? 'ファイルを変更' : 'PDFを選択',
+                        ),
                       ],
                     ),
                   ),
@@ -369,9 +381,9 @@ class TransportationBookingPage extends HookConsumerWidget {
                 .animate(delay: const Duration(milliseconds: 800))
                 .fadeIn(duration: const Duration(milliseconds: 600))
                 .slideY(begin: 0.3),
-            
+
             const SizedBox(height: 24),
-            
+
             // 出発・到着情報
             Text(
               '出発・到着情報',
@@ -380,7 +392,7 @@ class TransportationBookingPage extends HookConsumerWidget {
               ),
             ),
             const SizedBox(height: 12),
-            
+
             // 出発地・到着地
             Row(
               children: [
@@ -414,9 +426,9 @@ class TransportationBookingPage extends HookConsumerWidget {
                 .animate(delay: const Duration(milliseconds: 1000))
                 .fadeIn(duration: const Duration(milliseconds: 600))
                 .slideY(begin: 0.3),
-            
+
             const SizedBox(height: 16),
-            
+
             // 出発日時・到着日時
             Row(
               children: [
@@ -437,7 +449,8 @@ class TransportationBookingPage extends HookConsumerWidget {
                             context: context,
                             initialDate: departureDate.value ?? DateTime.now(),
                             firstDate: DateTime.now(),
-                            lastDate: DateTime.now().add(const Duration(days: 365)),
+                            lastDate:
+                                DateTime.now().add(const Duration(days: 365)),
                           );
                           if (date != null) {
                             departureDate.value = date;
@@ -447,7 +460,8 @@ class TransportationBookingPage extends HookConsumerWidget {
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: theme.colorScheme.outline.withValues(alpha: 0.3),
+                              color: theme.colorScheme.outline
+                                  .withValues(alpha: 0.3),
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -495,11 +509,12 @@ class TransportationBookingPage extends HookConsumerWidget {
                         onTap: () async {
                           final date = await showDatePicker(
                             context: context,
-                            initialDate: arrivalDate.value ?? 
-                                departureDate.value ?? 
+                            initialDate: arrivalDate.value ??
+                                departureDate.value ??
                                 DateTime.now(),
                             firstDate: departureDate.value ?? DateTime.now(),
-                            lastDate: DateTime.now().add(const Duration(days: 365)),
+                            lastDate:
+                                DateTime.now().add(const Duration(days: 365)),
                           );
                           if (date != null) {
                             arrivalDate.value = date;
@@ -509,7 +524,8 @@ class TransportationBookingPage extends HookConsumerWidget {
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: theme.colorScheme.outline.withValues(alpha: 0.3),
+                              color: theme.colorScheme.outline
+                                  .withValues(alpha: 0.3),
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -546,9 +562,9 @@ class TransportationBookingPage extends HookConsumerWidget {
                 .animate(delay: const Duration(milliseconds: 1200))
                 .fadeIn(duration: const Duration(milliseconds: 600))
                 .slideY(begin: 0.3),
-            
+
             const SizedBox(height: 24),
-            
+
             // 予約番号
             Text(
               '予約番号',
@@ -570,9 +586,9 @@ class TransportationBookingPage extends HookConsumerWidget {
                 .animate(delay: const Duration(milliseconds: 1400))
                 .fadeIn(duration: const Duration(milliseconds: 600))
                 .slideX(begin: 0.3),
-            
+
             const SizedBox(height: 16),
-            
+
             // メモ
             Text(
               'メモ',
@@ -598,7 +614,7 @@ class TransportationBookingPage extends HookConsumerWidget {
                 .animate(delay: const Duration(milliseconds: 1600))
                 .fadeIn(duration: const Duration(milliseconds: 600))
                 .slideY(begin: 0.3),
-            
+
             const SizedBox(height: 32),
           ],
         ),

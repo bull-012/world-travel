@@ -6,7 +6,7 @@ part of 'location_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$positionStreamHash() => r'1c888fd31d2e122659a8ecf46ed80c64626c99b3';
+String _$positionStreamHash() => r'f3c847610d45e77372613d6545383642bd9ed896';
 
 /// See also [positionStream].
 @ProviderFor(positionStream)
@@ -23,7 +23,7 @@ final positionStreamProvider = AutoDisposeStreamProvider<Position>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef PositionStreamRef = AutoDisposeStreamProviderRef<Position>;
-String _$locationServiceHash() => r'8643fc251c29fb99cec332eec42ae6cb177ba2d3';
+String _$locationServiceHash() => r'7f060a527ada02cd823533d19ed11145ffe8b505';
 
 /// See also [LocationService].
 @ProviderFor(LocationService)

@@ -13,7 +13,8 @@ void main() async {
   if (mapboxToken.isEmpty) {
     debugPrint('ERROR: MAPBOX_ACCESS_TOKEN not found in environment variables');
     debugPrint(
-        'Make sure to run with --dart-define-from-file=dart_defines/[env].env');
+      'Make sure to run with --dart-define-from-file=dart_defines/[env].env',
+    );
   } else {
     try {
       MapboxOptions.setAccessToken(mapboxToken);
@@ -23,7 +24,8 @@ void main() async {
       final verifyToken = await MapboxOptions.getAccessToken();
       if (verifyToken.isEmpty) {
         debugPrint(
-            'WARNING: MapBox token verification failed - token is empty');
+          'WARNING: MapBox token verification failed - token is empty',
+        );
       } else {
         debugPrint('MapBox token verified: ${verifyToken.substring(0, 10)}...');
       }

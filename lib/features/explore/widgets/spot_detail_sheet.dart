@@ -6,14 +6,14 @@ import 'package:world_travel/features/explore/models/spot.dart';
 
 class SpotDetailSheet extends ConsumerWidget {
   const SpotDetailSheet({
-    super.key,
     required this.spot,
+    super.key,
   });
 
   final Spot spot;
 
   static void show(BuildContext context, Spot spot) {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
@@ -45,7 +45,7 @@ class SpotDetailSheet extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              
+
               // Content
               Expanded(
                 child: SingleChildScrollView(
@@ -62,21 +62,24 @@ class SpotDetailSheet extends ConsumerWidget {
                             itemCount: spot.media.photos.length,
                             itemBuilder: (context, index) {
                               return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 4),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 4),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
                                   child: CachedNetworkImage(
                                     imageUrl: spot.media.photos[index],
                                     fit: BoxFit.cover,
-                                    placeholder: (context, url) => Container(
+                                    placeholder: (context, url) => ColoredBox(
                                       color: Colors.grey.withValues(alpha: 0.3),
                                       child: const Center(
                                         child: CircularProgressIndicator(),
                                       ),
                                     ),
-                                    errorWidget: (context, url, error) => Container(
+                                    errorWidget: (context, url, error) =>
+                                        ColoredBox(
                                       color: Colors.grey.withValues(alpha: 0.3),
-                                      child: const Icon(Icons.image_not_supported),
+                                      child:
+                                          const Icon(Icons.image_not_supported),
                                     ),
                                   ),
                                 ),
@@ -86,7 +89,7 @@ class SpotDetailSheet extends ConsumerWidget {
                         ),
                         const SizedBox(height: 16),
                       ],
-                      
+
                       // Name and category
                       Row(
                         children: [
@@ -110,7 +113,8 @@ class SpotDetailSheet extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: Text(
-                              SpotCategory.fromString(spot.category.first).displayName,
+                              SpotCategory.fromString(spot.category.first)
+                                  .displayName,
                               style: TextStyle(
                                 fontSize: 14,
                                 color: _getCategoryColor(spot.category.first),
@@ -121,11 +125,15 @@ class SpotDetailSheet extends ConsumerWidget {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      
+
                       // Address
                       Row(
                         children: [
-                          const Icon(Icons.location_on, size: 18, color: Colors.grey),
+                          const Icon(
+                            Icons.location_on,
+                            size: 18,
+                            color: Colors.grey,
+                          ),
                           const SizedBox(width: 4),
                           Expanded(
                             child: Text(
@@ -139,7 +147,7 @@ class SpotDetailSheet extends ConsumerWidget {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      
+
                       // Stats
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -165,7 +173,7 @@ class SpotDetailSheet extends ConsumerWidget {
                         ],
                       ),
                       const SizedBox(height: 24),
-                      
+
                       // Details section
                       _DetailSection(
                         title: '営業時間',
@@ -176,7 +184,8 @@ class SpotDetailSheet extends ConsumerWidget {
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(entry.key),
                                   Text(entry.value),
@@ -187,7 +196,7 @@ class SpotDetailSheet extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      
+
                       // Contact info
                       _DetailSection(
                         title: '連絡先',
@@ -199,7 +208,8 @@ class SpotDetailSheet extends ConsumerWidget {
                                 leading: const Icon(Icons.phone),
                                 title: Text(spot.details.phone),
                                 trailing: const Icon(Icons.chevron_right),
-                                onTap: () => _launchUrl('tel:${spot.details.phone}'),
+                                onTap: () =>
+                                    _launchUrl('tel:${spot.details.phone}'),
                                 contentPadding: EdgeInsets.zero,
                               ),
                             if (spot.details.website.isNotEmpty)
@@ -214,7 +224,7 @@ class SpotDetailSheet extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      
+
                       // Action buttons
                       Row(
                         children: [

@@ -330,7 +330,8 @@ class DestinationsPage extends StatelessWidget {
                                     backgroundColor:
                                         Colors.white.withValues(alpha: 0.3),
                                     valueColor: const AlwaysStoppedAnimation(
-                                        Colors.white),
+                                      Colors.white,
+                                    ),
                                     minHeight: 3,
                                   ),
                                 ),

@@ -9,10 +9,10 @@ import 'package:world_travel/features/travel_checklist/pages/travel_checklist_pa
 import 'package:world_travel/pages/create_travel_plan_page.dart';
 import 'package:world_travel/pages/home_page.dart';
 import 'package:world_travel/pages/main_scaffold.dart';
+import 'package:world_travel/pages/pdf_viewer_page.dart';
 import 'package:world_travel/pages/second_page.dart';
 import 'package:world_travel/pages/splash_page.dart';
 import 'package:world_travel/pages/transportation_booking_page.dart';
-import 'package:world_travel/pages/pdf_viewer_page.dart';
 
 part 'router.g.dart';
 

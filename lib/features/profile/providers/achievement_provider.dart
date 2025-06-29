@@ -28,7 +28,7 @@ class AchievementNotifier extends _$AchievementNotifier {
     state = state.map((achievement) {
       if (achievement.id == achievementId) {
         final updatedAchievement = achievement.copyWith(progress: newProgress);
-        
+
         // 進捗が最大に達したら自動的に解除
         if (newProgress >= achievement.maxProgress && !achievement.isUnlocked) {
           return updatedAchievement.copyWith(
@@ -36,7 +36,7 @@ class AchievementNotifier extends _$AchievementNotifier {
             unlockedAt: DateTime.now(),
           );
         }
-        
+
         return updatedAchievement;
       }
       return achievement;
@@ -52,10 +52,10 @@ class AchievementNotifier extends _$AchievementNotifier {
   Achievement? get latestAchievement {
     final unlocked = unlockedAchievements;
     if (unlocked.isEmpty) return null;
-    
+
     unlocked.sort(
-      (a, b) => (b.unlockedAt ?? DateTime(0))
-          .compareTo(a.unlockedAt ?? DateTime(0)),
+      (a, b) =>
+          (b.unlockedAt ?? DateTime(0)).compareTo(a.unlockedAt ?? DateTime(0)),
     );
     return unlocked.first;
   }
