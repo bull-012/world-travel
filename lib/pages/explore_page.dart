@@ -141,8 +141,8 @@ class ExplorePage extends HookConsumerWidget {
                       child: SpotRankingList(),
                     ),
                   
-                  // Location permission prompt
-                  if (locationAsync.hasError || locationAsync.value == null)
+                  // Location permission prompt - only show when loaded and permission denied
+                  if (!locationAsync.isLoading && (locationAsync.hasError || locationAsync.value == null))
                     Positioned(
                       bottom: 16,
                       left: 16,
