@@ -262,7 +262,42 @@ flutter pub get
 dart run build_runner build --delete-conflicting-outputs
 ```
 
-#### 2. 用意されたコマンド
+#### 2. 環境変数の設定
+
+このプロジェクトでは MapBox を使用しているため、環境変数の設定が必要です。
+
+```bash
+# 1. サンプルファイルをコピー
+cp dart_defines/dev.env.sample dart_defines/dev.env
+cp dart_defines/qa.env.sample dart_defines/qa.env
+cp dart_defines/prod.env.sample dart_defines/prod.env
+
+# 2. 各ファイルを編集して、実際の MapBox トークンを設定
+# MapBox アカウントから以下の2つのトークンを取得：
+# - Public Access Token (pk.*): https://account.mapbox.com/access-tokens/
+# - Secret Download Token (sk.*): https://account.mapbox.com/access-tokens/
+```
+
+**Android 追加設定**:
+```bash
+# Android ビルド用に MapBox SDK ダウンロードトークンを設定
+
+# local.properties を使用（推奨）
+cp android/local.properties.sample android/local.properties
+
+# local.properties を編集して、ファイルの最後に以下を追加：
+# MAPBOX_DOWNLOADS_TOKEN=sk.your_secret_token_here
+
+# 注意: local.properties は .gitignore に含まれているため、
+# 各開発者が自分の環境で設定する必要があります
+```
+
+**重要**: 
+- 環境変数ファイル（`.env`）と `local.properties` は Git に含まれません
+- 各開発者が自分のトークンを設定する必要があります
+- Public Token (pk.*) と Secret Token (sk.*) は異なるトークンです
+
+#### 3. 用意されたコマンド
 ```bash
 # プロジェクト全体のセットアップコマンド
 flutter pub get && dart run build_runner build --delete-conflicting-outputs
@@ -277,19 +312,28 @@ flutter test
 flutter run -t widgetbook/main.dart
 ```
 
-#### 3. プラットフォームビルド
+#### 4. 開発時の実行
+```bash
+# 開発環境で実行（環境変数付き）
+fvm flutter run --dart-define-from-file=dart_defines/dev.env
+
+# QA環境で実行
+fvm flutter run --dart-define-from-file=dart_defines/qa.env
+```
+
+#### 5. プラットフォームビルド
 ```bash
 # Android
-flutter build apk --dart-define-from-file=dart_defines/qa.env
+fvm flutter build apk --dart-define-from-file=dart_defines/qa.env
 
 # iOS
-flutter build ios --release --no-codesign
+fvm flutter build ios --release --no-codesign --dart-define-from-file=dart_defines/qa.env
 
 # Web
-flutter build web
+fvm flutter build web --dart-define-from-file=dart_defines/qa.env
 
 # Widgetbook (Web)
-flutter build web -t widgetbook/main.dart --release
+fvm flutter build web -t widgetbook/main.dart --release
 ```
 
 ### 特定機能のセットアップ

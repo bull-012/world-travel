@@ -47,3 +47,10 @@ app.*.map.json
 
 # FVM Version Cache
 .fvm/
+
+# Environment variables
+.env
+/dart_defines/local.env
+/dart_defines/qa.env
+/dart_defines/dev.env
+/dart_defines/prod.env

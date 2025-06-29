@@ -8,7 +8,7 @@ part of 'router.dart';
 
 List<RouteBase> get $appRoutes => [
       $splashRoute,
-      $homeRoute,
+      $mainRoute,
     ];
 
 RouteBase get $splashRoute => GoRouteData.$route(
@@ -33,9 +33,9 @@ extension $SplashRouteExtension on SplashRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $homeRoute => GoRouteData.$route(
+RouteBase get $mainRoute => GoRouteData.$route(
       path: '/',
-      factory: $HomeRouteExtension._fromState,
+      factory: $MainRouteExtension._fromState,
       routes: [
         GoRouteData.$route(
           path: 'second',
@@ -45,11 +45,33 @@ RouteBase get $homeRoute => GoRouteData.$route(
           path: 'sample',
           factory: $SampleRouteExtension._fromState,
         ),
+        GoRouteData.$route(
+          path: 'travel-checklist',
+          factory: $TravelChecklistRouteExtension._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: 'detail',
+              factory: $ChecklistDetailRouteExtension._fromState,
+            ),
+          ],
+        ),
+        GoRouteData.$route(
+          path: 'create-travel-plan',
+          factory: $CreateTravelPlanRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'transportation-booking',
+          factory: $TransportationBookingRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'pdf-viewer',
+          factory: $PdfViewerRouteExtension._fromState,
+        ),
       ],
     );
 
-extension $HomeRouteExtension on HomeRoute {
-  static HomeRoute _fromState(GoRouterState state) => const HomeRoute();
+extension $MainRouteExtension on MainRoute {
+  static MainRoute _fromState(GoRouterState state) => const MainRoute();
 
   String get location => GoRouteData.$location(
         '/',
@@ -93,6 +115,107 @@ extension $SampleRouteExtension on SampleRoute {
 
   String get location => GoRouteData.$location(
         '/sample',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $TravelChecklistRouteExtension on TravelChecklistRoute {
+  static TravelChecklistRoute _fromState(GoRouterState state) =>
+      const TravelChecklistRoute();
+
+  String get location => GoRouteData.$location(
+        '/travel-checklist',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ChecklistDetailRouteExtension on ChecklistDetailRoute {
+  static ChecklistDetailRoute _fromState(GoRouterState state) =>
+      ChecklistDetailRoute(
+        $extra: state.extra as ChecklistItem,
+      );
+
+  String get location => GoRouteData.$location(
+        '/travel-checklist/detail',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $CreateTravelPlanRouteExtension on CreateTravelPlanRoute {
+  static CreateTravelPlanRoute _fromState(GoRouterState state) =>
+      const CreateTravelPlanRoute();
+
+  String get location => GoRouteData.$location(
+        '/create-travel-plan',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $TransportationBookingRouteExtension on TransportationBookingRoute {
+  static TransportationBookingRoute _fromState(GoRouterState state) =>
+      TransportationBookingRoute(
+        $extra: state.extra as TransportationBooking?,
+      );
+
+  String get location => GoRouteData.$location(
+        '/transportation-booking',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $PdfViewerRouteExtension on PdfViewerRoute {
+  static PdfViewerRoute _fromState(GoRouterState state) => PdfViewerRoute(
+        $extra: state.extra as PdfViewerArgs,
+      );
+
+  String get location => GoRouteData.$location(
+        '/pdf-viewer',
       );
 
   void go(BuildContext context) => context.go(location, extra: $extra);
