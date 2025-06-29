@@ -130,6 +130,8 @@ class _MainScaffoldViewState extends State<MainScaffoldView>
             _selectedIndex = index;
           });
         },
+        // Disable swiping on all pages - only allow navigation via bottom nav bar
+        physics: const NeverScrollableScrollPhysics(),
         children: const [
           HomePage(),
           ExplorePage(),
