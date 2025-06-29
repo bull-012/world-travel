@@ -50,8 +50,8 @@ dependencies:
   flutter_animate: ^4.5.2
   vibration: ^2.0.0
   
-  # For MapBox integration (using stable version to avoid iOS dependency conflicts)
-  mapbox_maps_flutter: 2.1.0
+  # For MapBox integration
+  mapbox_maps_flutter: ^2.3.0
   
   # For location services
   geolocator: ^13.0.2
