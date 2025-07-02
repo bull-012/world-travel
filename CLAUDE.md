@@ -387,3 +387,44 @@ cd ios && pod install --repo-update
 
 ## role
 - fvm flutter analyzeを実行して、コードの静的解析を行うこと
+
+## Slack通知
+作業過程の重要なポイントをSlackに通知してください。以下のタイミングで通知を送信：
+
+### 通知タイミング
+1. **セッション開始時**
+   ```bash
+   ./scripts/claude-slack-notify.sh log "🚀 開発セッション開始: [作業内容の概要]"
+   ```
+
+2. **新機能の実装開始時**
+   ```bash
+   ./scripts/claude-slack-notify.sh log "📱 新機能実装: [機能名]"
+   ```
+
+3. **重要なファイル作成・更新時**
+   ```bash
+   ./scripts/claude-slack-notify.sh file "[ファイルパス]" "create/update"
+   ```
+
+4. **ビルド・テスト実行時**
+   ```bash
+   ./scripts/claude-slack-notify.sh command "[コマンド]" "[説明]"
+   ```
+
+5. **エラー発生時**
+   ```bash
+   ./scripts/claude-slack-notify.sh log "❌ エラー: [エラー内容の概要]"
+   ```
+
+6. **作業完了時**
+   ```bash
+   ./scripts/claude-slack-notify.sh log "✅ 完了: [完了内容]"
+   ./scripts/claude-slack-notify.sh end
+   ```
+
+### 注意事項
+- 全ての操作を通知する必要はありません
+- 重要なマイルストーンとエラーに焦点を当てる
+- 1つのセッション内で全ての通知をスレッド化
+- 冗長な通知は避け、意味のある情報のみ送信
