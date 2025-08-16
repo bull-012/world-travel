@@ -267,7 +267,7 @@ class TransportationBookingPage extends HookConsumerWidget {
             ),
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
-              value: bookingSites.contains(providerController.text)
+              initialValue: bookingSites.contains(providerController.text)
                   ? providerController.text
                   : null,
               decoration: InputDecoration(

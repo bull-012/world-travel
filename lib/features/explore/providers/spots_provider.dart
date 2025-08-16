@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:world_travel/features/explore/models/spot.dart';
 import 'package:world_travel/features/explore/models/spot_filter.dart';
 import 'package:world_travel/features/explore/providers/location_provider.dart';
+import 'package:world_travel/features/explore/providers/user_spots_provider.dart';
 
 part 'spots_provider.g.dart';
 
@@ -44,11 +45,17 @@ Future<List<Spot>> spots(Ref ref) async {
   final positionAsync = ref.watch(locationServiceProvider);
   final position = positionAsync.valueOrNull;
 
+  // Get user spots
+  final userSpots = ref.watch(userSpotsAsSpotsProvider);
+
   // Generate mock data for now
   final mockSpots = _generateMockSpots();
 
+  // Combine mock spots with user spots
+  final allSpots = [...mockSpots, ...userSpots];
+
   // Apply filters
-  var filteredSpots = mockSpots;
+  var filteredSpots = allSpots;
 
   // Filter by search query
   if (filter.searchQuery.isNotEmpty) {
