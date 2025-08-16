@@ -6,7 +6,7 @@ part of 'spots_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$spotsHash() => r'22caa5197738854231a7edb9024d0295f5ff9acf';
+String _$spotsHash() => r'472916f47ae25fded61acdff917ff493fecd00e4';
 
 /// See also [spots].
 @ProviderFor(spots)
